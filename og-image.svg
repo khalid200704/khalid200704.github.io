@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e40af"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.12"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.04"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="1050" cy="100" r="180" fill="white" opacity="0.04"/>
+  <circle cx="150" cy="530" r="140" fill="white" opacity="0.04"/>
+  <circle cx="1100" cy="500" r="100" fill="white" opacity="0.03"/>
+
+  <!-- Logo mark -->
+  <rect x="80" y="80" width="72" height="72" rx="18" fill="white" opacity="0.95"/>
+  <text x="116" y="133" font-family="Arial,sans-serif" font-size="32" font-weight="800" fill="#2563eb" text-anchor="middle">TI</text>
+
+  <!-- Brand name -->
+  <text x="170" y="127" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="white" opacity="0.95">TI Toolkit</text>
+
+  <!-- Main headline -->
+  <text x="80" y="280" font-family="Arial,sans-serif" font-size="64" font-weight="800" fill="white" letter-spacing="-2">Kalkulator</text>
+  <text x="80" y="358" font-family="Arial,sans-serif" font-size="64" font-weight="800" fill="white" letter-spacing="-2">Teknik Industri</text>
+  <text x="80" y="436" font-family="Arial,sans-serif" font-size="64" font-weight="800" fill="white" opacity="0.85" letter-spacing="-2">Online Gratis</text>
+
+  <!-- Subtitle -->
+  <text x="80" y="506" font-family="Arial,sans-serif" font-size="26" fill="white" opacity="0.75">EOQ · OEE · Forecasting · NPV · SPC · Takt Time · Line Balancing</text>
+
+  <!-- Badge -->
+  <rect x="80" y="548" width="320" height="44" rx="22" fill="white" opacity="0.15"/>
+  <text x="240" y="576" font-family="Arial,sans-serif" font-size="18" font-weight="600" fill="white" text-anchor="middle">Untuk Mahasiswa Indonesia</text>
+
+  <!-- URL -->
+  <text x="1120" y="590" font-family="Arial,sans-serif" font-size="20" fill="white" opacity="0.6" text-anchor="end">khalid200704.github.io</text>
+</svg>

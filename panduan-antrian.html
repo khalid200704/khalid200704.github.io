@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Teori Antrian (Queueing Theory): Rumus M/M/1, Little's Law + Contoh</title>
+<meta name="description" content="Panduan teori antrian untuk teknik industri: notasi Kendall, rumus model M/M/1 (utilisasi, panjang antrian Lq, waktu tunggu Wq), Little's Law, dan contoh soal sistem antrian dengan pembahasan lengkap." />
+<meta name="author" content="TI Toolkit" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://khalid200704.github.io/panduan-antrian.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://khalid200704.github.io/panduan-antrian.html" />
+<meta property="og:title" content="Teori Antrian (Queueing Theory): Rumus M/M/1, Little's Law + Contoh" />
+<meta property="og:description" content="Notasi Kendall, rumus M/M/1, Little's Law, dan contoh soal sistem antrian dengan pembahasan lengkap." />
+<meta property="og:image" content="https://khalid200704.github.io/og-image.svg" />
+<meta property="og:locale" content="id_ID" />
+<meta property="og:site_name" content="TI Toolkit" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='15' font-weight='800' fill='white' text-anchor='middle'%3ETI%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="styles.css" />
+
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8688855167346136" crossorigin="anonymous"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Teori Antrian (Queueing Theory): Rumus M/M/1, Little's Law + Contoh",
+  "description": "Notasi Kendall, rumus model M/M/1, Little's Law, dan contoh soal sistem antrian dengan pembahasan lengkap.",
+  "inLanguage": "id-ID",
+  "author": { "@type": "Organization", "name": "TI Toolkit" },
+  "publisher": { "@type": "Organization", "name": "TI Toolkit", "url": "https://khalid200704.github.io/" },
+  "mainEntityOfPage": "https://khalid200704.github.io/panduan-antrian.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Apa arti notasi M/M/1?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Notasi Kendall A/B/c: huruf pertama adalah pola kedatangan, kedua pola pelayanan, ketiga jumlah server. M/M/1 berarti kedatangan Poisson (antarwaktu eksponensial/Markovian), waktu pelayanan eksponensial, dan satu server." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa itu Little's Law?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Little's Law (Little, 1961) menyatakan L = λW: rata-rata jumlah pelanggan dalam sistem sama dengan laju kedatangan dikali rata-rata waktu dalam sistem. Hukum ini berlaku untuk hampir semua sistem antrian yang stabil, apa pun distribusinya." }
+    },
+    {
+      "@type": "Question",
+      "name": "Kenapa sistem antrian harus memiliki ρ < 1?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Utilisasi ρ = λ/μ harus kurang dari 1 agar sistem stabil. Jika kedatangan lebih cepat dari kemampuan pelayanan (ρ ≥ 1), antrian tumbuh tanpa batas dan rumus steady-state tidak berlaku." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://khalid200704.github.io/" },
+    { "@type": "ListItem", "position": 2, "name": "Panduan", "item": "https://khalid200704.github.io/panduan.html" },
+    { "@type": "ListItem", "position": 3, "name": "Teori Antrian", "item": "https://khalid200704.github.io/panduan-antrian.html" }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <nav class="nav" aria-label="Navigasi utama">
+    <a href="index.html" class="logo" aria-label="TI Toolkit - Beranda">
+      <span class="logo-mark">TI</span>
+      <span>TI Toolkit</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Kalkulator</a>
+      <a href="panduan.html" class="active">Panduan</a>
+      <a href="about.html">Tentang</a>
+      <a href="contact.html">Kontak</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-container">
+  <main class="content-page">
+
+    <div class="meta-info">Panduan Penelitian Operasional — bagian dari seri <a href="panduan.html">Panduan Teknik Industri</a> TI Toolkit.</div>
+
+    <h1>Teori Antrian: Model M/M/1 dan Little's Law</h1>
+    <p class="subtitle">Notasi Kendall, ukuran kinerja sistem antrian (L, Lq, W, Wq), dan contoh soal lengkap — dasar analisis loket, kasir, mesin, dan call center.</p>
+
+    <h2>Mengapa Antrian Perlu Dianalisis?</h2>
+    <p>Antrian muncul setiap kali permintaan layanan datang lebih cepat daripada kemampuan melayani <em>pada saat itu</em> — di kasir minimarket, loket rumah sakit, mesin yang menunggu diperbaiki, hingga paket data di router. <strong>Teori antrian</strong> dirintis oleh insinyur Denmark <strong>A. K. Erlang</strong> (1909) saat menganalisis sentral telepon Kopenhagen, dan kini menjadi materi inti Penelitian Operasional (Operations Research).</p>
+    <p>Inti masalahnya adalah trade-off: menambah server (kasir, teknisi) menaikkan biaya kapasitas tetapi menurunkan biaya menunggu. Teori antrian memberi angka untuk menimbang keduanya.</p>
+
+    <h2>Struktur Sistem Antrian dan Notasi Kendall</h2>
+    <p>Sistem antrian dijelaskan dengan notasi <strong>Kendall A/B/c</strong> (Kendall, 1953):</p>
+    <table class="data-table">
+      <thead><tr><th>Posisi</th><th>Arti</th><th>Simbol umum</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>Distribusi antarwaktu kedatangan</td><td>M (Markovian/eksponensial), D (deterministik), G (umum)</td></tr>
+        <tr><td>B</td><td>Distribusi waktu pelayanan</td><td>M, D, G</td></tr>
+        <tr><td>c</td><td>Jumlah server paralel</td><td>1, 2, …, s</td></tr>
+      </tbody>
+    </table>
+    <p>Model paling dasar adalah <strong>M/M/1</strong>: kedatangan mengikuti proses Poisson dengan laju λ, waktu pelayanan eksponensial dengan laju μ, satu server, disiplin FCFS (first come first served), populasi dan kapasitas antrian tak terbatas.</p>
+
+    <h2>Rumus Model M/M/1</h2>
+    <p>Syarat kestabilan: utilisasi ρ = λ/μ harus &lt; 1. Pada kondisi steady-state (Hillier &amp; Lieberman, 2021):</p>
+    <table class="data-table">
+      <thead><tr><th>Ukuran kinerja</th><th>Rumus</th></tr></thead>
+      <tbody>
+        <tr><td>Utilisasi server</td><td>ρ = λ / μ</td></tr>
+        <tr><td>Peluang sistem kosong</td><td>P₀ = 1 − ρ</td></tr>
+        <tr><td>Rata-rata pelanggan dalam sistem</td><td>L = ρ / (1 − ρ) = λ / (μ − λ)</td></tr>
+        <tr><td>Rata-rata pelanggan dalam antrian</td><td>Lq = ρ² / (1 − ρ)</td></tr>
+        <tr><td>Rata-rata waktu dalam sistem</td><td>W = 1 / (μ − λ)</td></tr>
+        <tr><td>Rata-rata waktu menunggu di antrian</td><td>Wq = λ / [μ(μ − λ)]</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Little's Law: Hukum Paling Berguna di Teori Antrian</h2>
+    <div class="formula-block">L = λ · W &nbsp;&nbsp;|&nbsp;&nbsp; Lq = λ · Wq</div>
+    <p>Dibuktikan secara formal oleh John D. C. Little (1961), hukum ini berlaku untuk <em>hampir semua</em> sistem antrian stabil — apa pun distribusi kedatangan dan pelayanannya. Praktisnya: cukup tahu dua dari tiga besaran (L, λ, W), besaran ketiga langsung didapat. Little's Law juga menjadi dasar rumus lead time produksi: WIP = throughput × cycle time.</p>
+
+    <h2>Contoh Soal M/M/1 dan Pembahasan</h2>
+    <p><strong>Soal:</strong> Sebuah bengkel servis motor kecil memiliki satu mekanik. Motor datang rata-rata λ = 8 unit/jam (Poisson) dan mekanik mampu melayani rata-rata μ = 10 unit/jam (eksponensial). Hitung seluruh ukuran kinerja sistem.</p>
+    <p><strong>Langkah 1 — Utilisasi:</strong></p>
+    <div class="formula-block">ρ = 8/10 = 0,8 → mekanik sibuk 80% waktu; P₀ = 0,2</div>
+    <p><strong>Langkah 2 — Jumlah motor dalam sistem dan antrian:</strong></p>
+    <div class="formula-block">L = 0,8/(1−0,8) = 4 motor &nbsp;|&nbsp; Lq = 0,8²/(1−0,8) = 3,2 motor</div>
+    <p><strong>Langkah 3 — Waktu dalam sistem dan waktu menunggu:</strong></p>
+    <div class="formula-block">W = 1/(10−8) = 0,5 jam = 30 menit &nbsp;|&nbsp; Wq = 8/[10(10−8)] = 0,4 jam = 24 menit</div>
+    <p><strong>Langkah 4 — Verifikasi dengan Little's Law:</strong> L = λW = 8 × 0,5 = 4 ✓ dan Lq = 8 × 0,4 = 3,2 ✓.</p>
+    <p><strong>Interpretasi:</strong> rata-rata pelanggan menghabiskan 30 menit di bengkel, 24 menit di antaranya hanya menunggu. Perhatikan fenomena penting: utilisasi "hanya" 80%, tetapi antrian sudah panjang — karena hubungan L terhadap ρ <em>tidak linear</em>. Jika λ naik ke 9/jam (ρ = 0,9), L melonjak ke 9 motor dan W menjadi 1 jam. Inilah alasan sistem layanan tidak dirancang mendekati utilisasi 100%.</p>
+
+    <h2>Perluasan Model</h2>
+    <ul>
+      <li><strong>M/M/s</strong> — beberapa server paralel (bank dengan banyak teller); rumusnya memakai P₀ berbentuk penjumlahan, biasanya dibantu tabel atau software.</li>
+      <li><strong>M/M/1/K</strong> — kapasitas antrian terbatas K (pelanggan ditolak saat penuh).</li>
+      <li><strong>M/G/1</strong> — pelayanan berdistribusi umum; Lq dihitung dengan formula Pollaczek–Khintchine.</li>
+      <li><strong>Analisis biaya</strong> — total biaya = biaya server (c × Cs) + biaya menunggu (L × Cw); jumlah server optimal meminimalkan totalnya.</li>
+    </ul>
+
+    <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
+    <div class="faq-item">
+      <h3>Apa beda L dan Lq?</h3>
+      <p>L menghitung semua pelanggan dalam <em>sistem</em> (yang sedang dilayani + yang mengantre), sedangkan Lq hanya yang <em>mengantre</em>. Selisihnya L − Lq = ρ, yaitu rata-rata pelanggan yang sedang dilayani.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Bagaimana memeriksa asumsi Poisson di data nyata?</h3>
+      <p>Catat jumlah kedatangan per interval waktu yang sama, lalu uji kecocokan distribusi Poisson dengan uji chi-square goodness-of-fit — prosedur standar di praktikum statistika industri.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Kenapa hasil rumus disebut steady-state?</h3>
+      <p>Rumus M/M/1 menggambarkan kondisi rata-rata jangka panjang setelah sistem "stabil", bukan menit-menit awal buka layanan. Untuk perilaku transien atau sistem kompleks, digunakan simulasi (misal dengan software Arena atau Python/SimPy).</p>
+    </div>
+
+    <h2>Referensi</h2>
+    <ul>
+      <li>Little, J. D. C. (1961). "A Proof for the Queuing Formula: L = λW." <em>Operations Research</em>, 9(3), 383–387. — bukti formal Little's Law.</li>
+      <li>Kendall, D. G. (1953). "Stochastic Processes Occurring in the Theory of Queues and their Analysis by the Method of the Imbedded Markov Chain." <em>The Annals of Mathematical Statistics</em>, 24(3), 338–354. — asal notasi A/B/c.</li>
+      <li>Hillier, F. S., &amp; Lieberman, G. J. (2021). <em>Introduction to Operations Research</em> (11th ed.), bab Queueing Theory. McGraw-Hill.</li>
+      <li>Gross, D., Shortle, J. F., Thompson, J. M., &amp; Harris, C. M. (2018). <em>Fundamentals of Queueing Theory</em> (5th ed.). Wiley.</li>
+      <li>Heizer, J., Render, B., &amp; Munson, C. (2020). <em>Operations Management</em> (13th ed.), Module D "Waiting-Line Models". Pearson.</li>
+    </ul>
+
+    <hr class="divider">
+    <p>Kalkulator antrian M/M/1 sedang dalam pengembangan. Sementara itu, tabel rumus di atas mencakup semua yang dibutuhkan untuk soal M/M/1 — atau <a href="contact.html">kirim permintaan</a> agar kalkulator ini diprioritaskan.</p>
+    <p>
+      <a href="index.html" class="btn">Buka Kalkulator</a>
+      <a href="panduan.html" class="btn btn-secondary" style="margin-left:8px;">Panduan Lainnya</a>
+    </p>
+
+  </main>
+</div>
+
+<footer>
+  <div class="logo"><span class="logo-mark">TI</span> <span>TI Toolkit</span></div>
+  <div class="footer-links">
+    <a href="index.html">Kalkulator</a>
+    <a href="panduan.html">Panduan</a>
+    <a href="about.html">Tentang</a>
+    <a href="contact.html">Kontak</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
+  <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
+</footer>
+
+</body>
+</html>

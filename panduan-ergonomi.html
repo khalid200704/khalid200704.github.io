@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Ergonomi Industri: NIOSH Lifting Equation, RULA/REBA + Contoh</title>
+<meta name="description" content="Panduan ergonomi untuk teknik industri: persamaan angkat NIOSH (RWL dan Lifting Index) dengan contoh perhitungan lengkap, penilaian postur RULA/REBA, Nordic Body Map, antropometri, dan regulasi K3 Indonesia." />
+<meta name="author" content="TI Toolkit" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://khalid200704.github.io/panduan-ergonomi.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://khalid200704.github.io/panduan-ergonomi.html" />
+<meta property="og:title" content="Ergonomi Industri: NIOSH Lifting Equation, RULA/REBA + Contoh" />
+<meta property="og:description" content="Persamaan angkat NIOSH (RWL, Lifting Index) dengan contoh perhitungan, RULA/REBA, Nordic Body Map, dan antropometri." />
+<meta property="og:image" content="https://khalid200704.github.io/og-image.svg" />
+<meta property="og:locale" content="id_ID" />
+<meta property="og:site_name" content="TI Toolkit" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='15' font-weight='800' fill='white' text-anchor='middle'%3ETI%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="styles.css" />
+
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8688855167346136" crossorigin="anonymous"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Ergonomi Industri: NIOSH Lifting Equation, RULA/REBA + Contoh",
+  "description": "Persamaan angkat NIOSH (RWL dan Lifting Index) dengan contoh perhitungan lengkap, penilaian postur RULA/REBA, Nordic Body Map, dan antropometri.",
+  "inLanguage": "id-ID",
+  "author": { "@type": "Organization", "name": "TI Toolkit" },
+  "publisher": { "@type": "Organization", "name": "TI Toolkit", "url": "https://khalid200704.github.io/" },
+  "mainEntityOfPage": "https://khalid200704.github.io/panduan-ergonomi.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Apa itu NIOSH Lifting Equation?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Persamaan angkat NIOSH (Waters dkk., 1993) menghitung Recommended Weight Limit (RWL) — beban maksimum yang aman diangkat hampir semua pekerja sehat — dari konstanta beban 23 kg dikalikan enam faktor pengali kondisi pengangkatan. Rasio beban aktual terhadap RWL disebut Lifting Index (LI)." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa arti Lifting Index (LI) lebih dari 1?",
+      "acceptedAnswer": { "@type": "Answer", "text": "LI > 1 berarti beban melebihi batas yang direkomendasikan dan risiko cedera punggung bawah meningkat; pekerjaan perlu didesain ulang. LI > 3 dianggap berisiko tinggi bagi sebagian besar pekerja." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa beda RULA dan REBA?",
+      "acceptedAnswer": { "@type": "Answer", "text": "RULA (1993) fokus menilai risiko anggota tubuh bagian atas (lengan, pergelangan, leher) untuk pekerjaan duduk/berdiri statis, sedangkan REBA (2000) menilai seluruh tubuh termasuk kaki dan beban dinamis, cocok untuk pekerjaan manual handling." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://khalid200704.github.io/" },
+    { "@type": "ListItem", "position": 2, "name": "Panduan", "item": "https://khalid200704.github.io/panduan.html" },
+    { "@type": "ListItem", "position": 3, "name": "Ergonomi", "item": "https://khalid200704.github.io/panduan-ergonomi.html" }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <nav class="nav" aria-label="Navigasi utama">
+    <a href="index.html" class="logo" aria-label="TI Toolkit - Beranda">
+      <span class="logo-mark">TI</span>
+      <span>TI Toolkit</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Kalkulator</a>
+      <a href="panduan.html" class="active">Panduan</a>
+      <a href="about.html">Tentang</a>
+      <a href="contact.html">Kontak</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-container">
+  <main class="content-page">
+
+    <div class="meta-info">Panduan Ergonomi &amp; K3 — bagian dari seri <a href="panduan.html">Panduan Teknik Industri</a> TI Toolkit.</div>
+
+    <h1>Ergonomi Industri: NIOSH Lifting Equation &amp; Penilaian Postur</h1>
+    <p class="subtitle">Menghitung batas beban angkat yang aman (RWL &amp; Lifting Index), mengenal RULA/REBA dan Nordic Body Map, serta dasar antropometri untuk perancangan stasiun kerja.</p>
+
+    <h2>Apa itu Ergonomi?</h2>
+    <p><strong>Ergonomi</strong> (atau <em>human factors</em>) adalah ilmu yang menyesuaikan pekerjaan, alat, dan lingkungan dengan kemampuan serta keterbatasan manusia — bukan sebaliknya. Menurut International Ergonomics Association (IEA), ergonomi mencakup tiga domain: <strong>fisik</strong> (postur, beban angkat, gerakan repetitif), <strong>kognitif</strong> (beban mental, persepsi, pengambilan keputusan), dan <strong>organisasi</strong> (shift kerja, desain tim).</p>
+    <p>Di Indonesia, penerapan ergonomi di tempat kerja diwajibkan melalui <strong>Permenaker No. 5 Tahun 2018</strong> tentang Keselamatan dan Kesehatan Kerja Lingkungan Kerja, yang memuat standar faktor ergonomi termasuk penanganan beban manual.</p>
+
+    <h2>NIOSH Lifting Equation: Batas Angkat yang Aman</h2>
+    <p>Alat kuantitatif paling banyak dipakai untuk menilai pekerjaan mengangkat adalah <strong>Revised NIOSH Lifting Equation</strong> (Waters, Putz-Anderson, Garg &amp; Fine, 1993). Persamaan ini menghitung <strong>RWL (Recommended Weight Limit)</strong> — beban yang masih aman diangkat oleh ±90% pekerja sehat:</p>
+    <div class="formula-block">RWL = LC × HM × VM × DM × AM × FM × CM</div>
+    <table class="data-table">
+      <thead><tr><th>Faktor</th><th>Arti</th><th>Rumus / Sumber nilai</th></tr></thead>
+      <tbody>
+        <tr><td>LC</td><td>Load Constant</td><td>23 kg (konstanta)</td></tr>
+        <tr><td>HM</td><td>Horizontal Multiplier — jarak horizontal beban dari tubuh, H (cm)</td><td>25 / H</td></tr>
+        <tr><td>VM</td><td>Vertical Multiplier — tinggi awal beban, V (cm)</td><td>1 − 0,003 |V − 75|</td></tr>
+        <tr><td>DM</td><td>Distance Multiplier — jarak perpindahan vertikal, D (cm)</td><td>0,82 + 4,5 / D</td></tr>
+        <tr><td>AM</td><td>Asymmetric Multiplier — sudut puntiran badan, A (derajat)</td><td>1 − 0,0032 A</td></tr>
+        <tr><td>FM</td><td>Frequency Multiplier — frekuensi &amp; durasi angkat</td><td>Tabel NIOSH</td></tr>
+        <tr><td>CM</td><td>Coupling Multiplier — kualitas pegangan</td><td>Tabel NIOSH (good/fair/poor)</td></tr>
+      </tbody>
+    </table>
+    <p>Tingkat risiko dinilai dengan <strong>Lifting Index</strong>:</p>
+    <div class="formula-block">LI = Berat beban aktual / RWL</div>
+    <p>LI ≤ 1: risiko rendah · 1 &lt; LI ≤ 3: risiko meningkat, perlu perbaikan · LI &gt; 3: risiko tinggi, perbaikan segera (Waters dkk., 1993).</p>
+
+    <h2>Contoh Perhitungan RWL dan Pembahasan</h2>
+    <p><strong>Soal:</strong> Operator gudang mengangkat kardus 20 kg dengan kondisi: jarak horizontal H = 30 cm, tinggi awal beban V = 60 cm, perpindahan vertikal D = 40 cm, puntiran badan A = 30°, frekuensi 2 angkatan/menit selama ≤ 1 jam (FM = 0,91 dari tabel NIOSH), pegangan fair pada V &lt; 75 cm (CM = 0,95). Hitung RWL dan LI.</p>
+    <p><strong>Langkah 1 — Hitung tiap pengali:</strong></p>
+    <ul>
+      <li>HM = 25/30 = 0,833</li>
+      <li>VM = 1 − 0,003 |60 − 75| = 1 − 0,045 = 0,955</li>
+      <li>DM = 0,82 + 4,5/40 = 0,933</li>
+      <li>AM = 1 − 0,0032 × 30 = 0,904</li>
+      <li>FM = 0,91 ; CM = 0,95 (dari tabel)</li>
+    </ul>
+    <p><strong>Langkah 2 — RWL:</strong></p>
+    <div class="formula-block">RWL = 23 × 0,833 × 0,955 × 0,933 × 0,904 × 0,91 × 0,95 ≈ 13,3 kg</div>
+    <p><strong>Langkah 3 — Lifting Index:</strong></p>
+    <div class="formula-block">LI = 20 / 13,3 ≈ 1,5 → risiko meningkat, perlu perbaikan</div>
+    <p><strong>Rekomendasi perbaikan</strong> (urut dari dampak terbesar pada contoh ini): dekatkan beban ke tubuh (perbesar HM), hilangkan puntiran dengan menata ulang layout (AM = 1), atau turunkan berat kardus/gunakan alat bantu sehingga LI ≤ 1.</p>
+
+    <h2>Penilaian Postur Kerja: RULA, REBA, dan Nordic Body Map</h2>
+    <ul>
+      <li><strong>RULA</strong> (Rapid Upper Limb Assessment; McAtamney &amp; Corlett, 1993) — menilai postur lengan, pergelangan, leher, dan badan dengan skor 1–7; skor ≥ 5 berarti perlu investigasi dan perubahan segera. Cocok untuk kerja duduk/berdiri yang dominan anggota tubuh atas (perakitan, komputer).</li>
+      <li><strong>REBA</strong> (Rapid Entire Body Assessment; Hignett &amp; McAtamney, 2000) — versi seluruh tubuh dengan skor 1–15, mempertimbangkan beban, pegangan, dan aktivitas; cocok untuk manual handling dan perawat/logistik.</li>
+      <li><strong>Nordic Body Map / NMQ</strong> (Kuorinka dkk., 1987) — kuesioner standar keluhan muskuloskeletal pada 27–28 bagian tubuh; hampir selalu dipakai sebagai data awal di penelitian dan skripsi ergonomi Indonesia.</li>
+    </ul>
+
+    <h2>Antropometri: Merancang Sesuai Ukuran Pengguna</h2>
+    <p><strong>Antropometri</strong> adalah data dimensi tubuh manusia yang menjadi dasar perancangan stasiun kerja, kursi, dan alat. Prinsip pemakaian persentil:</p>
+    <table class="data-table">
+      <thead><tr><th>Prinsip</th><th>Persentil</th><th>Contoh</th></tr></thead>
+      <tbody>
+        <tr><td>Desain untuk jangkauan</td><td>P5 (kecil)</td><td>Letak tombol/kontrol agar terjangkau orang bertubuh kecil</td></tr>
+        <tr><td>Desain untuk ruang</td><td>P95 (besar)</td><td>Tinggi pintu, lebar kursi, clearance kaki</td></tr>
+        <tr><td>Desain adjustable</td><td>P5–P95</td><td>Kursi kerja dan meja yang dapat diatur</td></tr>
+      </tbody>
+    </table>
+    <p>Untuk pengguna Indonesia, gunakan data antropometri orang Indonesia — misalnya bank data nasional <em>antropometriindonesia.org</em> yang dikelola perhimpunan ergonomi/laboratorium ergonomi perguruan tinggi Indonesia — karena dimensi tubuh populasi Indonesia berbeda dari data Barat yang ada di banyak buku teks.</p>
+
+    <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
+    <div class="faq-item">
+      <h3>Kenapa konstanta beban NIOSH 23 kg?</h3>
+      <p>23 kg adalah beban maksimum pada kondisi pengangkatan ideal (beban dekat tubuh, setinggi 75 cm, tanpa puntiran, frekuensi rendah, pegangan baik) yang masih aman bagi ±90% pekerja sehat berdasarkan kriteria biomekanik (gaya tekan L5/S1 ≤ 3,4 kN), fisiologis, dan psikofisik (Waters dkk., 1993).</p>
+    </div>
+    <div class="faq-item">
+      <h3>Kapan pakai RULA dan kapan pakai NIOSH?</h3>
+      <p>NIOSH khusus untuk tugas <em>mengangkat/menurunkan</em> beban dua tangan. RULA/REBA untuk menilai <em>postur</em> kerja secara umum. Di banyak penelitian keduanya dipakai bersama: Nordic Body Map untuk skrining keluhan → RULA/REBA atau NIOSH untuk analisis → usulan perbaikan stasiun kerja.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apa dasar hukum ergonomi di Indonesia?</h3>
+      <p>Permenaker No. 5 Tahun 2018 tentang K3 Lingkungan Kerja mengatur faktor ergonomi (termasuk penanganan beban manual dan postur kerja) sebagai bagian dari syarat K3 yang wajib dipenuhi pengusaha, dengan pengukuran oleh ahli/lembaga K3.</p>
+    </div>
+
+    <h2>Referensi</h2>
+    <ul>
+      <li>Waters, T. R., Putz-Anderson, V., Garg, A., &amp; Fine, L. J. (1993). "Revised NIOSH equation for the design and evaluation of manual lifting tasks." <em>Ergonomics</em>, 36(7), 749–776. — makalah asli persamaan angkat NIOSH.</li>
+      <li>Waters, T. R., Putz-Anderson, V., &amp; Garg, A. (1994). <em>Applications Manual for the Revised NIOSH Lifting Equation</em>. DHHS (NIOSH) Publication No. 94-110. — sumber tabel FM dan CM.</li>
+      <li>McAtamney, L., &amp; Corlett, E. N. (1993). "RULA: a survey method for the investigation of work-related upper limb disorders." <em>Applied Ergonomics</em>, 24(2), 91–99.</li>
+      <li>Hignett, S., &amp; McAtamney, L. (2000). "Rapid Entire Body Assessment (REBA)." <em>Applied Ergonomics</em>, 31(2), 201–205.</li>
+      <li>Kuorinka, I., dkk. (1987). "Standardised Nordic questionnaires for the analysis of musculoskeletal symptoms." <em>Applied Ergonomics</em>, 18(3), 233–237.</li>
+      <li>Wickens, C. D., Lee, J. D., Liu, Y., &amp; Gordon-Becker, S. (2014). <em>An Introduction to Human Factors Engineering</em> (2nd ed.). Pearson.</li>
+      <li>Peraturan Menteri Ketenagakerjaan RI No. 5 Tahun 2018 tentang Keselamatan dan Kesehatan Kerja Lingkungan Kerja.</li>
+    </ul>
+
+    <hr class="divider">
+    <p>Kalkulator RWL/Lifting Index sedang dalam pengembangan. Rumus dan tabel di atas cukup untuk mengerjakan soal dan laporan praktikum ergonomi — atau <a href="contact.html">kirim permintaan</a> agar kalkulator ini diprioritaskan.</p>
+    <p>
+      <a href="index.html" class="btn">Buka Kalkulator</a>
+      <a href="panduan.html" class="btn btn-secondary" style="margin-left:8px;">Panduan Lainnya</a>
+    </p>
+
+  </main>
+</div>
+
+<footer>
+  <div class="logo"><span class="logo-mark">TI</span> <span>TI Toolkit</span></div>
+  <div class="footer-links">
+    <a href="index.html">Kalkulator</a>
+    <a href="panduan.html">Panduan</a>
+    <a href="about.html">Tentang</a>
+    <a href="contact.html">Kontak</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
+  <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
+</footer>
+
+</body>
+</html>

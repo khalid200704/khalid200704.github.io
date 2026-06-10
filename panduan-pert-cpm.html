@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>PERT &amp; CPM: Jalur Kritis, Slack &amp; Contoh Soal Network Diagram</title>
+<meta name="description" content="Panduan manajemen proyek PERT dan CPM: cara membuat network diagram, menghitung ES/EF/LS/LF, menentukan jalur kritis dan slack, estimasi tiga titik PERT, dan probabilitas penyelesaian proyek dengan contoh soal." />
+<meta name="author" content="TI Toolkit" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://khalid200704.github.io/panduan-pert-cpm.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://khalid200704.github.io/panduan-pert-cpm.html" />
+<meta property="og:title" content="PERT &amp; CPM: Jalur Kritis, Slack &amp; Contoh Soal Network Diagram" />
+<meta property="og:description" content="Cara menghitung ES/EF/LS/LF, jalur kritis, slack, estimasi tiga titik PERT, dan probabilitas penyelesaian proyek." />
+<meta property="og:image" content="https://khalid200704.github.io/og-image.svg" />
+<meta property="og:locale" content="id_ID" />
+<meta property="og:site_name" content="TI Toolkit" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='15' font-weight='800' fill='white' text-anchor='middle'%3ETI%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="styles.css" />
+
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8688855167346136" crossorigin="anonymous"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "PERT & CPM: Jalur Kritis, Slack & Contoh Soal Network Diagram",
+  "description": "Cara membuat network diagram, menghitung ES/EF/LS/LF, jalur kritis, slack, estimasi tiga titik PERT, dan probabilitas penyelesaian proyek.",
+  "inLanguage": "id-ID",
+  "author": { "@type": "Organization", "name": "TI Toolkit" },
+  "publisher": { "@type": "Organization", "name": "TI Toolkit", "url": "https://khalid200704.github.io/" },
+  "mainEntityOfPage": "https://khalid200704.github.io/panduan-pert-cpm.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Apa perbedaan PERT dan CPM?",
+      "acceptedAnswer": { "@type": "Answer", "text": "CPM (Critical Path Method) memakai satu estimasi waktu deterministik per aktivitas, sedangkan PERT memakai tiga estimasi (optimis, paling mungkin, pesimis) sehingga durasi proyek bersifat probabilistik. Keduanya sama-sama mencari jalur kritis pada network diagram." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa itu jalur kritis (critical path)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Jalur kritis adalah rangkaian aktivitas terpanjang dari awal sampai akhir proyek. Total durasinya menentukan umur proyek, dan aktivitas di jalur ini memiliki slack nol — keterlambatan sekecil apa pun langsung menunda proyek." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bagaimana rumus waktu harapan PERT?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Waktu harapan te = (a + 4m + b)/6 dan variansnya σ² = ((b − a)/6)², dengan a = waktu optimis, m = paling mungkin, dan b = pesimis. Rumus ini berasal dari pendekatan distribusi beta." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://khalid200704.github.io/" },
+    { "@type": "ListItem", "position": 2, "name": "Panduan", "item": "https://khalid200704.github.io/panduan.html" },
+    { "@type": "ListItem", "position": 3, "name": "PERT & CPM", "item": "https://khalid200704.github.io/panduan-pert-cpm.html" }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <nav class="nav" aria-label="Navigasi utama">
+    <a href="index.html" class="logo" aria-label="TI Toolkit - Beranda">
+      <span class="logo-mark">TI</span>
+      <span>TI Toolkit</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Kalkulator</a>
+      <a href="panduan.html" class="active">Panduan</a>
+      <a href="about.html">Tentang</a>
+      <a href="contact.html">Kontak</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-container">
+  <main class="content-page">
+
+    <div class="meta-info">Panduan Manajemen Proyek — bagian dari seri <a href="panduan.html">Panduan Teknik Industri</a> TI Toolkit.</div>
+
+    <h1>PERT &amp; CPM: Menentukan Jalur Kritis Proyek</h1>
+    <p class="subtitle">Network diagram, perhitungan maju-mundur (ES/EF/LS/LF), slack, estimasi tiga titik PERT, dan probabilitas penyelesaian proyek tepat waktu.</p>
+
+    <h2>Sejarah Singkat dan Perbedaannya</h2>
+    <p>Dua teknik penjadwalan proyek ini lahir hampir bersamaan di akhir 1950-an dari dunia nyata, bukan dari kampus. <strong>CPM (Critical Path Method)</strong> dikembangkan oleh James Kelley (Remington Rand) dan Morgan Walker (DuPont) pada 1957 untuk penjadwalan pemeliharaan pabrik kimia. <strong>PERT (Program Evaluation and Review Technique)</strong> dikembangkan tim Angkatan Laut AS bersama Booz Allen Hamilton dan Lockheed pada 1958 untuk proyek rudal Polaris, dan dipublikasikan Malcolm dkk. (1959) di jurnal <em>Operations Research</em>.</p>
+    <table class="data-table">
+      <thead><tr><th>Aspek</th><th>CPM</th><th>PERT</th></tr></thead>
+      <tbody>
+        <tr><td>Estimasi waktu</td><td>Satu nilai (deterministik)</td><td>Tiga nilai: a, m, b (probabilistik)</td></tr>
+        <tr><td>Cocok untuk</td><td>Proyek rutin yang durasinya dikenal (konstruksi, maintenance)</td><td>Proyek baru/riset yang durasinya tidak pasti</td></tr>
+        <tr><td>Output utama</td><td>Jalur kritis, slack, trade-off biaya-waktu (crashing)</td><td>Jalur kritis + probabilitas selesai pada target waktu</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Langkah Perhitungan CPM</h2>
+    <ol>
+      <li><strong>Forward pass</strong> — hitung Earliest Start (ES) dan Earliest Finish (EF = ES + durasi) dari kiri ke kanan; ES aktivitas = EF terbesar dari semua pendahulunya.</li>
+      <li><strong>Backward pass</strong> — hitung Latest Finish (LF) dan Latest Start (LS = LF − durasi) dari kanan ke kiri; LF aktivitas = LS terkecil dari semua penerusnya.</li>
+      <li><strong>Slack</strong> = LS − ES = LF − EF. Aktivitas dengan slack 0 membentuk <strong>jalur kritis</strong>.</li>
+    </ol>
+
+    <h2>Contoh Soal CPM dan Pembahasan</h2>
+    <p><strong>Soal:</strong> Sebuah proyek memiliki 5 aktivitas berikut. Tentukan jalur kritis dan slack tiap aktivitas.</p>
+    <table class="data-table">
+      <thead><tr><th>Aktivitas</th><th>Pendahulu</th><th>Durasi (hari)</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>—</td><td>3</td></tr>
+        <tr><td>B</td><td>—</td><td>4</td></tr>
+        <tr><td>C</td><td>A</td><td>5</td></tr>
+        <tr><td>D</td><td>B</td><td>6</td></tr>
+        <tr><td>E</td><td>C, D</td><td>4</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Langkah 1 — Forward pass:</strong> A: ES 0, EF 3 · B: ES 0, EF 4 · C: ES 3, EF 8 · D: ES 4, EF 10 · E: ES = maks(8, 10) = 10, EF 14. Durasi proyek = <strong>14 hari</strong>.</p>
+    <p><strong>Langkah 2 — Backward pass:</strong> E: LF 14, LS 10 · D: LF 10, LS 4 · C: LF 10, LS 5 · B: LF 4, LS 0 · A: LF 5, LS 2.</p>
+    <p><strong>Langkah 3 — Slack:</strong></p>
+    <table class="data-table">
+      <thead><tr><th>Aktivitas</th><th>ES</th><th>EF</th><th>LS</th><th>LF</th><th>Slack</th><th>Kritis?</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>0</td><td>3</td><td>2</td><td>5</td><td>2</td><td>Tidak</td></tr>
+        <tr><td>B</td><td>0</td><td>4</td><td>0</td><td>4</td><td>0</td><td><strong>Ya</strong></td></tr>
+        <tr><td>C</td><td>3</td><td>8</td><td>5</td><td>10</td><td>2</td><td>Tidak</td></tr>
+        <tr><td>D</td><td>4</td><td>10</td><td>4</td><td>10</td><td>0</td><td><strong>Ya</strong></td></tr>
+        <tr><td>E</td><td>10</td><td>14</td><td>10</td><td>14</td><td>0</td><td><strong>Ya</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="formula-block">Jalur kritis: B → D → E = 4 + 6 + 4 = 14 hari</div>
+    <p>Aktivitas A dan C boleh terlambat sampai 2 hari tanpa menunda proyek; B, D, dan E sama sekali tidak boleh terlambat.</p>
+
+    <h2>Estimasi Tiga Titik PERT</h2>
+    <p>Jika durasi tidak pasti, PERT meminta tiga estimasi per aktivitas — optimis (a), paling mungkin (m), dan pesimis (b) — lalu menghitung waktu harapan dan varians berdasarkan pendekatan distribusi beta:</p>
+    <div class="formula-block">t<sub>e</sub> = (a + 4m + b) / 6 &nbsp;&nbsp;|&nbsp;&nbsp; σ² = ((b − a) / 6)²</div>
+    <p><strong>Contoh:</strong> aktivitas dengan a = 4, m = 6, b = 14 hari → t<sub>e</sub> = (4 + 24 + 14)/6 = 7 hari dan σ² = ((14−4)/6)² ≈ 2,78.</p>
+    <p><strong>Probabilitas selesai tepat waktu:</strong> jumlahkan t<sub>e</sub> dan σ² semua aktivitas di jalur kritis, lalu gunakan distribusi normal. Misal durasi harapan proyek 14 hari dengan total varians jalur kritis 4 (σ = 2), dan target kontrak 16 hari:</p>
+    <div class="formula-block">Z = (16 − 14) / 2 = 1,0 &nbsp;→&nbsp; P(selesai ≤ 16 hari) = 84,1%</div>
+    <p>(Nilai 84,1% dibaca dari tabel distribusi normal standar untuk Z = 1,00.)</p>
+
+    <h2>Kesalahan Umum</h2>
+    <ul>
+      <li>Mengambil ES dari pendahulu yang salah — ES harus dari EF <em>terbesar</em> ketika pendahulu lebih dari satu (titik merge seperti aktivitas E).</li>
+      <li>Menjumlahkan varians dari semua aktivitas — yang dijumlahkan hanya varians <em>aktivitas di jalur kritis</em>.</li>
+      <li>Lupa bahwa jalur kritis bisa lebih dari satu, dan bisa berpindah jika durasi aktivitas berubah (misalnya setelah crashing).</li>
+    </ul>
+
+    <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
+    <div class="faq-item">
+      <h3>Apa itu crashing proyek?</h3>
+      <p>Crashing adalah mempercepat aktivitas di jalur kritis dengan biaya tambahan (lembur, alat ekstra). Aturannya: percepat aktivitas kritis dengan biaya percepatan per hari termurah lebih dulu, dan cek ulang jalur kritis setiap langkah.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Kenapa pembaginya 6 pada rumus PERT?</h3>
+      <p>Karena rentang distribusi beta yang dipakai PERT diasumsikan selebar ±3 standar deviasi, sehingga (b − a) ≈ 6σ. Pembobotan 4 pada m berasal dari pendekatan rata-rata distribusi beta tersebut (Malcolm dkk., 1959).</p>
+    </div>
+    <div class="faq-item">
+      <h3>PERT/CPM dipelajari di mata kuliah apa?</h3>
+      <p>Manajemen Proyek, Penelitian Operasional, dan Perencanaan &amp; Pengendalian Proyek. Di dunia kerja, teknik ini menjadi dasar fitur penjadwalan Microsoft Project dan Primavera.</p>
+    </div>
+
+    <h2>Referensi</h2>
+    <ul>
+      <li>Malcolm, D. G., Roseboom, J. H., Clark, C. E., &amp; Fazar, W. (1959). "Application of a Technique for Research and Development Program Evaluation." <em>Operations Research</em>, 7(5), 646–669. — makalah asli PERT.</li>
+      <li>Kelley, J. E., &amp; Walker, M. R. (1959). "Critical-Path Planning and Scheduling." <em>Proceedings of the Eastern Joint Computer Conference</em>, 160–173. — makalah asli CPM.</li>
+      <li>Heizer, J., Render, B., &amp; Munson, C. (2020). <em>Operations Management: Sustainability and Supply Chain Management</em> (13th ed.), Bab 3 "Project Management". Pearson.</li>
+      <li>Hillier, F. S., &amp; Lieberman, G. J. (2021). <em>Introduction to Operations Research</em> (11th ed.), bab Project Management with PERT/CPM. McGraw-Hill.</li>
+      <li>Project Management Institute. (2021). <em>A Guide to the Project Management Body of Knowledge (PMBOK® Guide)</em> (7th ed.).</li>
+    </ul>
+
+    <hr class="divider">
+    <p>Kalkulator PERT/CPM sedang dalam pengembangan. Sementara itu, gunakan tabel ES/EF/LS/LF di atas sebagai template pengerjaan manual — atau <a href="contact.html">kirim permintaan</a> agar kalkulator ini diprioritaskan.</p>
+    <p>
+      <a href="index.html" class="btn">Buka Kalkulator</a>
+      <a href="panduan.html" class="btn btn-secondary" style="margin-left:8px;">Panduan Lainnya</a>
+    </p>
+
+  </main>
+</div>
+
+<footer>
+  <div class="logo"><span class="logo-mark">TI</span> <span>TI Toolkit</span></div>
+  <div class="footer-links">
+    <a href="index.html">Kalkulator</a>
+    <a href="panduan.html">Panduan</a>
+    <a href="about.html">Tentang</a>
+    <a href="contact.html">Kontak</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
+  <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
+</footer>
+
+</body>
+</html>

@@ -86,7 +86,7 @@
   "@type": "Organization",
   "name": "TI Toolkit",
   "url": "https://khalid200704.github.io/",
-  "logo": "https://khalid200704.github.io/og-image.svg",
+  "logo": "https://khalid200704.github.io/og-image.png",
   "sameAs": []
 }
 </script>
@@ -199,19 +199,19 @@
           </div>
           <div class="form-grid">
             <div class="field">
-              <label>Permintaan Tahunan, D <span class="unit">(unit/tahun)</span></label>
+              <label for="eoq-d">Permintaan Tahunan, D <span class="unit">(unit/tahun)</span></label>
               <input type="number" id="eoq-d" value="10000" step="any" min="0">
             </div>
             <div class="field">
-              <label>Biaya Pemesanan, S <span class="unit">(Rp/pesanan)</span></label>
+              <label for="eoq-s">Biaya Pemesanan, S <span class="unit">(Rp/pesanan)</span></label>
               <input type="number" id="eoq-s" value="50000" step="any" min="0">
             </div>
             <div class="field">
-              <label>Biaya Penyimpanan, H <span class="unit">(Rp/unit/tahun)</span></label>
+              <label for="eoq-h">Biaya Penyimpanan, H <span class="unit">(Rp/unit/tahun)</span></label>
               <input type="number" id="eoq-h" value="2000" step="any" min="0">
             </div>
             <div class="field">
-              <label>Hari Kerja per Tahun <span class="unit">(opsional)</span></label>
+              <label for="eoq-days">Hari Kerja per Tahun <span class="unit">(opsional)</span></label>
               <input type="number" id="eoq-days" value="300" step="any" min="1">
             </div>
           </div>
@@ -240,15 +240,15 @@
           </div>
           <div class="form-grid">
             <div class="field">
-              <label>Permintaan Harian, d <span class="unit">(unit/hari)</span></label>
+              <label for="rop-d">Permintaan Harian, d <span class="unit">(unit/hari)</span></label>
               <input type="number" id="rop-d" value="50" step="any" min="0">
             </div>
             <div class="field">
-              <label>Lead Time, L <span class="unit">(hari)</span></label>
+              <label for="rop-l">Lead Time, L <span class="unit">(hari)</span></label>
               <input type="number" id="rop-l" value="7" step="any" min="0">
             </div>
             <div class="field">
-              <label>Safety Stock <span class="unit">(unit, opsional)</span></label>
+              <label for="rop-ss">Safety Stock <span class="unit">(unit, opsional)</span></label>
               <input type="number" id="rop-ss" value="0" step="any" min="0">
             </div>
           </div>
@@ -277,7 +277,7 @@
           </div>
           <div class="form-grid">
             <div class="field">
-              <label>Service Level <span class="unit">(%)</span></label>
+              <label for="ss-service">Service Level <span class="unit">(%)</span></label>
               <select id="ss-service">
                 <option value="1.28">90%</option>
                 <option value="1.645">95%</option>
@@ -288,11 +288,11 @@
               </select>
             </div>
             <div class="field">
-              <label>Standar Deviasi Permintaan, σd <span class="unit">(unit/hari)</span></label>
+              <label for="ss-sigma">Standar Deviasi Permintaan, σd <span class="unit">(unit/hari)</span></label>
               <input type="number" id="ss-sigma" value="10" step="any" min="0">
             </div>
             <div class="field">
-              <label>Lead Time, L <span class="unit">(hari)</span></label>
+              <label for="ss-l">Lead Time, L <span class="unit">(hari)</span></label>
               <input type="number" id="ss-l" value="7" step="any" min="0">
             </div>
           </div>
@@ -321,7 +321,7 @@
           </div>
           <div class="form-grid">
             <div class="field">
-              <label>Metode</label>
+              <label for="fc-method">Metode</label>
               <select id="fc-method">
                 <option value="ma">Moving Average (MA)</option>
                 <option value="wma">Weighted Moving Average (WMA)</option>
@@ -329,18 +329,18 @@
               </select>
             </div>
             <div class="field">
-              <label>Parameter <span class="unit">(n untuk MA/WMA · α untuk ES)</span></label>
+              <label for="fc-param">Parameter <span class="unit">(n untuk MA/WMA · α untuk ES)</span></label>
               <input type="text" id="fc-param" value="3">
               <small>MA/WMA: jumlah periode (n). ES: konstanta pemulusan α (0–1).</small>
             </div>
             <div class="field">
-              <label>Bobot WMA <span class="unit">(pisah koma, terbaru dahulu, total = 1)</span></label>
+              <label for="fc-weights">Bobot WMA <span class="unit">(pisah koma, terbaru dahulu, total = 1)</span></label>
               <input type="text" id="fc-weights" value="0.5, 0.3, 0.2">
               <small>Hanya digunakan jika metode = WMA.</small>
             </div>
           </div>
           <div class="field">
-            <label>Data Aktual <span class="unit">(pisah koma atau baris baru)</span></label>
+            <label for="fc-data">Data Aktual <span class="unit">(pisah koma atau baris baru)</span></label>
             <textarea id="fc-data" rows="3">42, 45, 48, 50, 55, 60, 58, 62, 65, 70</textarea>
           </div>
           <div class="button-row">
@@ -371,19 +371,19 @@
           </div>
           <div class="form-grid">
             <div class="field">
-              <label>Biaya Tetap, FC <span class="unit">(Rp)</span></label>
+              <label for="bep-fc">Biaya Tetap, FC <span class="unit">(Rp)</span></label>
               <input type="number" id="bep-fc" value="50000000" step="any" min="0">
             </div>
             <div class="field">
-              <label>Harga Jual, P <span class="unit">(Rp/unit)</span></label>
+              <label for="bep-p">Harga Jual, P <span class="unit">(Rp/unit)</span></label>
               <input type="number" id="bep-p" value="15000" step="any" min="0">
             </div>
             <div class="field">
-              <label>Biaya Variabel, VC <span class="unit">(Rp/unit)</span></label>
+              <label for="bep-vc">Biaya Variabel, VC <span class="unit">(Rp/unit)</span></label>
               <input type="number" id="bep-vc" value="8000" step="any" min="0">
             </div>
             <div class="field">
-              <label>Target Laba <span class="unit">(Rp, opsional)</span></label>
+              <label for="bep-profit">Target Laba <span class="unit">(Rp, opsional)</span></label>
               <input type="number" id="bep-profit" value="0" step="any" min="0">
             </div>
           </div>
@@ -418,16 +418,16 @@
           </div>
           <div class="form-grid">
             <div class="field">
-              <label>Waktu Produksi Tersedia <span class="unit">(menit/hari)</span></label>
+              <label for="takt-time">Waktu Produksi Tersedia <span class="unit">(menit/hari)</span></label>
               <input type="number" id="takt-time" value="480" step="any" min="0">
               <small>Contoh: 1 shift 8 jam = 480 menit. Kurangi break time jika perlu.</small>
             </div>
             <div class="field">
-              <label>Permintaan Pelanggan <span class="unit">(unit/hari)</span></label>
+              <label for="takt-demand">Permintaan Pelanggan <span class="unit">(unit/hari)</span></label>
               <input type="number" id="takt-demand" value="240" step="any" min="1">
             </div>
             <div class="field">
-              <label>Cycle Time Aktual <span class="unit">(menit/unit, opsional)</span></label>
+              <label for="takt-ct">Cycle Time Aktual <span class="unit">(menit/unit, opsional)</span></label>
               <input type="number" id="takt-ct" value="1.5" step="any" min="0">
               <small>Isi untuk membandingkan CT vs Takt Time.</small>
             </div>
@@ -457,25 +457,25 @@
           </div>
           <div class="form-grid">
             <div class="field">
-              <label>Planned Production Time <span class="unit">(menit)</span></label>
+              <label for="oee-planned">Planned Production Time <span class="unit">(menit)</span></label>
               <input type="number" id="oee-planned" value="480" step="any" min="1">
             </div>
             <div class="field">
-              <label>Downtime <span class="unit">(menit)</span></label>
+              <label for="oee-downtime">Downtime <span class="unit">(menit)</span></label>
               <input type="number" id="oee-downtime" value="60" step="any" min="0">
               <small>Breakdown + setup/adjustment + planned stops.</small>
             </div>
             <div class="field">
-              <label>Ideal Cycle Time <span class="unit">(menit/unit)</span></label>
+              <label for="oee-ict">Ideal Cycle Time <span class="unit">(menit/unit)</span></label>
               <input type="number" id="oee-ict" value="1" step="any" min="0">
               <small>Waktu siklus ideal (nameplate capacity).</small>
             </div>
             <div class="field">
-              <label>Total Unit Diproduksi</label>
+              <label for="oee-total">Total Unit Diproduksi</label>
               <input type="number" id="oee-total" value="380" step="any" min="1">
             </div>
             <div class="field">
-              <label>Unit Baik (Good/Accept)</label>
+              <label for="oee-good">Unit Baik (Good/Accept)</label>
               <input type="number" id="oee-good" value="370" step="any" min="0">
             </div>
           </div>
@@ -504,18 +504,18 @@
           </div>
           <div class="form-grid">
             <div class="field">
-              <label>Cycle Time, CT <span class="unit">(detik/unit)</span></label>
+              <label for="lb-ct">Cycle Time, CT <span class="unit">(detik/unit)</span></label>
               <input type="number" id="lb-ct" value="60" step="any" min="0">
               <small>CT = Takt Time atau ditentukan dari kapasitas mesin bottleneck.</small>
             </div>
             <div class="field">
-              <label>Jumlah Workstation Aktual, N</label>
+              <label for="lb-n">Jumlah Workstation Aktual, N</label>
               <input type="number" id="lb-n" value="5" step="1" min="1">
               <small>Untuk menghitung efisiensi dan balance delay aktual.</small>
             </div>
           </div>
           <div class="field">
-            <label>Waktu Tiap Task <span class="unit">(detik, pisah koma — urutan sesuai task)</span></label>
+            <label for="lb-tasks">Waktu Tiap Task <span class="unit">(detik, pisah koma — urutan sesuai task)</span></label>
             <textarea id="lb-tasks" rows="2">40, 55, 35, 50, 45, 30, 20, 15</textarea>
           </div>
           <div class="button-row">
@@ -543,17 +543,17 @@
           </div>
           <div class="form-grid">
             <div class="field">
-              <label>Investasi Awal, I₀ <span class="unit">(Rp)</span></label>
+              <label for="npv-i0">Investasi Awal, I₀ <span class="unit">(Rp)</span></label>
               <input type="number" id="npv-i0" value="100000000" step="any" min="0">
             </div>
             <div class="field">
-              <label>Discount Rate / MARR <span class="unit">(% per tahun)</span></label>
+              <label for="npv-rate">Discount Rate / MARR <span class="unit">(% per tahun)</span></label>
               <input type="number" id="npv-rate" value="10" step="any" min="0">
               <small>Minimum Attractive Rate of Return — biasanya = cost of capital.</small>
             </div>
           </div>
           <div class="field">
-            <label>Cash Flow per Tahun <span class="unit">(pisah koma, dari tahun ke-1)</span></label>
+            <label for="npv-cf">Cash Flow per Tahun <span class="unit">(pisah koma, dari tahun ke-1)</span></label>
             <textarea id="npv-cf" rows="2">30000000, 35000000, 40000000, 45000000, 25000000</textarea>
           </div>
           <div class="button-row">
@@ -624,7 +624,7 @@
             <span class="formula">t<sub>e</sub> = (a+4m+b)/6</span>
           </div>
           <div class="field">
-            <label>Daftar Aktivitas <span class="unit">(satu baris per aktivitas: Nama, Pendahulu, Durasi — atau Nama, Pendahulu, a, m, b untuk PERT)</span></label>
+            <label for="pert-data">Daftar Aktivitas <span class="unit">(satu baris per aktivitas: Nama, Pendahulu, Durasi — atau Nama, Pendahulu, a, m, b untuk PERT)</span></label>
             <textarea id="pert-data" rows="6">A, -, 3
 B, -, 4
 C, A, 5
@@ -634,7 +634,7 @@ E, C D, 4</textarea>
           </div>
           <div class="form-grid">
             <div class="field">
-              <label>Target Waktu Proyek <span class="unit">(opsional, untuk probabilitas — hanya mode PERT)</span></label>
+              <label for="pert-target">Target Waktu Proyek <span class="unit">(opsional, untuk probabilitas — hanya mode PERT)</span></label>
               <input type="number" id="pert-target" value="" step="any" min="0" placeholder="mis. 16">
             </div>
           </div>
@@ -664,16 +664,16 @@ E, C D, 4</textarea>
           </div>
           <div class="form-grid">
             <div class="field">
-              <label>Laju Kedatangan, λ <span class="unit">(pelanggan per satuan waktu)</span></label>
+              <label for="queue-lambda">Laju Kedatangan, λ <span class="unit">(pelanggan per satuan waktu)</span></label>
               <input type="number" id="queue-lambda" value="8" step="any" min="0">
             </div>
             <div class="field">
-              <label>Laju Pelayanan, μ <span class="unit">(pelanggan per satuan waktu)</span></label>
+              <label for="queue-mu">Laju Pelayanan, μ <span class="unit">(pelanggan per satuan waktu)</span></label>
               <input type="number" id="queue-mu" value="10" step="any" min="0">
               <small>λ dan μ harus memakai satuan waktu yang sama. Syarat stabil: λ &lt; μ.</small>
             </div>
             <div class="field">
-              <label>Satuan Waktu</label>
+              <label for="queue-unit">Satuan Waktu</label>
               <select id="queue-unit">
                 <option value="jam" selected>per jam</option>
                 <option value="menit">per menit</option>
@@ -706,29 +706,29 @@ E, C D, 4</textarea>
           </div>
           <div class="form-grid">
             <div class="field">
-              <label>Berat Beban Aktual <span class="unit">(kg)</span></label>
+              <label for="niosh-weight">Berat Beban Aktual <span class="unit">(kg)</span></label>
               <input type="number" id="niosh-weight" value="20" step="any" min="0">
             </div>
             <div class="field">
-              <label>Jarak Horizontal, H <span class="unit">(cm, dari titik tengah pergelangan kaki)</span></label>
+              <label for="niosh-h">Jarak Horizontal, H <span class="unit">(cm, dari titik tengah pergelangan kaki)</span></label>
               <input type="number" id="niosh-h" value="30" step="any" min="0">
               <small>H ≤ 25 cm dianggap 25 (HM = 1). H &gt; 63 cm di luar jangkauan (RWL = 0).</small>
             </div>
             <div class="field">
-              <label>Tinggi Awal Beban, V <span class="unit">(cm dari lantai)</span></label>
+              <label for="niosh-v">Tinggi Awal Beban, V <span class="unit">(cm dari lantai)</span></label>
               <input type="number" id="niosh-v" value="60" step="any" min="0">
             </div>
             <div class="field">
-              <label>Perpindahan Vertikal, D <span class="unit">(cm)</span></label>
+              <label for="niosh-d">Perpindahan Vertikal, D <span class="unit">(cm)</span></label>
               <input type="number" id="niosh-d" value="40" step="any" min="0">
               <small>D &lt; 25 cm dianggap 25 (DM = 1).</small>
             </div>
             <div class="field">
-              <label>Sudut Puntiran Badan, A <span class="unit">(derajat)</span></label>
+              <label for="niosh-a">Sudut Puntiran Badan, A <span class="unit">(derajat)</span></label>
               <input type="number" id="niosh-a" value="30" step="any" min="0" max="135">
             </div>
             <div class="field">
-              <label>Frekuensi Angkat <span class="unit">(durasi kerja ≤ 1 jam)</span></label>
+              <label for="niosh-fm">Frekuensi Angkat <span class="unit">(durasi kerja ≤ 1 jam)</span></label>
               <select id="niosh-fm">
                 <option value="1.00">≤ 0,2 angkatan/menit (FM 1,00)</option>
                 <option value="0.97">0,5 angkatan/menit (FM 0,97)</option>
@@ -742,7 +742,7 @@ E, C D, 4</textarea>
               <small>Untuk durasi 1–2 jam atau 2–8 jam, FM lebih kecil — lihat tabel di <a href="panduan-ergonomi.html">panduan</a>.</small>
             </div>
             <div class="field">
-              <label>Kualitas Pegangan (Coupling)</label>
+              <label for="niosh-cm">Kualitas Pegangan (Coupling)</label>
               <select id="niosh-cm">
                 <option value="good">Good — handle/pegangan baik</option>
                 <option value="fair" selected>Fair — pegangan cukup</option>

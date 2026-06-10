@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>NPV &amp; Payback Period: Rumus, Cara Menghitung &amp; Contoh Soal</title>
+<meta name="description" content="Panduan ekonomi teknik: rumus NPV (Net Present Value), konsep time value of money, discount rate/MARR, payback period, contoh soal evaluasi kelayakan investasi langkah demi langkah." />
+<meta name="author" content="TI Toolkit" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://khalid200704.github.io/panduan-npv.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://khalid200704.github.io/panduan-npv.html" />
+<meta property="og:title" content="NPV &amp; Payback Period: Rumus, Cara Menghitung &amp; Contoh Soal" />
+<meta property="og:description" content="Rumus NPV, time value of money, MARR, payback period, dan contoh soal kelayakan investasi." />
+<meta property="og:image" content="https://khalid200704.github.io/og-image.svg" />
+<meta property="og:locale" content="id_ID" />
+<meta property="og:site_name" content="TI Toolkit" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='15' font-weight='800' fill='white' text-anchor='middle'%3ETI%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="styles.css" />
+
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8688855167346136" crossorigin="anonymous"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NPV & Payback Period: Rumus, Cara Menghitung & Contoh Soal",
+  "description": "Rumus NPV, konsep time value of money, discount rate/MARR, payback period, dan contoh soal evaluasi kelayakan investasi.",
+  "inLanguage": "id-ID",
+  "author": { "@type": "Organization", "name": "TI Toolkit" },
+  "publisher": { "@type": "Organization", "name": "TI Toolkit", "url": "https://khalid200704.github.io/" },
+  "mainEntityOfPage": "https://khalid200704.github.io/panduan-npv.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Apa arti NPV positif?",
+      "acceptedAnswer": { "@type": "Answer", "text": "NPV positif berarti nilai sekarang seluruh arus kas masuk melebihi investasi awal pada tingkat diskonto yang dipilih — proyek menambah nilai dan layak diterima. NPV negatif berarti proyek sebaiknya ditolak." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa itu MARR (Minimum Attractive Rate of Return)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "MARR adalah tingkat pengembalian minimum yang disyaratkan investor untuk mau menanamkan modal, biasanya ditetapkan dari biaya modal ditambah premi risiko. MARR dipakai sebagai discount rate dalam perhitungan NPV." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa kelemahan metode payback period?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Payback period sederhana mengabaikan nilai waktu uang dan seluruh arus kas setelah titik balik modal, sehingga bisa menyesatkan. Karena itu payback biasanya dipakai sebagai pelengkap NPV, bukan pengganti." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://khalid200704.github.io/" },
+    { "@type": "ListItem", "position": 2, "name": "Panduan", "item": "https://khalid200704.github.io/panduan.html" },
+    { "@type": "ListItem", "position": 3, "name": "NPV", "item": "https://khalid200704.github.io/panduan-npv.html" }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <nav class="nav" aria-label="Navigasi utama">
+    <a href="index.html" class="logo" aria-label="TI Toolkit - Beranda">
+      <span class="logo-mark">TI</span>
+      <span>TI Toolkit</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Kalkulator</a>
+      <a href="panduan.html" class="active">Panduan</a>
+      <a href="about.html">Tentang</a>
+      <a href="contact.html">Kontak</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-container">
+  <main class="content-page">
+
+    <div class="meta-info">Panduan Ekonomi Teknik — bagian dari seri <a href="panduan.html">Panduan Teknik Industri</a> TI Toolkit.</div>
+
+    <h1>NPV &amp; Payback Period: Evaluasi Kelayakan Investasi</h1>
+    <p class="subtitle">Konsep time value of money, rumus Net Present Value, pemilihan discount rate (MARR), dan contoh soal lengkap dengan tabel perhitungan.</p>
+
+    <h2>Time Value of Money: Konsep Dasarnya</h2>
+    <p>Uang Rp 1 juta hari ini lebih berharga daripada Rp 1 juta tahun depan, karena uang hari ini bisa diinvestasikan dan menghasilkan bunga. Konsep <strong>nilai waktu uang (time value of money)</strong> inilah dasar seluruh ekonomi teknik: arus kas di masa depan harus "ditarik" ke nilai sekarang (present value) sebelum bisa dibandingkan secara adil:</p>
+    <div class="formula-block">PV = FV / (1 + i)<sup>t</sup></div>
+    <p>dengan i = tingkat diskonto per periode dan t = jumlah periode. Proses ini disebut <em>discounting</em>.</p>
+
+    <h2>Rumus NPV</h2>
+    <p><strong>Net Present Value (NPV)</strong> adalah jumlah nilai sekarang seluruh arus kas proyek dikurangi investasi awal:</p>
+    <div class="formula-block">NPV = Σ [ CF<sub>t</sub> / (1 + i)<sup>t</sup> ] − I₀</div>
+    <table class="data-table">
+      <thead><tr><th>Simbol</th><th>Arti</th></tr></thead>
+      <tbody>
+        <tr><td>CF<sub>t</sub></td><td>Arus kas bersih tahun ke-t</td></tr>
+        <tr><td>i</td><td>Discount rate / MARR (Minimum Attractive Rate of Return)</td></tr>
+        <tr><td>I₀</td><td>Investasi awal (tahun ke-0)</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Kriteria keputusan:</strong> NPV &gt; 0 → proyek layak (menambah nilai); NPV &lt; 0 → tolak; NPV = 0 → impas terhadap MARR. Untuk membandingkan beberapa alternatif dengan umur sama, pilih NPV terbesar.</p>
+
+    <h2>Contoh Soal NPV dan Pembahasan</h2>
+    <p><strong>Soal:</strong> Sebuah investasi mesin membutuhkan modal awal Rp 100 juta. Arus kas bersih yang diproyeksikan selama 5 tahun: 30, 35, 40, 45, dan 25 (dalam juta rupiah). MARR perusahaan 10% per tahun. Apakah investasi layak? Hitung juga payback period-nya.</p>
+    <p><strong>Langkah 1 — Diskontokan setiap arus kas:</strong></p>
+    <table class="data-table">
+      <thead><tr><th>Tahun</th><th>CF (juta)</th><th>Faktor 1/(1,1)<sup>t</sup></th><th>PV (juta)</th><th>Kumulatif CF</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>30</td><td>0,9091</td><td>27,27</td><td>30</td></tr>
+        <tr><td>2</td><td>35</td><td>0,8264</td><td>28,93</td><td>65</td></tr>
+        <tr><td>3</td><td>40</td><td>0,7513</td><td>30,05</td><td>105</td></tr>
+        <tr><td>4</td><td>45</td><td>0,6830</td><td>30,74</td><td>150</td></tr>
+        <tr><td>5</td><td>25</td><td>0,6209</td><td>15,52</td><td>175</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Langkah 2 — Jumlahkan PV:</strong> 27,27 + 28,93 + 30,05 + 30,74 + 15,52 = 132,51 juta.</p>
+    <p><strong>Langkah 3 — NPV:</strong></p>
+    <div class="formula-block">NPV = 132,51 − 100 = +Rp 32,51 juta &nbsp;→&nbsp; LAYAK</div>
+    <p><strong>Langkah 4 — Payback period (sederhana):</strong> kumulatif arus kas mencapai Rp 100 juta di antara tahun 2 (65) dan tahun 3 (105). Sisa yang harus tertutup setelah tahun 2 = 100 − 65 = 35, dengan CF tahun 3 = 40:</p>
+    <div class="formula-block">Payback = 2 + 35/40 = 2,88 tahun</div>
+    <p><strong>Interpretasi:</strong> modal kembali dalam ±2 tahun 10,5 bulan, dan pada MARR 10% proyek menghasilkan nilai tambah bersih Rp 32,51 juta — keputusan: terima investasi.</p>
+
+    <h2>Memilih Discount Rate (MARR)</h2>
+    <p>MARR umumnya ditetapkan dari <em>biaya modal</em> (bunga pinjaman atau imbal hasil yang hilang dari alternatif investasi) ditambah <em>premi risiko</em> proyek. Semakin tinggi MARR, semakin kecil NPV — proyek dengan arus kas jauh di masa depan paling terpukul oleh MARR tinggi. Di soal kuliah, MARR hampir selalu diberikan; di praktik, penetapannya adalah keputusan manajerial penting.</p>
+
+    <h2>NPV vs Metode Evaluasi Lain</h2>
+    <table class="data-table">
+      <thead><tr><th>Metode</th><th>Kriteria layak</th><th>Catatan</th></tr></thead>
+      <tbody>
+        <tr><td>NPV</td><td>NPV &gt; 0</td><td>Paling andal secara teori; hasil dalam rupiah</td></tr>
+        <tr><td>IRR</td><td>IRR &gt; MARR</td><td>Intuitif (dalam %), tetapi bisa multiganda untuk arus kas tak konvensional</td></tr>
+        <tr><td>Payback</td><td>&lt; batas yang ditetapkan</td><td>Sederhana; mengabaikan TVM dan arus kas setelah payback</td></tr>
+        <tr><td>BCR (B/C Ratio)</td><td>BCR &gt; 1</td><td>Umum untuk proyek publik/pemerintah</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
+    <div class="faq-item">
+      <h3>Apa bedanya payback period biasa dan discounted payback?</h3>
+      <p>Discounted payback menghitung balik modal dari arus kas yang sudah didiskontokan, sehingga selalu lebih lama dari payback biasa tetapi lebih akurat secara finansial.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Bagaimana jika ada nilai sisa (salvage value) mesin?</h3>
+      <p>Tambahkan nilai sisa sebagai arus kas masuk di tahun terakhir sebelum didiskontokan. Contoh: nilai sisa 10 juta di tahun 5 menambah PV sebesar 10 × 0,6209 = 6,21 juta.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Kenapa NPV bisa berbeda dengan keputusan IRR?</h3>
+      <p>Untuk proyek tunggal keduanya konsisten. Konflik bisa muncul saat membandingkan proyek dengan skala atau pola arus kas berbeda — dalam kasus itu, teori keuangan menganjurkan mengikuti NPV.</p>
+    </div>
+
+    <hr class="divider">
+    <p>Kalkulator NPV kami menampilkan tabel diskonto per tahun, NPV total, dan payback period secara otomatis dari arus kas yang Anda masukkan.</p>
+    <p>
+      <a href="index.html" class="btn">Buka Kalkulator NPV</a>
+      <a href="panduan.html" class="btn btn-secondary" style="margin-left:8px;">Panduan Lainnya</a>
+    </p>
+
+  </main>
+</div>
+
+<footer>
+  <div class="logo"><span class="logo-mark">TI</span> <span>TI Toolkit</span></div>
+  <div class="footer-links">
+    <a href="index.html">Kalkulator</a>
+    <a href="panduan.html">Panduan</a>
+    <a href="about.html">Tentang</a>
+    <a href="contact.html">Kontak</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
+  <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Rumus EOQ: Cara Menghitung Economic Order Quantity + Contoh Soal</title>
+<meta name="description" content="Panduan lengkap rumus EOQ (Economic Order Quantity): pengertian, asumsi, cara menghitung langkah demi langkah, contoh soal dengan jawaban, dan kaitannya dengan ROP serta safety stock." />
+<meta name="author" content="TI Toolkit" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://khalid200704.github.io/panduan-eoq.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://khalid200704.github.io/panduan-eoq.html" />
+<meta property="og:title" content="Rumus EOQ: Cara Menghitung Economic Order Quantity + Contoh Soal" />
+<meta property="og:description" content="Pengertian EOQ, asumsi model, rumus, contoh soal langkah demi langkah, dan hubungannya dengan Reorder Point dan Safety Stock." />
+<meta property="og:image" content="https://khalid200704.github.io/og-image.svg" />
+<meta property="og:locale" content="id_ID" />
+<meta property="og:site_name" content="TI Toolkit" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='15' font-weight='800' fill='white' text-anchor='middle'%3ETI%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="styles.css" />
+
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8688855167346136" crossorigin="anonymous"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Rumus EOQ: Cara Menghitung Economic Order Quantity + Contoh Soal",
+  "description": "Panduan lengkap rumus EOQ: pengertian, asumsi, cara menghitung, contoh soal dengan jawaban, dan kaitannya dengan ROP serta safety stock.",
+  "inLanguage": "id-ID",
+  "author": { "@type": "Organization", "name": "TI Toolkit" },
+  "publisher": { "@type": "Organization", "name": "TI Toolkit", "url": "https://khalid200704.github.io/" },
+  "mainEntityOfPage": "https://khalid200704.github.io/panduan-eoq.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Apa itu EOQ (Economic Order Quantity)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "EOQ adalah jumlah pemesanan optimal yang meminimalkan total biaya persediaan, yaitu jumlah biaya pemesanan (ordering cost) dan biaya penyimpanan (holding cost) per tahun. Rumusnya EOQ = √(2DS/H)." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa saja asumsi model EOQ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Model EOQ dasar mengasumsikan permintaan konstan dan diketahui, lead time tetap, harga per unit tetap (tanpa diskon kuantitas), tidak ada stockout, dan pesanan diterima sekaligus dalam satu batch." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa perbedaan EOQ dan ROP?",
+      "acceptedAnswer": { "@type": "Answer", "text": "EOQ menjawab berapa banyak yang harus dipesan, sedangkan ROP (Reorder Point) menjawab kapan harus memesan, yaitu saat posisi persediaan turun ke tingkat d×L + safety stock." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://khalid200704.github.io/" },
+    { "@type": "ListItem", "position": 2, "name": "Panduan", "item": "https://khalid200704.github.io/panduan.html" },
+    { "@type": "ListItem", "position": 3, "name": "EOQ", "item": "https://khalid200704.github.io/panduan-eoq.html" }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <nav class="nav" aria-label="Navigasi utama">
+    <a href="index.html" class="logo" aria-label="TI Toolkit - Beranda">
+      <span class="logo-mark">TI</span>
+      <span>TI Toolkit</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Kalkulator</a>
+      <a href="panduan.html" class="active">Panduan</a>
+      <a href="about.html">Tentang</a>
+      <a href="contact.html">Kontak</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-container">
+  <main class="content-page">
+
+    <div class="meta-info">Panduan Manajemen Persediaan — bagian dari seri <a href="panduan.html">Panduan Teknik Industri</a> TI Toolkit.</div>
+
+    <h1>Rumus EOQ: Cara Menghitung Economic Order Quantity</h1>
+    <p class="subtitle">Pengertian, asumsi model, rumus, contoh soal langkah demi langkah, dan hubungannya dengan Reorder Point serta Safety Stock.</p>
+
+    <h2>Apa itu EOQ?</h2>
+    <p><strong>Economic Order Quantity (EOQ)</strong> adalah jumlah unit yang sebaiknya dipesan setiap kali melakukan pemesanan agar <strong>total biaya persediaan tahunan menjadi minimum</strong>. Model ini pertama kali dikembangkan oleh Ford W. Harris pada tahun 1913 dan sampai sekarang masih menjadi materi inti mata kuliah Manajemen Persediaan dan Perencanaan &amp; Pengendalian Produksi (PPIC).</p>
+    <p>Ide dasarnya: ada dua biaya yang saling tarik-menarik. Jika Anda memesan dalam jumlah besar tetapi jarang, <em>biaya pemesanan</em> turun tetapi <em>biaya penyimpanan</em> naik karena rata-rata stok di gudang lebih banyak. Sebaliknya, memesan sedikit tapi sering menekan biaya simpan namun menaikkan biaya pesan. EOQ adalah titik keseimbangan di mana kedua biaya tersebut sama besar.</p>
+
+    <h2>Rumus EOQ</h2>
+    <div class="formula-block">EOQ = √( 2 × D × S / H )</div>
+    <table class="data-table">
+      <thead><tr><th>Simbol</th><th>Arti</th><th>Satuan</th></tr></thead>
+      <tbody>
+        <tr><td>D</td><td>Permintaan (demand) per tahun</td><td>unit/tahun</td></tr>
+        <tr><td>S</td><td>Biaya pemesanan per kali pesan (setup/ordering cost)</td><td>Rp/pesanan</td></tr>
+        <tr><td>H</td><td>Biaya penyimpanan per unit per tahun (holding cost)</td><td>Rp/unit/tahun</td></tr>
+      </tbody>
+    </table>
+    <p>Dari EOQ, beberapa ukuran turunan yang sering ditanyakan di soal ujian:</p>
+    <ul>
+      <li><strong>Frekuensi pemesanan per tahun:</strong> N = D / EOQ</li>
+      <li><strong>Jarak antar pesanan:</strong> T = jumlah hari kerja per tahun / N</li>
+      <li><strong>Total biaya persediaan minimum:</strong> TC = (D/EOQ)·S + (EOQ/2)·H = √(2·D·S·H)</li>
+    </ul>
+
+    <h2>Asumsi Model EOQ</h2>
+    <p>Model EOQ dasar valid jika asumsi-asumsi berikut terpenuhi (Heizer &amp; Render, <em>Operations Management</em>):</p>
+    <ol>
+      <li>Permintaan diketahui, konstan, dan independen.</li>
+      <li>Lead time (waktu tunggu pesanan) diketahui dan konstan.</li>
+      <li>Pesanan diterima sekaligus dalam satu kiriman penuh.</li>
+      <li>Tidak ada diskon kuantitas (harga per unit tetap).</li>
+      <li>Biaya variabel hanya biaya pemesanan dan biaya penyimpanan.</li>
+      <li>Stockout (kehabisan stok) dapat dihindari sepenuhnya jika pemesanan dilakukan tepat waktu.</li>
+    </ol>
+    <p>Jika permintaan berfluktuasi cukup besar, gunakan EOQ sebagai estimasi awal dan tambahkan <a href="panduan-eoq.html#safety-stock">safety stock</a> untuk mengantisipasi variabilitas.</p>
+
+    <h2>Contoh Soal EOQ dan Pembahasan</h2>
+    <p><strong>Soal:</strong> Sebuah distributor sparepart memiliki permintaan tahunan D = 10.000 unit. Biaya setiap kali memesan S = Rp 50.000 dan biaya penyimpanan H = Rp 2.000 per unit per tahun. Perusahaan beroperasi 300 hari kerja per tahun. Tentukan EOQ, frekuensi pemesanan, jarak antar pesanan, dan total biaya persediaan minimum.</p>
+    <p><strong>Langkah 1 — Hitung EOQ:</strong></p>
+    <div class="formula-block">EOQ = √(2 × 10.000 × 50.000 / 2.000) = √500.000 ≈ 707 unit</div>
+    <p><strong>Langkah 2 — Frekuensi pemesanan per tahun:</strong> N = 10.000 / 707 ≈ 14,1 ≈ 14 kali per tahun.</p>
+    <p><strong>Langkah 3 — Jarak antar pesanan:</strong> T = 300 / 14,1 ≈ 21 hari kerja. Artinya perusahaan memesan rata-rata setiap 3 minggu sekali.</p>
+    <p><strong>Langkah 4 — Total biaya persediaan minimum:</strong></p>
+    <div class="formula-block">TC = √(2 × D × S × H) = √(2 × 10.000 × 50.000 × 2.000) ≈ Rp 1.414.214 /tahun</div>
+    <p>Pada titik EOQ, biaya pemesanan tahunan (≈ Rp 707.107) sama besar dengan biaya penyimpanan tahunan (≈ Rp 707.107) — inilah ciri khas solusi optimal model EOQ.</p>
+
+    <h2 id="rop">Kapan Harus Memesan? Reorder Point (ROP)</h2>
+    <p>EOQ menjawab <em>berapa banyak</em> yang dipesan; <strong>Reorder Point</strong> menjawab <em>kapan</em> memesan. Pesanan baru harus dilakukan saat posisi persediaan turun ke tingkat:</p>
+    <div class="formula-block">ROP = d × L + SS</div>
+    <p>dengan d = permintaan rata-rata per hari, L = lead time (hari), dan SS = safety stock. Contoh: jika d = 50 unit/hari dan L = 7 hari tanpa safety stock, maka ROP = 350 unit — saat stok tinggal 350 unit, lakukan pemesanan sebesar EOQ.</p>
+
+    <h2 id="safety-stock">Safety Stock: Stok Pengaman</h2>
+    <p>Dalam praktik, permintaan harian tidak pernah benar-benar konstan. <strong>Safety stock</strong> adalah persediaan tambahan untuk melindungi dari ketidakpastian permintaan selama lead time:</p>
+    <div class="formula-block">SS = Z × σd × √L</div>
+    <p>Z adalah nilai standar normal sesuai <em>service level</em> yang diinginkan (Z = 1,645 untuk 95%; Z = 2,05 untuk 98%; Z = 2,33 untuk 99%), σd adalah standar deviasi permintaan harian. Contoh: dengan service level 98%, σd = 10 unit/hari, dan L = 7 hari, maka SS = 2,05 × 10 × √7 ≈ 55 unit, sehingga ROP menjadi 350 + 55 = 405 unit.</p>
+
+    <h2>Kesalahan Umum Saat Mengerjakan Soal EOQ</h2>
+    <ul>
+      <li><strong>Satuan tidak konsisten</strong> — D harus per tahun dan H per unit per tahun. Jika H diberikan sebagai persentase dari harga barang (misal 20% × harga), konversi dulu ke Rp/unit/tahun.</li>
+      <li><strong>Tertukar S dan H</strong> — S melekat pada <em>setiap kali pesan</em>, H melekat pada <em>setiap unit yang disimpan</em>.</li>
+      <li><strong>Membulatkan terlalu dini</strong> — bulatkan hasil akhir saja agar total biaya tidak melenceng.</li>
+      <li><strong>Lupa membedakan hari kalender dan hari kerja</strong> saat menghitung jarak antar pesanan.</li>
+    </ul>
+
+    <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
+    <div class="faq-item">
+      <h3>Apakah hasil EOQ harus dibulatkan?</h3>
+      <p>Ya, dalam praktik jumlah pesanan dibulatkan ke unit (atau kelipatan kemasan) terdekat. Karena kurva total biaya di sekitar EOQ relatif datar, pembulatan kecil hampir tidak mengubah total biaya.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Bagaimana jika ada diskon kuantitas?</h3>
+      <p>Gunakan model <em>quantity discount</em>: hitung EOQ untuk setiap tingkat harga, sesuaikan ke kuantitas minimum diskon bila perlu, lalu bandingkan total biaya (termasuk biaya pembelian) dan pilih yang termurah.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apa bedanya EOQ dengan EPQ?</h3>
+      <p>EPQ (Economic Production Quantity) dipakai jika barang diproduksi sendiri secara bertahap, bukan diterima sekaligus. Rumusnya EOQ dikalikan faktor koreksi √(p/(p−d)) dengan p = laju produksi dan d = laju permintaan.</p>
+    </div>
+
+    <hr class="divider">
+    <p>Sudah paham konsepnya? Validasi perhitungan Anda dengan kalkulator kami — hasilnya menampilkan langkah perhitungan, bukan hanya angka akhir.</p>
+    <p>
+      <a href="index.html" class="btn">Buka Kalkulator EOQ</a>
+      <a href="panduan.html" class="btn btn-secondary" style="margin-left:8px;">Panduan Lainnya</a>
+    </p>
+
+  </main>
+</div>
+
+<footer>
+  <div class="logo"><span class="logo-mark">TI</span> <span>TI Toolkit</span></div>
+  <div class="footer-links">
+    <a href="index.html">Kalkulator</a>
+    <a href="panduan.html">Panduan</a>
+    <a href="about.html">Tentang</a>
+    <a href="contact.html">Kontak</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
+  <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
+</footer>
+
+</body>
+</html>

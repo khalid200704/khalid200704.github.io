@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Takt Time: Rumus, Perbedaan dengan Cycle Time &amp; Contoh Soal</title>
+<meta name="description" content="Panduan takt time untuk lean manufacturing: rumus takt time, perbedaan takt time vs cycle time vs lead time, contoh perhitungan langkah demi langkah, dan cara menggunakannya untuk menyeimbangkan lini produksi." />
+<meta name="author" content="TI Toolkit" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://khalid200704.github.io/panduan-takt-time.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://khalid200704.github.io/panduan-takt-time.html" />
+<meta property="og:title" content="Takt Time: Rumus, Perbedaan dengan Cycle Time &amp; Contoh Soal" />
+<meta property="og:description" content="Rumus takt time, perbedaan dengan cycle time dan lead time, serta contoh perhitungan untuk lini produksi." />
+<meta property="og:image" content="https://khalid200704.github.io/og-image.svg" />
+<meta property="og:locale" content="id_ID" />
+<meta property="og:site_name" content="TI Toolkit" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='15' font-weight='800' fill='white' text-anchor='middle'%3ETI%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="styles.css" />
+
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8688855167346136" crossorigin="anonymous"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Takt Time: Rumus, Perbedaan dengan Cycle Time & Contoh Soal",
+  "description": "Rumus takt time, perbedaan takt time vs cycle time vs lead time, dan contoh perhitungan untuk lini produksi.",
+  "inLanguage": "id-ID",
+  "author": { "@type": "Organization", "name": "TI Toolkit" },
+  "publisher": { "@type": "Organization", "name": "TI Toolkit", "url": "https://khalid200704.github.io/" },
+  "mainEntityOfPage": "https://khalid200704.github.io/panduan-takt-time.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Apa itu takt time?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Takt time adalah kecepatan produksi yang dibutuhkan untuk memenuhi permintaan pelanggan, dihitung dari waktu produksi tersedia dibagi permintaan pelanggan. Misal tersedia 480 menit dan permintaan 240 unit, takt time = 2 menit per unit." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa beda takt time dan cycle time?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Takt time ditentukan oleh permintaan pelanggan (berapa cepat seharusnya), sedangkan cycle time adalah kecepatan aktual proses (berapa cepat kenyataannya). Idealnya cycle time sedikit di bawah takt time." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa yang terjadi jika cycle time lebih besar dari takt time?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Lini produksi tidak mampu memenuhi permintaan — terjadi backlog atau lembur. Solusinya: kurangi waktu siklus (perbaikan proses), tambah kapasitas/jalur, atau tambah jam kerja." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://khalid200704.github.io/" },
+    { "@type": "ListItem", "position": 2, "name": "Panduan", "item": "https://khalid200704.github.io/panduan.html" },
+    { "@type": "ListItem", "position": 3, "name": "Takt Time", "item": "https://khalid200704.github.io/panduan-takt-time.html" }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <nav class="nav" aria-label="Navigasi utama">
+    <a href="index.html" class="logo" aria-label="TI Toolkit - Beranda">
+      <span class="logo-mark">TI</span>
+      <span>TI Toolkit</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Kalkulator</a>
+      <a href="panduan.html" class="active">Panduan</a>
+      <a href="about.html">Tentang</a>
+      <a href="contact.html">Kontak</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-container">
+  <main class="content-page">
+
+    <div class="meta-info">Panduan Lean Manufacturing — bagian dari seri <a href="panduan.html">Panduan Teknik Industri</a> TI Toolkit.</div>
+
+    <h1>Takt Time: Rumus dan Cara Menghitungnya</h1>
+    <p class="subtitle">Konsep inti lean manufacturing: seberapa cepat lini produksi harus berjalan agar pas dengan permintaan pelanggan — tidak lebih cepat, tidak lebih lambat.</p>
+
+    <h2>Apa itu Takt Time?</h2>
+    <p><strong>Takt time</strong> berasal dari kata Jerman <em>Takt</em> yang berarti ketukan/irama (seperti metronom musik). Dalam lean manufacturing dan Toyota Production System, takt time adalah <strong>irama produksi yang dibutuhkan untuk memenuhi permintaan pelanggan</strong>: satu unit harus selesai setiap sekian menit/detik agar output harian persis sama dengan permintaan harian.</p>
+    <p>Memproduksi lebih lambat dari takt time berarti tidak memenuhi permintaan; memproduksi lebih cepat berarti <em>overproduction</em> — pemborosan (muda) nomor satu dalam lean karena menumpuk persediaan.</p>
+
+    <h2>Rumus Takt Time</h2>
+    <div class="formula-block">Takt Time = Waktu Produksi Tersedia / Permintaan Pelanggan</div>
+    <p>Hal penting saat menghitung <strong>waktu produksi tersedia</strong>: kurangi waktu yang memang tidak dipakai untuk produksi — istirahat, meeting pagi, pembersihan terjadwal. Jangan kurangi downtime tak terencana; itu masalah yang harus diperbaiki, bukan diakomodasi dalam takt.</p>
+
+    <h2>Takt Time vs Cycle Time vs Lead Time</h2>
+    <p>Tiga istilah ini sering tertukar di ujian — padahal bedanya tegas:</p>
+    <table class="data-table">
+      <thead><tr><th>Istilah</th><th>Definisi</th><th>Ditentukan oleh</th></tr></thead>
+      <tbody>
+        <tr><td>Takt Time</td><td>Kecepatan yang <em>dibutuhkan</em> per unit</td><td>Permintaan pelanggan</td></tr>
+        <tr><td>Cycle Time</td><td>Kecepatan <em>aktual</em> proses per unit</td><td>Kemampuan proses/mesin</td></tr>
+        <tr><td>Lead Time</td><td>Total waktu dari order masuk sampai produk diterima</td><td>Keseluruhan aliran proses</td></tr>
+      </tbody>
+    </table>
+    <ul>
+      <li><strong>CT &gt; Takt</strong> → lini terlalu lambat, permintaan tidak terpenuhi (backlog/lembur).</li>
+      <li><strong>CT ≈ Takt</strong> (sedikit di bawah) → kondisi ideal lean.</li>
+      <li><strong>CT jauh &lt; Takt</strong> → overproduction atau kapasitas menganggur; pertimbangkan realokasi sumber daya.</li>
+    </ul>
+
+    <h2>Contoh Soal Takt Time dan Pembahasan</h2>
+    <p><strong>Soal:</strong> Sebuah lini perakitan bekerja 1 shift = 8 jam (480 menit) per hari. Permintaan pelanggan 240 unit per hari. Cycle time aktual stasiun bottleneck adalah 1,5 menit/unit. (a) Hitung takt time. (b) Apakah lini mampu memenuhi permintaan? (c) Berapa kapasitas maksimum lini?</p>
+    <p><strong>Langkah 1 — Takt time:</strong></p>
+    <div class="formula-block">Takt = 480 menit / 240 unit = 2 menit/unit</div>
+    <p>Artinya satu unit harus keluar dari lini setiap 2 menit.</p>
+    <p><strong>Langkah 2 — Bandingkan dengan cycle time:</strong> CT = 1,5 menit &lt; Takt = 2 menit → lini <strong>mampu</strong> memenuhi permintaan, dengan kelonggaran 0,5 menit per unit (25% margin kapasitas).</p>
+    <p><strong>Langkah 3 — Kapasitas maksimum:</strong> 480 / 1,5 = 320 unit/hari. Jadi lini bisa melayani kenaikan permintaan hingga 320 unit/hari sebelum perlu perbaikan proses atau penambahan kapasitas.</p>
+    <p><strong>Variasi umum di soal:</strong> jika ada 2 kali istirahat 15 menit di dalam shift, waktu tersedia menjadi 450 menit dan takt time = 450/240 = 1,875 menit/unit — sekarang margin terhadap CT 1,5 menit menipis. Selalu baca teliti apakah break time sudah dikeluarkan dari waktu tersedia.</p>
+
+    <h2>Untuk Apa Takt Time Digunakan?</h2>
+    <ul>
+      <li><strong>Line balancing</strong> — takt time biasanya dijadikan cycle time target saat membagi elemen kerja ke workstation (lihat <a href="panduan-line-balancing.html">panduan line balancing</a>).</li>
+      <li><strong>Menentukan jumlah operator/mesin</strong> — jumlah minimum stasiun ≈ total waktu kerja per unit ÷ takt time.</li>
+      <li><strong>Visual management</strong> — papan produksi per jam (hourly output board) dibuat dari takt time.</li>
+      <li><strong>Mendeteksi masalah lebih cepat</strong> — jika output per jam meleset dari irama takt, ada abnormalitas yang harus segera ditangani.</li>
+    </ul>
+
+    <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
+    <div class="faq-item">
+      <h3>Apakah takt time bisa berubah?</h3>
+      <p>Ya. Takt time berubah setiap kali permintaan pelanggan atau jam kerja berubah — biasanya dihitung ulang per bulan atau per periode perencanaan produksi.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Bagaimana jika permintaan sangat fluktuatif?</h3>
+      <p>Praktik lean umumnya menghitung takt dari permintaan rata-rata periode perencanaan dan meredam fluktuasi harian dengan <em>heijunka</em> (production leveling) plus sedikit stok penyangga barang jadi.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apakah takt time sama dengan target produksi per jam?</h3>
+      <p>Keduanya dua sisi mata uang: target per jam = 60 menit ÷ takt time (menit/unit). Takt 2 menit/unit setara target 30 unit/jam.</p>
+    </div>
+
+    <hr class="divider">
+    <p>Gunakan kalkulator takt time kami untuk menghitung takt, membandingkannya dengan cycle time aktual, dan melihat kapasitas maksimum lini Anda.</p>
+    <p>
+      <a href="index.html" class="btn">Buka Kalkulator Takt Time</a>
+      <a href="panduan.html" class="btn btn-secondary" style="margin-left:8px;">Panduan Lainnya</a>
+    </p>
+
+  </main>
+</div>
+
+<footer>
+  <div class="logo"><span class="logo-mark">TI</span> <span>TI Toolkit</span></div>
+  <div class="footer-links">
+    <a href="index.html">Kalkulator</a>
+    <a href="panduan.html">Panduan</a>
+    <a href="about.html">Tentang</a>
+    <a href="contact.html">Kontak</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
+  <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
+</footer>
+
+</body>
+</html>

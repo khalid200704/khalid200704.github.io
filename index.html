@@ -71,7 +71,10 @@
     "OEE (Overall Equipment Effectiveness)",
     "Line Balancing",
     "NPV & Engineering Economics",
-    "Statistical Process Control"
+    "Statistical Process Control",
+    "PERT/CPM Critical Path",
+    "Antrian M/M/1 (Queueing)",
+    "NIOSH Lifting Equation (RWL & LI)"
   ]
 }
 </script>
@@ -177,6 +180,9 @@
       <button data-target="linebal">Line Balancing</button>
       <button data-target="npv">NPV / TVM</button>
       <button data-target="stats">Statistik &amp; SPC</button>
+      <button data-target="pert">PERT/CPM</button>
+      <button data-target="queue">Antrian M/M/1</button>
+      <button data-target="niosh">NIOSH Lifting</button>
     </nav>
 
     <div class="layout">
@@ -604,6 +610,157 @@
             </div>
             <div class="copy-row">
               <button class="btn btn-secondary btn-sm" id="copy-btn-st" onclick="copyResults('st')">Salin Hasil</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ PERT / CPM ============ -->
+        <section class="calc" id="calc-pert">
+          <div class="calc-header">
+            <div>
+              <h2>PERT / CPM — Jalur Kritis Proyek</h2>
+              <p>Hitung ES/EF/LS/LF, slack, jalur kritis, dan probabilitas penyelesaian proyek. <a href="panduan-pert-cpm.html">Pelajari teorinya →</a></p>
+            </div>
+            <span class="formula">t<sub>e</sub> = (a+4m+b)/6</span>
+          </div>
+          <div class="field">
+            <label>Daftar Aktivitas <span class="unit">(satu baris per aktivitas: Nama, Pendahulu, Durasi — atau Nama, Pendahulu, a, m, b untuk PERT)</span></label>
+            <textarea id="pert-data" rows="6">A, -, 3
+B, -, 4
+C, A, 5
+D, B, 6
+E, C D, 4</textarea>
+            <small>Pendahulu lebih dari satu dipisah spasi (contoh: <code>C D</code>). Tulis <code>-</code> jika tanpa pendahulu. Mode PERT: beri 3 durasi (optimis, paling mungkin, pesimis).</small>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label>Target Waktu Proyek <span class="unit">(opsional, untuk probabilitas — hanya mode PERT)</span></label>
+              <input type="number" id="pert-target" value="" step="any" min="0" placeholder="mis. 16">
+            </div>
+          </div>
+          <div class="button-row">
+            <button class="btn" onclick="calcPERT()">Hitung</button>
+            <button class="btn btn-secondary" onclick="resetCalc('pert')">Reset</button>
+          </div>
+          <div class="results hidden" id="pert-result">
+            <h3>Hasil</h3>
+            <div class="result-grid" id="pert-result-grid"></div>
+            <div id="pert-table" style="margin-top:16px;"></div>
+            <div class="result-detail" id="pert-detail"></div>
+            <div class="copy-row">
+              <button class="btn btn-secondary btn-sm" id="copy-btn-pert" onclick="copyResults('pert')">Salin Hasil</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ Antrian M/M/1 ============ -->
+        <section class="calc" id="calc-queue">
+          <div class="calc-header">
+            <div>
+              <h2>Teori Antrian — Model M/M/1</h2>
+              <p>Utilisasi, panjang antrian, dan waktu tunggu sistem antrian satu server. <a href="panduan-antrian.html">Pelajari teorinya →</a></p>
+            </div>
+            <span class="formula">L = λ/(μ−λ)</span>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label>Laju Kedatangan, λ <span class="unit">(pelanggan per satuan waktu)</span></label>
+              <input type="number" id="queue-lambda" value="8" step="any" min="0">
+            </div>
+            <div class="field">
+              <label>Laju Pelayanan, μ <span class="unit">(pelanggan per satuan waktu)</span></label>
+              <input type="number" id="queue-mu" value="10" step="any" min="0">
+              <small>λ dan μ harus memakai satuan waktu yang sama. Syarat stabil: λ &lt; μ.</small>
+            </div>
+            <div class="field">
+              <label>Satuan Waktu</label>
+              <select id="queue-unit">
+                <option value="jam" selected>per jam</option>
+                <option value="menit">per menit</option>
+                <option value="hari">per hari</option>
+              </select>
+            </div>
+          </div>
+          <div class="button-row">
+            <button class="btn" onclick="calcQueue()">Hitung</button>
+            <button class="btn btn-secondary" onclick="resetCalc('queue')">Reset</button>
+          </div>
+          <div class="results hidden" id="queue-result">
+            <h3>Hasil</h3>
+            <div class="result-grid" id="queue-result-grid"></div>
+            <div class="result-detail" id="queue-detail"></div>
+            <div class="copy-row">
+              <button class="btn btn-secondary btn-sm" id="copy-btn-queue" onclick="copyResults('queue')">Salin Hasil</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ NIOSH Lifting ============ -->
+        <section class="calc" id="calc-niosh">
+          <div class="calc-header">
+            <div>
+              <h2>NIOSH Lifting Equation (RWL &amp; LI)</h2>
+              <p>Batas beban angkat yang aman dan Lifting Index berdasarkan persamaan NIOSH 1991. <a href="panduan-ergonomi.html">Pelajari teorinya →</a></p>
+            </div>
+            <span class="formula">RWL = LC·HM·VM·DM·AM·FM·CM</span>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label>Berat Beban Aktual <span class="unit">(kg)</span></label>
+              <input type="number" id="niosh-weight" value="20" step="any" min="0">
+            </div>
+            <div class="field">
+              <label>Jarak Horizontal, H <span class="unit">(cm, dari titik tengah pergelangan kaki)</span></label>
+              <input type="number" id="niosh-h" value="30" step="any" min="0">
+              <small>H ≤ 25 cm dianggap 25 (HM = 1). H &gt; 63 cm di luar jangkauan (RWL = 0).</small>
+            </div>
+            <div class="field">
+              <label>Tinggi Awal Beban, V <span class="unit">(cm dari lantai)</span></label>
+              <input type="number" id="niosh-v" value="60" step="any" min="0">
+            </div>
+            <div class="field">
+              <label>Perpindahan Vertikal, D <span class="unit">(cm)</span></label>
+              <input type="number" id="niosh-d" value="40" step="any" min="0">
+              <small>D &lt; 25 cm dianggap 25 (DM = 1).</small>
+            </div>
+            <div class="field">
+              <label>Sudut Puntiran Badan, A <span class="unit">(derajat)</span></label>
+              <input type="number" id="niosh-a" value="30" step="any" min="0" max="135">
+            </div>
+            <div class="field">
+              <label>Frekuensi Angkat <span class="unit">(durasi kerja ≤ 1 jam)</span></label>
+              <select id="niosh-fm">
+                <option value="1.00">≤ 0,2 angkatan/menit (FM 1,00)</option>
+                <option value="0.97">0,5 angkatan/menit (FM 0,97)</option>
+                <option value="0.94">1 angkatan/menit (FM 0,94)</option>
+                <option value="0.91" selected>2 angkatan/menit (FM 0,91)</option>
+                <option value="0.88">3 angkatan/menit (FM 0,88)</option>
+                <option value="0.84">4 angkatan/menit (FM 0,84)</option>
+                <option value="0.80">5 angkatan/menit (FM 0,80)</option>
+                <option value="0.75">6 angkatan/menit (FM 0,75)</option>
+              </select>
+              <small>Untuk durasi 1–2 jam atau 2–8 jam, FM lebih kecil — lihat tabel di <a href="panduan-ergonomi.html">panduan</a>.</small>
+            </div>
+            <div class="field">
+              <label>Kualitas Pegangan (Coupling)</label>
+              <select id="niosh-cm">
+                <option value="good">Good — handle/pegangan baik</option>
+                <option value="fair" selected>Fair — pegangan cukup</option>
+                <option value="poor">Poor — sulit dipegang</option>
+              </select>
+              <small>CM dihitung otomatis berdasarkan kualitas pegangan dan tinggi V.</small>
+            </div>
+          </div>
+          <div class="button-row">
+            <button class="btn" onclick="calcNIOSH()">Hitung</button>
+            <button class="btn btn-secondary" onclick="resetCalc('niosh')">Reset</button>
+          </div>
+          <div class="results hidden" id="niosh-result">
+            <h3>Hasil</h3>
+            <div class="result-grid" id="niosh-result-grid"></div>
+            <div class="result-detail" id="niosh-detail"></div>
+            <div class="copy-row">
+              <button class="btn btn-secondary btn-sm" id="copy-btn-niosh" onclick="copyResults('niosh')">Salin Hasil</button>
             </div>
           </div>
         </section>

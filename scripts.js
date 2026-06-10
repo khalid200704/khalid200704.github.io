@@ -25,8 +25,8 @@ function resultItem(label, value, primary = false) {
   return `<div class="result-item"><div class="label">${label}</div><div class="value${primary ? ' primary' : ''}">${value}</div></div>`;
 }
 
-// prefix → section ID mapping untuk resetCalc
-const sectionMap = { ss: 'safety', fc: 'forecast', lb: 'linebal' };
+// prefix → section ID mapping untuk resetCalc / share
+const sectionMap = { ss: 'safety', fc: 'forecast', lb: 'linebal', st: 'stats' };
 
 function resetCalc(prefix) {
   if (prefix === 'st') {
@@ -42,28 +42,95 @@ function resetCalc(prefix) {
   if (r) r.classList.add('hidden');
 }
 
-function copyResults(prefix) {
+function buildResultsText(prefix) {
   const grid = document.getElementById(prefix + '-result-grid');
-  if (!grid) return;
-  const items = grid.querySelectorAll('.result-item');
+  if (!grid) return null;
   let text = `=== Hasil Kalkulator TI Toolkit ===\n`;
-  items.forEach(item => {
+  grid.querySelectorAll('.result-item').forEach(item => {
     const label = item.querySelector('.label')?.textContent?.trim() || '';
     const value = item.querySelector('.value')?.textContent?.trim() || '';
     text += `${label}: ${value}\n`;
   });
-  text += `\nkhalid200704.github.io`;
-  navigator.clipboard.writeText(text).then(() => {
-    showCopyFeedback(prefix);
-  }).catch(() => {
+  text += `\nDihitung: ${new Date().toLocaleString('id-ID')}\nkhalid200704.github.io`;
+  return text;
+}
+
+function copyToClipboard(text, onDone) {
+  navigator.clipboard.writeText(text).then(onDone).catch(() => {
     const ta = document.createElement('textarea');
     ta.value = text;
     document.body.appendChild(ta);
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
-    showCopyFeedback(prefix);
+    onDone();
   });
+}
+
+function copyResults(prefix) {
+  const text = buildResultsText(prefix);
+  if (!text) return;
+  copyToClipboard(text, () => showCopyFeedback(prefix));
+}
+
+function downloadResults(prefix) {
+  const text = buildResultsText(prefix);
+  if (!text) return;
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `ti-toolkit-${prefix}-${new Date().toISOString().slice(0, 10)}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+}
+
+// Bagikan link: encode semua input kalkulator ke URL agar bisa dibuka ulang
+function shareLink(prefix, btn) {
+  const sectionId = sectionMap[prefix] || prefix;
+  const params = new URLSearchParams();
+  params.set('c', prefix);
+  if (prefix === 'st') {
+    const data = Array.from(document.querySelectorAll('.st-input-val'))
+      .map(i => i.value).filter(v => v !== '');
+    params.set('st-data', data.join(','));
+  } else {
+    document.querySelectorAll(`#calc-${sectionId} input[id], #calc-${sectionId} select[id], #calc-${sectionId} textarea[id]`)
+      .forEach(el => { if (el.value !== '') params.set(el.id, el.value); });
+  }
+  const url = `${location.origin}${location.pathname}?${params.toString()}`;
+  copyToClipboard(url, () => {
+    if (!btn) return;
+    const orig = btn.textContent;
+    btn.textContent = '✓ Link disalin!';
+    btn.style.color = 'var(--success)';
+    setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2000);
+  });
+}
+
+// Buka kalkulator dari URL share (?c=prefix&...)
+function loadFromURL() {
+  const params = new URLSearchParams(location.search);
+  const prefix = params.get('c');
+  if (!prefix || !calcFns[prefix]) return;
+  const sectionId = sectionMap[prefix] || prefix;
+  if (prefix === 'st' && params.get('st-data')) {
+    const tbody = document.getElementById('st-tbody');
+    if (tbody) {
+      tbody.innerHTML = '';
+      params.get('st-data').split(',').forEach(v => addStatRow(v));
+    }
+  } else {
+    params.forEach((v, k) => {
+      if (k === 'c') return;
+      const el = document.getElementById(k);
+      if (el && (el.tagName === 'INPUT' || el.tagName === 'SELECT' || el.tagName === 'TEXTAREA')) el.value = v;
+    });
+  }
+  const tabBtn = document.querySelector(`.calc-nav button[data-target="${sectionId}"]`);
+  if (tabBtn) tabBtn.click();
+  calcFns[prefix]();
 }
 
 function showCopyFeedback(prefix) {
@@ -674,8 +741,221 @@ async function calcStats() {
   });
 }
 
+// ============ PERT / CPM ============
+function normCdf(z) {
+  const t = 1 / (1 + 0.2316419 * Math.abs(z));
+  const d = 0.3989423 * Math.exp(-z * z / 2);
+  const p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+  return z > 0 ? 1 - p : p;
+}
+
+function calcPERT() {
+  const lines = document.getElementById('pert-data').value.split('\n').map(l => l.trim()).filter(l => l);
+  if (lines.length < 2) return alert('Masukkan minimal 2 aktivitas.');
+
+  const acts = {};
+  const order = [];
+  let isPert = false;
+  for (const line of lines) {
+    const f = line.split(',').map(s => s.trim());
+    if (f.length < 3) return alert(`Format salah pada baris: "${line}"\nGunakan: Nama, Pendahulu, Durasi`);
+    const name = f[0];
+    if (acts[name]) return alert(`Aktivitas "${name}" duplikat.`);
+    const preds = f[1] === '-' || f[1] === '' ? [] : f[1].split(/[\s+]+/).filter(p => p);
+    const nums = f.slice(2).map(parseFloat);
+    if (nums.some(isNaN)) return alert(`Durasi tidak valid pada baris: "${line}"`);
+    let te, variance = 0;
+    if (nums.length >= 3) {
+      const [a, m, b] = nums;
+      if (!(a <= m && m <= b)) return alert(`Pada "${name}": harus a ≤ m ≤ b (optimis ≤ paling mungkin ≤ pesimis).`);
+      te = (a + 4 * m + b) / 6;
+      variance = Math.pow((b - a) / 6, 2);
+      isPert = true;
+    } else {
+      te = nums[0];
+    }
+    if (te < 0) return alert(`Durasi negatif pada "${name}".`);
+    acts[name] = { name, preds, te, variance, ES: 0, EF: 0, LS: 0, LF: 0 };
+    order.push(name);
+  }
+  for (const name of order) {
+    for (const p of acts[name].preds) {
+      if (!acts[p]) return alert(`Pendahulu "${p}" pada aktivitas "${name}" tidak ditemukan.`);
+    }
+  }
+
+  // Forward pass (iteratif, deteksi siklus via no-progress)
+  const resolved = new Set();
+  while (resolved.size < order.length) {
+    let progress = false;
+    for (const name of order) {
+      if (resolved.has(name)) continue;
+      const a = acts[name];
+      if (a.preds.every(p => resolved.has(p))) {
+        a.ES = a.preds.length ? Math.max(...a.preds.map(p => acts[p].EF)) : 0;
+        a.EF = a.ES + a.te;
+        resolved.add(name);
+        progress = true;
+      }
+    }
+    if (!progress) return alert('Terdeteksi siklus pada pendahulu — periksa kembali daftar aktivitas.');
+  }
+  const projDur = Math.max(...order.map(n => acts[n].EF));
+
+  // Backward pass
+  const succs = {};
+  order.forEach(n => succs[n] = []);
+  order.forEach(n => acts[n].preds.forEach(p => succs[p].push(n)));
+  const back = new Set();
+  while (back.size < order.length) {
+    for (const name of order) {
+      if (back.has(name)) continue;
+      const a = acts[name];
+      if (succs[name].every(s => back.has(s))) {
+        a.LF = succs[name].length ? Math.min(...succs[name].map(s => acts[s].LS)) : projDur;
+        a.LS = a.LF - a.te;
+        back.add(name);
+      }
+    }
+  }
+
+  const critical = order.filter(n => Math.abs(acts[n].LS - acts[n].ES) < 1e-9)
+    .sort((x, y) => acts[x].ES - acts[y].ES);
+  const totalVar = critical.reduce((s, n) => s + acts[n].variance, 0);
+  const sigma = Math.sqrt(totalVar);
+
+  let grid = resultItem('Durasi Proyek', num(projDur, 2) + ' satuan waktu', true)
+    + resultItem('Jalur Kritis', critical.join(' → '))
+    + resultItem('Aktivitas Kritis', critical.length + ' dari ' + order.length);
+  let detail = `<strong>Jalur kritis:</strong> ${critical.join(' → ')} dengan total durasi <strong>${num(projDur, 2)}</strong>.<br>Aktivitas dengan slack 0 tidak boleh terlambat sama sekali.`;
+
+  const target = val('pert-target');
+  if (isPert) {
+    grid += resultItem('σ Proyek (jalur kritis)', num(sigma, 3));
+    if (target > 0 && sigma > 0) {
+      const Z = (target - projDur) / sigma;
+      const P = normCdf(Z) * 100;
+      grid += resultItem(`P(selesai ≤ ${num(target, 1)})`, num(P, 1) + ' %', true);
+      detail += `<br><strong>Z</strong> = (${num(target, 1)} − ${num(projDur, 2)}) / ${num(sigma, 3)} = <strong>${num(Z, 2)}</strong> → probabilitas selesai tepat waktu ≈ <strong>${num(P, 1)}%</strong>`;
+    }
+  }
+
+  let table = '<table class="data-table"><thead><tr><th>Aktivitas</th><th>Durasi (te)</th><th>ES</th><th>EF</th><th>LS</th><th>LF</th><th>Slack</th><th>Kritis</th></tr></thead><tbody>';
+  for (const n of order) {
+    const a = acts[n];
+    const crit = Math.abs(a.LS - a.ES) < 1e-9;
+    table += `<tr${crit ? ' style="background:var(--primary-light);"' : ''}><td><strong>${a.name}</strong></td><td>${num(a.te, 2)}</td><td>${num(a.ES, 2)}</td><td>${num(a.EF, 2)}</td><td>${num(a.LS, 2)}</td><td>${num(a.LF, 2)}</td><td>${num(a.LS - a.ES, 2)}</td><td>${crit ? '✓' : ''}</td></tr>`;
+  }
+  table += '</tbody></table>';
+
+  document.getElementById('pert-result-grid').innerHTML = grid;
+  document.getElementById('pert-table').innerHTML = table;
+  document.getElementById('pert-detail').innerHTML = detail;
+  document.getElementById('pert-result').classList.remove('hidden');
+}
+
+// ============ Antrian M/M/1 ============
+function calcQueue() {
+  const lambda = val('queue-lambda'), mu = val('queue-mu');
+  const unit = document.getElementById('queue-unit').value;
+  if (!(lambda > 0 && mu > 0)) return alert('Masukkan λ dan μ yang valid (> 0).');
+  if (lambda >= mu) return alert('Sistem tidak stabil: λ harus lebih kecil dari μ (ρ < 1).\nAntrian akan tumbuh tanpa batas.');
+
+  const rho = lambda / mu;
+  const P0 = 1 - rho;
+  const L = rho / (1 - rho);
+  const Lq = rho * rho / (1 - rho);
+  const W = 1 / (mu - lambda);
+  const Wq = lambda / (mu * (mu - lambda));
+
+  const tUnit = unit === 'jam' ? 'jam' : unit === 'menit' ? 'menit' : 'hari';
+  const toMin = unit === 'jam' ? ` (${num(W * 60, 1)} menit)` : '';
+  const toMinQ = unit === 'jam' ? ` (${num(Wq * 60, 1)} menit)` : '';
+
+  document.getElementById('queue-result-grid').innerHTML =
+    resultItem('Utilisasi, ρ', num(rho * 100, 1) + ' %', true)
+    + resultItem('Peluang Sistem Kosong, P₀', num(P0 * 100, 1) + ' %')
+    + resultItem('Pelanggan dalam Sistem, L', num(L, 2))
+    + resultItem('Pelanggan dalam Antrian, Lq', num(Lq, 2))
+    + resultItem('Waktu dalam Sistem, W', num(W, 3) + ' ' + tUnit + toMin)
+    + resultItem('Waktu Menunggu, Wq', num(Wq, 3) + ' ' + tUnit + toMinQ);
+
+  document.getElementById('queue-detail').innerHTML =
+    `<strong>ρ = λ/μ</strong> = ${num(lambda)}/${num(mu)} = <strong>${num(rho, 3)}</strong> — server sibuk ${num(rho * 100, 1)}% waktu.<br>
+     <strong>L = ρ/(1−ρ)</strong> = <strong>${num(L, 2)} pelanggan</strong> · <strong>W = 1/(μ−λ)</strong> = <strong>${num(W, 3)} ${tUnit}</strong>${toMin}<br>
+     <span style="color:var(--success)">✓ Verifikasi Little's Law: L = λ·W = ${num(lambda)} × ${num(W, 3)} = ${num(lambda * W, 2)}</span>`;
+  document.getElementById('queue-result').classList.remove('hidden');
+}
+
+// ============ NIOSH Lifting Equation ============
+function calcNIOSH() {
+  const W = val('niosh-weight'), H = val('niosh-h'), V = val('niosh-v'), D = val('niosh-d'), A = val('niosh-a');
+  const FM = parseFloat(document.getElementById('niosh-fm').value);
+  const coupling = document.getElementById('niosh-cm').value;
+  if (!(W > 0 && H > 0 && V >= 0 && D > 0 && A >= 0)) return alert('Masukkan semua nilai dengan valid.');
+  if (H > 63) return alert('H > 63 cm berada di luar jangkauan biomekanik — RWL = 0.\nBeban harus didekatkan ke tubuh.');
+  if (V > 175) return alert('V > 175 cm melebihi jangkauan vertikal — RWL = 0.');
+  if (A > 135) return alert('Sudut puntiran > 135° di luar batas persamaan — RWL = 0.');
+
+  const HM = 25 / Math.max(H, 25);
+  const VM = Math.max(0, 1 - 0.003 * Math.abs(V - 75));
+  const DM = Math.min(1, 0.82 + 4.5 / Math.max(D, 25));
+  const AM = 1 - 0.0032 * A;
+  const CM = coupling === 'good' ? 1.00 : coupling === 'fair' ? (V < 75 ? 0.95 : 1.00) : 0.90;
+  const RWL = 23 * HM * VM * DM * AM * FM * CM;
+  const LI = W / RWL;
+
+  let risk, color;
+  if (LI <= 1) { risk = 'Risiko rendah — beban masih dalam batas aman'; color = 'var(--success)'; }
+  else if (LI <= 3) { risk = 'Risiko meningkat — pekerjaan perlu diperbaiki'; color = 'var(--warning)'; }
+  else { risk = 'RISIKO TINGGI — perbaikan segera diperlukan'; color = '#dc2626'; }
+
+  document.getElementById('niosh-result-grid').innerHTML =
+    resultItem('RWL (Batas Beban Aman)', num(RWL, 2) + ' kg', true)
+    + resultItem('Lifting Index (LI)', num(LI, 2), true)
+    + resultItem('HM (Horizontal)', num(HM, 3))
+    + resultItem('VM (Vertikal)', num(VM, 3))
+    + resultItem('DM (Perpindahan)', num(DM, 3))
+    + resultItem('AM (Asimetri)', num(AM, 3))
+    + resultItem('FM (Frekuensi)', num(FM, 2))
+    + resultItem('CM (Pegangan)', num(CM, 2));
+
+  document.getElementById('niosh-detail').innerHTML =
+    `<strong>RWL</strong> = 23 × ${num(HM, 3)} × ${num(VM, 3)} × ${num(DM, 3)} × ${num(AM, 3)} × ${num(FM, 2)} × ${num(CM, 2)} = <strong>${num(RWL, 2)} kg</strong><br>
+     <strong>LI</strong> = ${num(W)} / ${num(RWL, 2)} = <strong>${num(LI, 2)}</strong><br>
+     <span style="color:${color};font-weight:600;">${risk}</span><br>
+     <small>Referensi: Waters dkk. (1993), Revised NIOSH Lifting Equation. Lihat <a href="panduan-ergonomi.html">panduan ergonomi</a>.</small>`;
+  document.getElementById('niosh-result').classList.remove('hidden');
+}
+
+// prefix → fungsi hitung (untuk load dari URL share)
+const calcFns = {
+  eoq: calcEOQ, rop: calcROP, ss: calcSS, fc: calcForecast, bep: calcBEP,
+  takt: calcTakt, oee: calcOEE, lb: calcLineBal, npv: calcNPV, st: calcStats,
+  pert: calcPERT, queue: calcQueue, niosh: calcNIOSH
+};
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
   calcEOQ();
   initStatTable();
+
+  // Tambah tombol Unduh & Bagikan di setiap panel hasil
+  document.querySelectorAll('.results[id$="-result"]').forEach(div => {
+    const prefix = div.id.replace('-result', '');
+    const row = div.querySelector('.copy-row');
+    if (!row || !calcFns[prefix]) return;
+    const dl = document.createElement('button');
+    dl.className = 'btn btn-secondary btn-sm';
+    dl.textContent = 'Unduh .txt';
+    dl.onclick = () => downloadResults(prefix);
+    const sh = document.createElement('button');
+    sh.className = 'btn btn-secondary btn-sm';
+    sh.textContent = 'Bagikan Link';
+    sh.onclick = () => shareLink(prefix, sh);
+    row.appendChild(dl);
+    row.appendChild(sh);
+  });
+
+  loadFromURL();
 });

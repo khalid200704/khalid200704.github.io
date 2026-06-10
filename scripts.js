@@ -19,6 +19,27 @@ function loadChartJS() {
   });
 }
 
+// Tampilkan skeleton di area grafik selama Chart.js dimuat dari CDN (hanya load pertama)
+function loadChartJSWithSkeleton(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  const wrapper = canvas ? canvas.closest('.chart-wrapper') : null;
+  let sk = null;
+  if (wrapper && typeof Chart === 'undefined') {
+    canvas.style.display = 'none';
+    sk = document.createElement('div');
+    sk.className = 'chart-skeleton';
+    sk.setAttribute('aria-hidden', 'true');
+    sk.innerHTML = '<div class="skeleton sk-title"></div><div class="sk-bars">'
+      + Array.from({ length: 9 }, (_, i) => `<div class="skeleton sk-bar" style="height:${35 + (i * 41) % 60}%"></div>`).join('')
+      + '</div><div class="skeleton sk-caption"></div>';
+    wrapper.appendChild(sk);
+  }
+  return loadChartJS().then(() => {
+    if (sk) sk.remove();
+    if (canvas) canvas.style.display = '';
+  });
+}
+
 let fcChart, bepChart, stChart;
 
 function resultItem(label, value, primary = false) {
@@ -299,7 +320,7 @@ async function calcForecast() {
   document.getElementById('fc-result').classList.remove('hidden');
 
   // Chart
-  await loadChartJS();
+  await loadChartJSWithSkeleton('fc-chart');
   const labels = forecasts.map(f => 'P' + f.t);
   const actualValues = forecasts.map(f => f.actual);
   const forecastValues = forecasts.map(f => parseFloat(f.forecast.toFixed(2)));
@@ -372,7 +393,7 @@ async function calcBEP() {
   document.getElementById('bep-result').classList.remove('hidden');
 
   // Chart dengan lebih banyak titik untuk kurva mulus
-  await loadChartJS();
+  await loadChartJSWithSkeleton('bep-chart');
   const ctx = document.getElementById('bep-chart').getContext('2d');
   destroyChart(bepChart);
   const steps = 30;
@@ -675,7 +696,7 @@ async function calcStats() {
   document.getElementById('st-result').classList.remove('hidden');
 
   // Control Chart
-  await loadChartJS();
+  await loadChartJSWithSkeleton('st-chart');
   const ctx = document.getElementById('st-chart').getContext('2d');
   destroyChart(stChart);
   stChart = new Chart(ctx, {

@@ -342,6 +342,39 @@ textarea { resize: vertical; font-family: 'SF Mono', Menlo, Consolas, monospace;
   padding: 16px;
 }
 
+/* Skeleton loading (saat Chart.js dimuat dari CDN) */
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #ececf0 25%, #f7f7f9 50%, #ececf0 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.2s linear infinite;
+  border-radius: 6px;
+}
+.chart-skeleton { padding: 8px 4px; }
+.chart-skeleton .sk-title {
+  width: 40%;
+  height: 14px;
+  margin: 0 auto 18px;
+}
+.chart-skeleton .sk-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 180px;
+}
+.chart-skeleton .sk-bar { flex: 1; }
+.chart-skeleton .sk-caption {
+  width: 55%;
+  height: 10px;
+  margin: 14px auto 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+}
+
 /* Sidebar */
 aside {
   display: flex;

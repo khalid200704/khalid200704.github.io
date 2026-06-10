@@ -329,6 +329,8 @@ textarea { resize: vertical; font-family: 'SF Mono', Menlo, Consolas, monospace;
   margin-top: 14px;
   display: flex;
   justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 /* Chart */

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Control Chart &amp; SPC: Cara Menghitung UCL/LCL + Contoh Soal</title>
+<meta name="description" content="Panduan Statistical Process Control (SPC): konsep variasi proses, rumus batas kontrol UCL dan LCL, cara membaca control chart, contoh perhitungan langkah demi langkah, dan aturan deteksi out-of-control." />
+<meta name="author" content="TI Toolkit" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://khalid200704.github.io/panduan-spc.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://khalid200704.github.io/panduan-spc.html" />
+<meta property="og:title" content="Control Chart &amp; SPC: Cara Menghitung UCL/LCL + Contoh Soal" />
+<meta property="og:description" content="Konsep SPC, rumus UCL/LCL, cara membaca control chart, dan contoh perhitungan langkah demi langkah." />
+<meta property="og:image" content="https://khalid200704.github.io/og-image.svg" />
+<meta property="og:locale" content="id_ID" />
+<meta property="og:site_name" content="TI Toolkit" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='15' font-weight='800' fill='white' text-anchor='middle'%3ETI%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="styles.css" />
+
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8688855167346136" crossorigin="anonymous"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Control Chart & SPC: Cara Menghitung UCL/LCL + Contoh Soal",
+  "description": "Konsep variasi proses, rumus batas kontrol UCL dan LCL, cara membaca control chart, dan contoh perhitungan langkah demi langkah.",
+  "inLanguage": "id-ID",
+  "author": { "@type": "Organization", "name": "TI Toolkit" },
+  "publisher": { "@type": "Organization", "name": "TI Toolkit", "url": "https://khalid200704.github.io/" },
+  "mainEntityOfPage": "https://khalid200704.github.io/panduan-spc.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Apa itu Statistical Process Control (SPC)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "SPC adalah metode pengendalian kualitas yang memantau proses produksi menggunakan alat statistik, terutama control chart, untuk membedakan variasi alami (common cause) dari variasi tidak normal (special cause) yang perlu ditindaklanjuti." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bagaimana rumus UCL dan LCL?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Untuk peta kontrol 3-sigma: UCL = rata-rata + 3 standar deviasi dan LCL = rata-rata − 3 standar deviasi. Sekitar 99,73% titik proses yang terkendali akan jatuh di antara kedua batas ini." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa bedanya batas kontrol dan batas spesifikasi?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Batas kontrol (UCL/LCL) dihitung dari data proses dan menggambarkan suara proses, sedangkan batas spesifikasi (USL/LSL) ditetapkan oleh pelanggan/desain dan menggambarkan suara pelanggan. Keduanya tidak boleh dicampuradukkan." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://khalid200704.github.io/" },
+    { "@type": "ListItem", "position": 2, "name": "Panduan", "item": "https://khalid200704.github.io/panduan.html" },
+    { "@type": "ListItem", "position": 3, "name": "SPC", "item": "https://khalid200704.github.io/panduan-spc.html" }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <nav class="nav" aria-label="Navigasi utama">
+    <a href="index.html" class="logo" aria-label="TI Toolkit - Beranda">
+      <span class="logo-mark">TI</span>
+      <span>TI Toolkit</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Kalkulator</a>
+      <a href="panduan.html" class="active">Panduan</a>
+      <a href="about.html">Tentang</a>
+      <a href="contact.html">Kontak</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-container">
+  <main class="content-page">
+
+    <div class="meta-info">Panduan Pengendalian Kualitas — bagian dari seri <a href="panduan.html">Panduan Teknik Industri</a> TI Toolkit.</div>
+
+    <h1>Control Chart &amp; SPC: Cara Menghitung UCL/LCL</h1>
+    <p class="subtitle">Memahami variasi proses, menghitung batas kontrol 3-sigma, dan membaca sinyal out-of-control pada peta kendali.</p>
+
+    <h2>Apa itu SPC?</h2>
+    <p><strong>Statistical Process Control (SPC)</strong> adalah pendekatan pengendalian kualitas yang dipelopori Walter Shewhart (Bell Labs, 1920-an): alih-alih memeriksa produk satu per satu setelah jadi, SPC <strong>memantau proses</strong> secara statistik agar masalah terdeteksi sebelum menghasilkan banyak produk cacat.</p>
+    <p>Ide kuncinya adalah membedakan dua jenis variasi:</p>
+    <ul>
+      <li><strong>Common cause</strong> — variasi alami yang selalu ada di setiap proses (getaran mesin, fluktuasi material dalam toleransi). Proses dengan hanya common cause disebut <em>terkendali secara statistik</em>.</li>
+      <li><strong>Special cause</strong> — variasi tidak normal akibat sebab khusus (pahat aus, operator baru, batch material rusak). Inilah yang harus dicari dan dihilangkan.</li>
+    </ul>
+    <p>Alat utamanya adalah <strong>control chart (peta kendali)</strong>: grafik data proses dari waktu ke waktu dengan garis tengah (CL) dan batas kontrol atas/bawah (UCL/LCL).</p>
+
+    <h2>Rumus Batas Kontrol 3-Sigma</h2>
+    <div class="formula-block">UCL = x̄ + 3σ &nbsp;&nbsp;|&nbsp;&nbsp; CL = x̄ &nbsp;&nbsp;|&nbsp;&nbsp; LCL = x̄ − 3σ</div>
+    <p>dengan x̄ = rata-rata data dan σ = standar deviasi. Berdasarkan distribusi normal, 99,73% titik dari proses yang terkendali akan jatuh di antara UCL dan LCL — sehingga titik di luar batas hampir pasti menandakan special cause, bukan kebetulan.</p>
+    <p>Statistik dasar yang dibutuhkan:</p>
+    <div class="formula-block">x̄ = Σx / n &nbsp;&nbsp;|&nbsp;&nbsp; s = √[ Σ(x − x̄)² / (n − 1) ]</div>
+
+    <h2>Contoh Soal SPC dan Pembahasan</h2>
+    <p><strong>Soal:</strong> Pengukuran diameter poros (mm) dari 10 sampel: 50,2 ; 49,8 ; 50,5 ; 49,9 ; 50,1 ; 50,3 ; 49,7 ; 50,0 ; 50,4 ; 49,6. Hitung batas kontrol 3-sigma dan tentukan apakah proses terkendali.</p>
+    <p><strong>Langkah 1 — Rata-rata:</strong> Σx = 500,5 → x̄ = 500,5 / 10 = 50,05 mm.</p>
+    <p><strong>Langkah 2 — Standar deviasi (sampel):</strong> Σ(x − x̄)² = 0,825 → s = √(0,825/9) = √0,0917 ≈ 0,303 mm.</p>
+    <p><strong>Langkah 3 — Batas kontrol:</strong></p>
+    <div class="formula-block">UCL = 50,05 + 3(0,303) = 50,96 mm<br>LCL = 50,05 − 3(0,303) = 49,14 mm</div>
+    <p><strong>Langkah 4 — Evaluasi:</strong> seluruh data berada antara 49,6 dan 50,5 — semuanya di dalam batas kontrol, tanpa pola tidak normal. Kesimpulan: <strong>proses terkendali secara statistik</strong>.</p>
+
+    <h2>Sinyal Out-of-Control: Bukan Hanya Titik di Luar Batas</h2>
+    <p>Proses bisa bermasalah meskipun semua titik di dalam batas. Aturan deteksi tambahan yang umum dipakai (Western Electric rules):</p>
+    <ol>
+      <li>Satu titik di luar UCL atau LCL.</li>
+      <li>Tujuh (atau delapan) titik berturut-turut di satu sisi garis tengah — indikasi pergeseran rata-rata proses.</li>
+      <li>Tren naik/turun terus-menerus 7 titik — indikasi keausan alat atau drift.</li>
+      <li>Pola siklus atau terlalu banyak titik mendekati batas kontrol.</li>
+    </ol>
+
+    <h2>Jenis-Jenis Control Chart</h2>
+    <table class="data-table">
+      <thead><tr><th>Peta</th><th>Data</th><th>Memantau</th></tr></thead>
+      <tbody>
+        <tr><td>x̄–R chart</td><td>Variabel (pengukuran), subgroup kecil</td><td>Rata-rata dan rentang antar subgroup</td></tr>
+        <tr><td>I–MR chart</td><td>Variabel, observasi individual</td><td>Nilai individu dan moving range</td></tr>
+        <tr><td>p chart</td><td>Atribut</td><td>Proporsi unit cacat</td></tr>
+        <tr><td>c chart</td><td>Atribut</td><td>Jumlah cacat per unit inspeksi</td></tr>
+      </tbody>
+    </table>
+    <p>Untuk x̄–R chart, batas kontrol dihitung menggunakan konstanta tabel (A₂, D₃, D₄) sesuai ukuran subgroup — materi standar di buku Montgomery, <em>Statistical Quality Control</em>.</p>
+
+    <h2>Batas Kontrol ≠ Batas Spesifikasi</h2>
+    <p>Kesalahan konsep paling sering di ujian: <strong>UCL/LCL dihitung dari data proses</strong> ("suara proses"), sedangkan <strong>USL/LSL ditetapkan pelanggan atau desain</strong> ("suara pelanggan"). Proses bisa terkendali tetapi tetap menghasilkan produk di luar spesifikasi — itu masalah <em>capability</em> (diukur dengan Cp/Cpk), bukan <em>control</em>.</p>
+
+    <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
+    <div class="faq-item">
+      <h3>Kenapa dipakai 3 sigma, bukan 2 sigma?</h3>
+      <p>3-sigma adalah kompromi Shewhart antara dua risiko: batas terlalu sempit memicu banyak alarm palsu (false alarm), batas terlalu lebar membuat masalah nyata lolos. Pada 3σ, peluang alarm palsu hanya ±0,27%.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Pakai standar deviasi populasi atau sampel?</h3>
+      <p>Untuk data sampel (hampir semua kasus praktikum), gunakan rumus sampel dengan pembagi (n−1). Perbedaannya mengecil saat n besar.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Berapa minimal data untuk membuat control chart?</h3>
+      <p>Konvensi umum: 20–25 subgroup (atau ±100 observasi individual) untuk menetapkan batas kontrol awal yang stabil. Untuk latihan soal, data lebih sedikit tetap bisa dihitung dengan rumus yang sama.</p>
+    </div>
+
+    <hr class="divider">
+    <p>Kalkulator statistik &amp; SPC kami menghitung mean, median, standar deviasi, UCL/LCL, dan menggambar control chart-nya secara otomatis.</p>
+    <p>
+      <a href="index.html" class="btn">Buka Kalkulator SPC</a>
+      <a href="panduan.html" class="btn btn-secondary" style="margin-left:8px;">Panduan Lainnya</a>
+    </p>
+
+  </main>
+</div>
+
+<footer>
+  <div class="logo"><span class="logo-mark">TI</span> <span>TI Toolkit</span></div>
+  <div class="footer-links">
+    <a href="index.html">Kalkulator</a>
+    <a href="panduan.html">Panduan</a>
+    <a href="about.html">Tentang</a>
+    <a href="contact.html">Kontak</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
+  <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
+</footer>
+
+</body>
+</html>

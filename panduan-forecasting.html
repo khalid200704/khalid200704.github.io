@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Metode Forecasting: Moving Average, WMA &amp; Exponential Smoothing</title>
+<meta name="description" content="Panduan peramalan permintaan untuk teknik industri: cara menghitung Moving Average, Weighted Moving Average, Exponential Smoothing, plus ukuran error MAD, MSE, dan MAPE dengan contoh soal." />
+<meta name="author" content="TI Toolkit" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://khalid200704.github.io/panduan-forecasting.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://khalid200704.github.io/panduan-forecasting.html" />
+<meta property="og:title" content="Metode Forecasting: Moving Average, WMA &amp; Exponential Smoothing" />
+<meta property="og:description" content="Cara menghitung MA, WMA, dan Exponential Smoothing langkah demi langkah, plus MAD, MSE, dan MAPE." />
+<meta property="og:image" content="https://khalid200704.github.io/og-image.svg" />
+<meta property="og:locale" content="id_ID" />
+<meta property="og:site_name" content="TI Toolkit" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='15' font-weight='800' fill='white' text-anchor='middle'%3ETI%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="styles.css" />
+
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8688855167346136" crossorigin="anonymous"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Metode Forecasting: Moving Average, WMA & Exponential Smoothing",
+  "description": "Panduan peramalan permintaan: Moving Average, Weighted Moving Average, Exponential Smoothing, dan ukuran error MAD, MSE, MAPE dengan contoh soal.",
+  "inLanguage": "id-ID",
+  "author": { "@type": "Organization", "name": "TI Toolkit" },
+  "publisher": { "@type": "Organization", "name": "TI Toolkit", "url": "https://khalid200704.github.io/" },
+  "mainEntityOfPage": "https://khalid200704.github.io/panduan-forecasting.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Kapan menggunakan Moving Average vs Exponential Smoothing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Moving Average cocok untuk data stabil tanpa tren karena memberi bobot sama pada n periode terakhir. Exponential Smoothing lebih responsif karena memberi bobot lebih besar pada data terbaru, dan hanya membutuhkan satu parameter α." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa itu MAD, MSE, dan MAPE?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Ketiganya adalah ukuran akurasi forecast. MAD = rata-rata nilai absolut error, MSE = rata-rata kuadrat error (menghukum error besar), MAPE = rata-rata persentase absolut error sehingga mudah dibandingkan antar produk." }
+    },
+    {
+      "@type": "Question",
+      "name": "Berapa nilai alpha yang baik untuk Exponential Smoothing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "α antara 0,1–0,3 umum untuk permintaan stabil; α besar (0,5–0,9) untuk data yang berubah cepat. Praktik terbaik adalah mencoba beberapa nilai α dan memilih yang menghasilkan MAD atau MAPE terkecil." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://khalid200704.github.io/" },
+    { "@type": "ListItem", "position": 2, "name": "Panduan", "item": "https://khalid200704.github.io/panduan.html" },
+    { "@type": "ListItem", "position": 3, "name": "Forecasting", "item": "https://khalid200704.github.io/panduan-forecasting.html" }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <nav class="nav" aria-label="Navigasi utama">
+    <a href="index.html" class="logo" aria-label="TI Toolkit - Beranda">
+      <span class="logo-mark">TI</span>
+      <span>TI Toolkit</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Kalkulator</a>
+      <a href="panduan.html" class="active">Panduan</a>
+      <a href="about.html">Tentang</a>
+      <a href="contact.html">Kontak</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-container">
+  <main class="content-page">
+
+    <div class="meta-info">Panduan Peramalan Permintaan — bagian dari seri <a href="panduan.html">Panduan Teknik Industri</a> TI Toolkit.</div>
+
+    <h1>Metode Forecasting: MA, WMA &amp; Exponential Smoothing</h1>
+    <p class="subtitle">Cara menghitung tiga metode peramalan time-series paling umum di teknik industri, lengkap dengan ukuran error MAD, MSE, dan MAPE.</p>
+
+    <h2>Mengapa Forecasting Penting?</h2>
+    <p><strong>Peramalan (forecasting)</strong> adalah titik awal hampir semua keputusan perencanaan produksi: berapa bahan baku yang dibeli, berapa kapasitas yang disiapkan, sampai berapa tenaga kerja yang dijadwalkan. Forecast yang buruk merembet ke mana-mana — stok menumpuk atau justru kehabisan barang. Tiga metode time-series yang hampir selalu muncul di mata kuliah Peramalan dan PPIC adalah <em>Moving Average</em>, <em>Weighted Moving Average</em>, dan <em>Exponential Smoothing</em>.</p>
+
+    <h2>1. Moving Average (MA)</h2>
+    <div class="formula-block">F<sub>t+1</sub> = (A<sub>t</sub> + A<sub>t−1</sub> + … + A<sub>t−n+1</sub>) / n</div>
+    <p>Forecast periode berikutnya adalah rata-rata dari n data aktual terakhir. Semakin besar n, semakin halus (stabil) forecast tetapi semakin lambat merespons perubahan. MA cocok untuk permintaan yang relatif stabil tanpa tren atau musiman.</p>
+
+    <h2>2. Weighted Moving Average (WMA)</h2>
+    <div class="formula-block">F<sub>t+1</sub> = w₁·A<sub>t</sub> + w₂·A<sub>t−1</sub> + … + w<sub>n</sub>·A<sub>t−n+1</sub>,&nbsp;&nbsp; Σw = 1</div>
+    <p>Sama seperti MA tetapi periode terbaru diberi bobot lebih besar (misal 0,5 ; 0,3 ; 0,2). WMA lebih responsif terhadap perubahan terbaru dibanding MA biasa, dengan syarat total bobot harus = 1.</p>
+
+    <h2>3. Exponential Smoothing (ES)</h2>
+    <div class="formula-block">F<sub>t+1</sub> = α·A<sub>t</sub> + (1 − α)·F<sub>t</sub></div>
+    <p>ES menggabungkan data aktual terakhir (A<sub>t</sub>) dengan forecast sebelumnya (F<sub>t</sub>) menggunakan konstanta pemulusan α (0 &lt; α &lt; 1). α kecil → forecast halus dan stabil; α besar → forecast cepat mengejar perubahan. Keunggulan ES: hanya perlu menyimpan satu angka forecast sebelumnya, sehingga sangat efisien.</p>
+
+    <h2>Contoh Soal dan Pembahasan (MA 3-Periode)</h2>
+    <p><strong>Soal:</strong> Penjualan 10 bulan terakhir: 42, 45, 48, 50, 55, 60, 58, 62, 65, 70 unit. Hitung forecast bulan ke-11 dengan Moving Average 3 periode dan ukur akurasinya dengan MAD.</p>
+    <p><strong>Langkah 1 —</strong> Forecast baru bisa dihitung mulai periode ke-4 (butuh 3 data sebelumnya):</p>
+    <table class="data-table">
+      <thead><tr><th>Periode</th><th>Aktual</th><th>Forecast MA(3)</th><th>|Error|</th></tr></thead>
+      <tbody>
+        <tr><td>4</td><td>50</td><td>(42+45+48)/3 = 45,00</td><td>5,00</td></tr>
+        <tr><td>5</td><td>55</td><td>(45+48+50)/3 = 47,67</td><td>7,33</td></tr>
+        <tr><td>6</td><td>60</td><td>(48+50+55)/3 = 51,00</td><td>9,00</td></tr>
+        <tr><td>7</td><td>58</td><td>(50+55+60)/3 = 55,00</td><td>3,00</td></tr>
+        <tr><td>8</td><td>62</td><td>(55+60+58)/3 = 57,67</td><td>4,33</td></tr>
+        <tr><td>9</td><td>65</td><td>(60+58+62)/3 = 60,00</td><td>5,00</td></tr>
+        <tr><td>10</td><td>70</td><td>(58+62+65)/3 = 61,67</td><td>8,33</td></tr>
+        <tr><td><strong>11</strong></td><td>—</td><td><strong>(62+65+70)/3 = 65,67</strong></td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Langkah 2 — Hitung MAD:</strong> jumlah error absolut = 5 + 7,33 + 9 + 3 + 4,33 + 5 + 8,33 = 42,0 untuk 7 periode, sehingga:</p>
+    <div class="formula-block">MAD = 42,0 / 7 = 6,0 unit</div>
+    <p>Artinya, rata-rata forecast meleset 6 unit dari aktual. Karena data ini sebenarnya memiliki tren naik, MA(3) konsisten <em>underforecast</em> — di kasus seperti ini metode dengan komponen tren (misal Holt's/double exponential smoothing) akan lebih akurat.</p>
+
+    <h2>Mengukur Akurasi: MAD, MSE, dan MAPE</h2>
+    <table class="data-table">
+      <thead><tr><th>Ukuran</th><th>Rumus</th><th>Karakteristik</th></tr></thead>
+      <tbody>
+        <tr><td>MAD</td><td>Σ|A−F| / n</td><td>Mudah dipahami, satuan sama dengan data</td></tr>
+        <tr><td>MSE</td><td>Σ(A−F)² / n</td><td>Menghukum error besar lebih berat</td></tr>
+        <tr><td>MAPE</td><td>Σ(|A−F|/A) / n × 100%</td><td>Dalam persen, bisa dibandingkan antar produk</td></tr>
+      </tbody>
+    </table>
+    <p>Cara memilih metode terbaik: hitung forecast dengan beberapa metode/parameter pada data historis yang sama, lalu pilih yang menghasilkan MAD/MSE/MAPE terkecil. Sebagai patokan kasar, MAPE di bawah 10% tergolong sangat baik, 10–20% baik, 20–50% wajar, dan di atas 50% tidak akurat.</p>
+
+    <h2>Tips Memilih Metode</h2>
+    <ul>
+      <li><strong>Data stabil tanpa tren</strong> → MA atau ES dengan α kecil (0,1–0,3).</li>
+      <li><strong>Perubahan terbaru penting</strong> → WMA atau ES dengan α besar (0,5–0,9).</li>
+      <li><strong>Ada tren jelas</strong> → metode dasar ini akan selalu tertinggal; gunakan double exponential smoothing atau regresi tren.</li>
+      <li><strong>Ada pola musiman</strong> → tambahkan indeks musiman atau gunakan dekomposisi/Winter's method.</li>
+    </ul>
+
+    <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
+    <div class="faq-item">
+      <h3>Berapa forecast awal (F₁) untuk Exponential Smoothing?</h3>
+      <p>Konvensi yang umum: gunakan data aktual periode pertama (F₂ = A₁) atau rata-rata beberapa periode awal. Pengaruh nilai awal akan memudar seiring bertambahnya periode.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Kenapa total bobot WMA harus 1?</h3>
+      <p>Agar forecast tetap berada pada skala data. Jika total bobot ≠ 1, forecast akan sistematis terlalu besar atau terlalu kecil.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Metode mana yang paling akurat?</h3>
+      <p>Tidak ada yang selalu menang — akurasi tergantung pola data. Uji beberapa metode pada data historis Anda dan bandingkan MAD/MAPE-nya; itulah cara yang diajarkan di hampir semua buku teks operations management.</p>
+    </div>
+
+    <hr class="divider">
+    <p>Kalkulator forecasting kami menghitung MA, WMA, dan ES sekaligus menampilkan tabel error (MAD, MSE, MAPE) dan grafik perbandingan aktual vs forecast.</p>
+    <p>
+      <a href="index.html" class="btn">Buka Kalkulator Forecasting</a>
+      <a href="panduan.html" class="btn btn-secondary" style="margin-left:8px;">Panduan Lainnya</a>
+    </p>
+
+  </main>
+</div>
+
+<footer>
+  <div class="logo"><span class="logo-mark">TI</span> <span>TI Toolkit</span></div>
+  <div class="footer-links">
+    <a href="index.html">Kalkulator</a>
+    <a href="panduan.html">Panduan</a>
+    <a href="about.html">Tentang</a>
+    <a href="contact.html">Kontak</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
+  <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
+</footer>
+
+</body>
+</html>

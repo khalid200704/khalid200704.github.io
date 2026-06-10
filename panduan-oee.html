@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Cara Menghitung OEE (Overall Equipment Effectiveness) + Contoh</title>
+<meta name="description" content="Panduan OEE lengkap: rumus Availability, Performance, Quality, contoh perhitungan OEE langkah demi langkah, standar world class 85%, dan kaitannya dengan Six Big Losses TPM." />
+<meta name="author" content="TI Toolkit" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://khalid200704.github.io/panduan-oee.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://khalid200704.github.io/panduan-oee.html" />
+<meta property="og:title" content="Cara Menghitung OEE (Overall Equipment Effectiveness) + Contoh" />
+<meta property="og:description" content="Rumus Availability, Performance, Quality, contoh perhitungan OEE, standar world class, dan Six Big Losses." />
+<meta property="og:image" content="https://khalid200704.github.io/og-image.svg" />
+<meta property="og:locale" content="id_ID" />
+<meta property="og:site_name" content="TI Toolkit" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='15' font-weight='800' fill='white' text-anchor='middle'%3ETI%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="styles.css" />
+
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8688855167346136" crossorigin="anonymous"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Cara Menghitung OEE (Overall Equipment Effectiveness) + Contoh",
+  "description": "Rumus Availability, Performance, Quality, contoh perhitungan OEE langkah demi langkah, standar world class 85%, dan Six Big Losses TPM.",
+  "inLanguage": "id-ID",
+  "author": { "@type": "Organization", "name": "TI Toolkit" },
+  "publisher": { "@type": "Organization", "name": "TI Toolkit", "url": "https://khalid200704.github.io/" },
+  "mainEntityOfPage": "https://khalid200704.github.io/panduan-oee.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Apa itu OEE?",
+      "acceptedAnswer": { "@type": "Answer", "text": "OEE (Overall Equipment Effectiveness) adalah metrik Total Productive Maintenance yang mengukur seberapa efektif mesin dimanfaatkan, dihitung dari perkalian Availability × Performance × Quality." }
+    },
+    {
+      "@type": "Question",
+      "name": "Berapa nilai OEE yang baik?",
+      "acceptedAnswer": { "@type": "Answer", "text": "OEE 85% dianggap world class untuk manufaktur diskrit (A 90%, P 95%, Q 99%). Rata-rata pabrik umumnya berada di kisaran 60%, sedangkan di bawah 40% menunjukkan banyak ruang perbaikan." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa itu Six Big Losses?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Enam kerugian besar yang menggerogoti OEE: breakdown dan setup/adjustment (menurunkan Availability), idling/minor stops dan reduced speed (menurunkan Performance), serta defect/rework dan startup losses (menurunkan Quality)." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://khalid200704.github.io/" },
+    { "@type": "ListItem", "position": 2, "name": "Panduan", "item": "https://khalid200704.github.io/panduan.html" },
+    { "@type": "ListItem", "position": 3, "name": "OEE", "item": "https://khalid200704.github.io/panduan-oee.html" }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <nav class="nav" aria-label="Navigasi utama">
+    <a href="index.html" class="logo" aria-label="TI Toolkit - Beranda">
+      <span class="logo-mark">TI</span>
+      <span>TI Toolkit</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Kalkulator</a>
+      <a href="panduan.html" class="active">Panduan</a>
+      <a href="about.html">Tentang</a>
+      <a href="contact.html">Kontak</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-container">
+  <main class="content-page">
+
+    <div class="meta-info">Panduan Pengendalian Kualitas &amp; Perawatan — bagian dari seri <a href="panduan.html">Panduan Teknik Industri</a> TI Toolkit.</div>
+
+    <h1>Cara Menghitung OEE (Overall Equipment Effectiveness)</h1>
+    <p class="subtitle">Metrik utama Total Productive Maintenance (TPM): Availability × Performance × Quality, lengkap dengan contoh perhitungan dan benchmark world class.</p>
+
+    <h2>Apa itu OEE?</h2>
+    <p><strong>OEE (Overall Equipment Effectiveness)</strong> mengukur persentase waktu produksi terencana yang benar-benar produktif. OEE 100% berarti mesin hanya memproduksi barang bagus (Quality), secepat mungkin (Performance), tanpa berhenti sama sekali (Availability). Metrik ini lahir dari konsep <em>Total Productive Maintenance</em> (TPM) yang dikembangkan Seiichi Nakajima dan kini menjadi KPI standar di hampir semua pabrik manufaktur.</p>
+    <p>Kekuatan OEE bukan pada angka tunggalnya, melainkan pada <strong>dekomposisinya</strong> — OEE memberi tahu di mana kerugian terjadi: mesin sering berhenti? berjalan lambat? atau banyak produk cacat?</p>
+
+    <h2>Rumus OEE</h2>
+    <div class="formula-block">OEE = Availability × Performance × Quality</div>
+    <table class="data-table">
+      <thead><tr><th>Komponen</th><th>Rumus</th><th>Mengukur</th></tr></thead>
+      <tbody>
+        <tr><td>Availability (A)</td><td>(Planned Time − Downtime) / Planned Time</td><td>Kerugian karena berhenti (breakdown, setup)</td></tr>
+        <tr><td>Performance (P)</td><td>(Ideal Cycle Time × Total Unit) / Operating Time</td><td>Kerugian kecepatan (minor stop, slow running)</td></tr>
+        <tr><td>Quality (Q)</td><td>Unit Baik / Total Unit</td><td>Kerugian kualitas (reject, rework)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Contoh Soal OEE dan Pembahasan</h2>
+    <p><strong>Soal:</strong> Sebuah mesin dijadwalkan beroperasi 480 menit dalam satu shift. Tercatat downtime 60 menit (breakdown + setup). Ideal cycle time mesin 1 menit/unit. Selama shift, mesin memproduksi 380 unit dan 370 di antaranya lolos inspeksi. Hitung OEE.</p>
+    <p><strong>Langkah 1 — Availability:</strong> Operating time = 480 − 60 = 420 menit.</p>
+    <div class="formula-block">A = 420 / 480 = 87,5%</div>
+    <p><strong>Langkah 2 — Performance:</strong> dalam 420 menit, idealnya mesin menghasilkan 420 unit (1 menit/unit), tetapi aktualnya 380 unit.</p>
+    <div class="formula-block">P = (1 × 380) / 420 = 90,5%</div>
+    <p><strong>Langkah 3 — Quality:</strong></p>
+    <div class="formula-block">Q = 370 / 380 = 97,4%</div>
+    <p><strong>Langkah 4 — OEE:</strong></p>
+    <div class="formula-block">OEE = 0,875 × 0,905 × 0,974 ≈ 77,1%</div>
+    <p><strong>Interpretasi:</strong> dari seluruh waktu produksi terencana, hanya 77,1% yang menghasilkan barang bagus dengan kecepatan ideal. Kerugian terbesar ada di Availability (12,5% waktu hilang karena downtime) — prioritas perbaikan sebaiknya dimulai dari sana, misalnya dengan program SMED untuk mempercepat setup.</p>
+
+    <h2>Benchmark: Berapa OEE yang Baik?</h2>
+    <table class="data-table">
+      <thead><tr><th>OEE</th><th>Kategori</th><th>Catatan</th></tr></thead>
+      <tbody>
+        <tr><td>≥ 85%</td><td>World class</td><td>A ≈ 90%, P ≈ 95%, Q ≈ 99%</td></tr>
+        <tr><td>60–84%</td><td>Tipikal</td><td>Rata-rata pabrik; masih banyak ruang perbaikan</td></tr>
+        <tr><td>40–59%</td><td>Rendah</td><td>Umum pada pabrik tanpa program perbaikan</td></tr>
+        <tr><td>&lt; 40%</td><td>Sangat rendah</td><td>Perlu perbaikan fundamental</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Six Big Losses</h2>
+    <p>TPM memetakan enam kerugian besar yang menggerogoti masing-masing komponen OEE:</p>
+    <ol>
+      <li><strong>Breakdown</strong> (Availability) — kerusakan mesin tak terencana.</li>
+      <li><strong>Setup &amp; adjustment</strong> (Availability) — pergantian produk, kalibrasi.</li>
+      <li><strong>Idling &amp; minor stops</strong> (Performance) — berhenti sebentar &lt; 5 menit, material tersangkut.</li>
+      <li><strong>Reduced speed</strong> (Performance) — mesin berjalan di bawah kecepatan desain.</li>
+      <li><strong>Defects &amp; rework</strong> (Quality) — produk cacat selama produksi stabil.</li>
+      <li><strong>Startup losses</strong> (Quality) — produk cacat saat warm-up/awal produksi.</li>
+    </ol>
+
+    <h2>Kesalahan Umum dalam Menghitung OEE</h2>
+    <ul>
+      <li><strong>Memakai cycle time aktual, bukan ideal</strong>, pada komponen Performance — ini membuat P selalu 100% dan menyembunyikan kerugian kecepatan.</li>
+      <li><strong>Tidak konsisten soal planned downtime</strong> — istirahat terjadwal biasanya dikeluarkan dari planned production time, bukan dihitung sebagai downtime.</li>
+      <li><strong>Performance &gt; 100%</strong> — biasanya tanda ideal cycle time yang dipakai terlalu longgar; gunakan kapasitas desain (nameplate) yang sebenarnya.</li>
+      <li><strong>Mengejar angka OEE gabungan lintas mesin</strong> — OEE paling bermakna per mesin/lini; rata-rata pabrik menyembunyikan masalah lokal.</li>
+    </ul>
+
+    <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
+    <div class="faq-item">
+      <h3>Apa bedanya OEE dan utilisasi?</h3>
+      <p>Utilisasi hanya mengukur berapa lama mesin menyala dibanding waktu tersedia. OEE jauh lebih ketat karena ikut menghitung kecepatan aktual dan kualitas output, bukan sekadar "mesin hidup".</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apakah rework dihitung sebagai unit baik?</h3>
+      <p>Tidak. Dalam konvensi OEE, unit baik adalah yang lolos pertama kali (first pass yield). Unit yang harus di-rework dihitung sebagai kerugian kualitas meskipun akhirnya terjual.</p>
+    </div>
+    <div class="faq-item">
+      <h3>OEE dipelajari di mata kuliah apa?</h3>
+      <p>OEE muncul di Perawatan Mesin/Manajemen Perawatan (TPM), Sistem Produksi, dan Pengendalian Kualitas — serta sangat sering menjadi topik kerja praktek dan skripsi mahasiswa teknik industri di perusahaan manufaktur.</p>
+    </div>
+
+    <hr class="divider">
+    <p>Kalkulator OEE kami menghitung Availability, Performance, Quality, dan OEE total beserta interpretasi kategorinya secara otomatis.</p>
+    <p>
+      <a href="index.html" class="btn">Buka Kalkulator OEE</a>
+      <a href="panduan.html" class="btn btn-secondary" style="margin-left:8px;">Panduan Lainnya</a>
+    </p>
+
+  </main>
+</div>
+
+<footer>
+  <div class="logo"><span class="logo-mark">TI</span> <span>TI Toolkit</span></div>
+  <div class="footer-links">
+    <a href="index.html">Kalkulator</a>
+    <a href="panduan.html">Panduan</a>
+    <a href="about.html">Tentang</a>
+    <a href="contact.html">Kontak</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
+  <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
+</footer>
+
+</body>
+</html>

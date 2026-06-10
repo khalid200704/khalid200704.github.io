@@ -99,6 +99,41 @@
 }
 </script>
 
+<!-- Structured Data: FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Apakah TI Toolkit benar-benar gratis?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Ya, seluruh kalkulator dan panduan dapat digunakan gratis tanpa batas, tanpa registrasi. Situs ini didukung oleh iklan agar tetap gratis." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah hasil perhitungannya akurat?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Semua rumus mengikuti literatur standar (Heizer & Render, Stevenson, Montgomery) dan setiap hasil menampilkan langkah perhitungannya sehingga bisa diverifikasi sendiri. Untuk keputusan bisnis kritis, lakukan verifikasi tambahan bersama tenaga ahli." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah data yang saya masukkan disimpan?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Tidak. Seluruh perhitungan terjadi di browser Anda (client-side JavaScript) — data input tidak pernah dikirim atau disimpan di server." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bolehkah hasil kalkulator dipakai di laporan atau skripsi?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Boleh. Gunakan tombol Salin Hasil untuk menyalin ringkasan perhitungan. Untuk karya ilmiah, kutip rumus dari buku teks aslinya dan gunakan kalkulator ini sebagai alat validasi." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bisakah meminta kalkulator baru?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Bisa — kirimkan permintaan (misal PERT/CPM, teori antrian, ergonomi) melalui halaman kontak. Permintaan yang paling banyak diminta akan diprioritaskan." }
+    }
+  ]
+}
+</script>
+
 </head>
 <body>
 
@@ -110,6 +145,7 @@
     </a>
     <div class="nav-links">
       <a href="index.html" class="active">Kalkulator</a>
+      <a href="panduan.html">Panduan</a>
       <a href="about.html">Tentang</a>
       <a href="contact.html">Kontak</a>
       <a href="privacy.html">Privacy</a>
@@ -592,6 +628,19 @@
           </ul>
         </div>
         <div class="side-card">
+          <h4>Panduan Belajar</h4>
+          <ul>
+            <li><a href="panduan-eoq.html">EOQ, ROP &amp; Safety Stock</a></li>
+            <li><a href="panduan-forecasting.html">Forecasting (MA/WMA/ES)</a></li>
+            <li><a href="panduan-bep.html">Break-Even Point</a></li>
+            <li><a href="panduan-takt-time.html">Takt Time</a></li>
+            <li><a href="panduan-oee.html">OEE</a></li>
+            <li><a href="panduan-line-balancing.html">Line Balancing</a></li>
+            <li><a href="panduan-npv.html">NPV &amp; Payback</a></li>
+            <li><a href="panduan-spc.html">Control Chart &amp; SPC</a></li>
+          </ul>
+        </div>
+        <div class="side-card">
           <h4>Referensi</h4>
           <ul class="tips-list">
             <li>Heizer &amp; Render — Operations Management</li>
@@ -606,6 +655,55 @@
   <!-- AdSense Bottom -->
   <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8688855167346136" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
 
+  <!-- Panduan / Guides -->
+  <section class="seo-section" style="max-width:none;">
+    <h2>Panduan Belajar: Pahami Konsepnya, Bukan Hanya Angkanya</h2>
+    <p>Kalkulator paling bermanfaat kalau Anda paham apa yang dihitungnya. Setiap panduan di bawah berisi teori singkat, rumus, contoh soal dengan pembahasan langkah demi langkah, kesalahan umum saat mengerjakan soal, dan FAQ.</p>
+    <div class="guide-grid">
+      <a class="guide-card" href="panduan-eoq.html">
+        <span class="guide-tag">Inventory</span>
+        <h3>EOQ, ROP &amp; Safety Stock</h3>
+        <p>Berapa banyak dan kapan harus memesan agar biaya persediaan minimum.</p>
+      </a>
+      <a class="guide-card" href="panduan-forecasting.html">
+        <span class="guide-tag">Forecasting</span>
+        <h3>MA, WMA &amp; Exponential Smoothing</h3>
+        <p>Tiga metode peramalan plus ukuran error MAD, MSE, dan MAPE.</p>
+      </a>
+      <a class="guide-card" href="panduan-bep.html">
+        <span class="guide-tag">Kelayakan</span>
+        <h3>Break-Even Point</h3>
+        <p>Titik impas unit &amp; rupiah, margin kontribusi, dan target laba.</p>
+      </a>
+      <a class="guide-card" href="panduan-takt-time.html">
+        <span class="guide-tag">Lean</span>
+        <h3>Takt Time</h3>
+        <p>Irama produksi sesuai permintaan, dan bedanya dengan cycle time.</p>
+      </a>
+      <a class="guide-card" href="panduan-oee.html">
+        <span class="guide-tag">TPM</span>
+        <h3>OEE</h3>
+        <p>Availability × Performance × Quality dan benchmark world class 85%.</p>
+      </a>
+      <a class="guide-card" href="panduan-line-balancing.html">
+        <span class="guide-tag">Sistem Produksi</span>
+        <h3>Line Balancing</h3>
+        <p>Workstation minimum, efisiensi lini, dan balance delay.</p>
+      </a>
+      <a class="guide-card" href="panduan-npv.html">
+        <span class="guide-tag">Ekonomi Teknik</span>
+        <h3>NPV &amp; Payback Period</h3>
+        <p>Time value of money dan evaluasi kelayakan investasi.</p>
+      </a>
+      <a class="guide-card" href="panduan-spc.html">
+        <span class="guide-tag">Quality</span>
+        <h3>Control Chart &amp; SPC</h3>
+        <p>Batas kontrol 3-sigma dan cara membaca sinyal out-of-control.</p>
+      </a>
+    </div>
+    <p style="margin-top:16px;"><a href="panduan.html" class="btn btn-secondary">Lihat Semua Panduan</a></p>
+  </section>
+
   <!-- SEO Content -->
   <section class="seo-section">
     <h2>Kalkulator Teknik Industri Online Gratis</h2>
@@ -614,12 +712,28 @@
     <h3>Materi yang Dicakup</h3>
     <p>Kalkulator ini mencakup mata kuliah inti teknik industri: <strong>Manajemen Persediaan</strong> (EOQ, Reorder Point, Safety Stock), <strong>Peramalan Permintaan</strong> (Moving Average, WMA, Exponential Smoothing), <strong>Perencanaan Produksi</strong> (Takt Time, Line Balancing), <strong>Pengendalian Kualitas</strong> (OEE, Control Chart, SPC), <strong>Ekonomi Teknik</strong> (NPV, Payback Period), dan <strong>Analisis Kelayakan</strong> (Break-Even Point).</p>
 
+    <h3>Bagaimana Cara Kerjanya?</h3>
+    <p>Pilih kalkulator dari menu di atas, masukkan data soal atau data lapangan Anda, lalu klik <strong>Hitung</strong>. Hasil ditampilkan beserta <strong>langkah perhitungan dan rumus yang dipakai</strong> — bukan hanya angka akhir — sehingga Anda bisa memeriksa pekerjaan manual Anda atau memakainya sebagai bahan belajar. Beberapa kalkulator (Forecasting, BEP, SPC) juga menggambar grafik otomatis yang siap dijadikan lampiran laporan. Semuanya berjalan langsung di browser: tidak perlu instalasi, tidak perlu mendaftar akun, dan data Anda tidak dikirim ke server mana pun.</p>
+
     <h3>Cocok Untuk Apa?</h3>
-    <p>Tugas kuliah, UTS/UAS, kerja praktek, tugas akhir/skripsi, dan estimasi cepat bagi praktisi industri. Semua rumus ditampilkan secara transparan sehingga bisa digunakan sebagai bahan pembelajaran.</p>
+    <p>Tugas kuliah, UTS/UAS, kerja praktek, tugas akhir/skripsi, dan estimasi cepat bagi praktisi industri. Untuk pemahaman konsep yang lebih dalam, baca <a href="panduan.html">panduan belajar</a> kami yang berisi teori, contoh soal, dan pembahasan untuk setiap topik kalkulator.</p>
+
+    <h2 style="margin-top:36px;">Pertanyaan yang Sering Diajukan</h2>
+    <h3>Apakah TI Toolkit benar-benar gratis?</h3>
+    <p>Ya, seluruh kalkulator dan panduan dapat digunakan gratis tanpa batas, tanpa registrasi. Situs ini didukung oleh iklan agar tetap gratis.</p>
+    <h3>Apakah hasil perhitungannya akurat?</h3>
+    <p>Semua rumus mengikuti literatur standar (Heizer &amp; Render, Stevenson, Montgomery) dan setiap hasil menampilkan langkah perhitungannya sehingga bisa Anda verifikasi sendiri. Namun untuk keputusan bisnis kritis, selalu lakukan verifikasi tambahan bersama tenaga ahli.</p>
+    <h3>Apakah data yang saya masukkan disimpan?</h3>
+    <p>Tidak. Seluruh perhitungan terjadi di browser Anda (client-side JavaScript) — data input tidak pernah dikirim atau disimpan di server.</p>
+    <h3>Bolehkah hasil kalkulator dipakai di laporan atau skripsi?</h3>
+    <p>Boleh. Gunakan tombol <strong>Salin Hasil</strong> untuk menyalin ringkasan perhitungan. Untuk karya ilmiah, kutip rumus dari buku teks aslinya dan gunakan kalkulator ini sebagai alat validasi.</p>
+    <h3>Bisakah meminta kalkulator baru?</h3>
+    <p>Bisa — kirimkan permintaan (misal PERT/CPM, teori antrian, ergonomi) melalui <a href="contact.html">halaman kontak</a>. Permintaan yang paling banyak diminta akan diprioritaskan.</p>
 
     <p style="margin-top:24px;">
-      <a href="about.html" class="btn btn-secondary">Pelajari lebih lanjut</a>
-      <a href="contact.html" class="btn btn-secondary">Hubungi kami</a>
+      <a href="panduan.html" class="btn btn-secondary">Baca Panduan</a>
+      <a href="about.html" class="btn btn-secondary">Tentang Kami</a>
+      <a href="contact.html" class="btn btn-secondary">Hubungi Kami</a>
     </p>
   </section>
 
@@ -629,6 +743,7 @@
   <div class="logo"><span class="logo-mark">TI</span> <span>TI Toolkit</span></div>
   <div class="footer-links">
     <a href="index.html">Kalkulator</a>
+    <a href="panduan.html">Panduan</a>
     <a href="about.html">Tentang</a>
     <a href="contact.html">Kontak</a>
     <a href="privacy.html">Privacy Policy</a>

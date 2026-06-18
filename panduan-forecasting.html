@@ -43,18 +43,38 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Kapan menggunakan Moving Average vs Exponential Smoothing?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Moving Average cocok untuk data stabil tanpa tren karena memberi bobot sama pada n periode terakhir. Exponential Smoothing lebih responsif karena memberi bobot lebih besar pada data terbaru, dan hanya membutuhkan satu parameter α." }
+      "name": "Berapa forecast awal (F1) untuk Exponential Smoothing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Konvensi yang umum: gunakan data aktual periode pertama (F2 = A1) atau rata-rata beberapa periode awal. Pengaruh nilai awal akan memudar seiring bertambahnya periode — setelah sekitar 10-15 periode, dampak nilai inisialisasi biasanya sudah sangat kecil." }
     },
     {
       "@type": "Question",
-      "name": "Apa itu MAD, MSE, dan MAPE?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Ketiganya adalah ukuran akurasi forecast. MAD = rata-rata nilai absolut error, MSE = rata-rata kuadrat error (menghukum error besar), MAPE = rata-rata persentase absolut error sehingga mudah dibandingkan antar produk." }
+      "name": "Kenapa total bobot WMA harus 1?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Agar forecast tetap berada pada skala data. Jika total bobot lebih dari 1, forecast akan sistematis terlalu besar; jika kurang dari 1, forecast akan sistematis terlalu kecil. Secara matematis, total bobot = 1 memastikan bahwa WMA merupakan rata-rata tertimbang yang valid." }
     },
     {
       "@type": "Question",
-      "name": "Berapa nilai alpha yang baik untuk Exponential Smoothing?",
-      "acceptedAnswer": { "@type": "Answer", "text": "α antara 0,1–0,3 umum untuk permintaan stabil; α besar (0,5–0,9) untuk data yang berubah cepat. Praktik terbaik adalah mencoba beberapa nilai α dan memilih yang menghasilkan MAD atau MAPE terkecil." }
+      "name": "Metode mana yang paling akurat?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Tidak ada yang selalu menang — akurasi tergantung pola data. Uji beberapa metode pada data historis Anda dan bandingkan MAD/MAPE-nya. Biarkan data yang menentukan metode terbaik, bukan asumsi a priori." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bagaimana menangani data musiman?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Gunakan metode dekomposisi musiman (hitung indeks musiman, deseasonalisasi data, ramalkan, lalu kalikan kembali) atau gunakan metode Holt-Winters (Triple Exponential Smoothing). Pastikan tersedia data minimal dua siklus penuh." }
+    },
+    {
+      "@type": "Question",
+      "name": "Berapa banyak data historis yang diperlukan?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Tergantung metode: MA(n) butuh minimal n data, ES cukup 1 data untuk inisialisasi (disarankan 15-20 untuk evaluasi), metode musiman butuh minimal 2 siklus penuh (misal 24 bulan data bulanan), dan regresi butuh 20-30 observasi." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa bedanya forecast error dan forecast bias?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Forecast error mengukur besarnya penyimpangan (MAD, MSE, MAPE — menggunakan nilai absolut). Forecast bias mengukur arah penyimpangan — apakah forecast secara sistematis terlalu tinggi atau rendah, dihitung dari jumlah error tanpa nilai absolut." }
+    },
+    {
+      "@type": "Question",
+      "name": "Kapan harus menggunakan metode kualitatif?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Ketika tidak tersedia data historis (produk baru), terjadi perubahan struktural yang membuat data historis tidak relevan, atau horizon peramalan sangat panjang (lebih dari 3-5 tahun). Banyak perusahaan menggabungkan metode kuantitatif dan kualitatif." }
     }
   ]
 }
@@ -102,22 +122,132 @@
 
 
 
-    <h2>Mengapa Forecasting Penting?</h2>
-    <p><strong>Peramalan (forecasting)</strong> adalah titik awal hampir semua keputusan perencanaan produksi: berapa bahan baku yang dibeli, berapa kapasitas yang disiapkan, sampai berapa tenaga kerja yang dijadwalkan. Forecast yang buruk merembet ke mana-mana — stok menumpuk atau justru kehabisan barang. Tiga metode time-series yang hampir selalu muncul di mata kuliah Peramalan dan PPIC adalah <em>Moving Average</em>, <em>Weighted Moving Average</em>, dan <em>Exponential Smoothing</em>.</p>
+    <h2>Mengapa Peramalan Penting?</h2>
+    <p><strong>Peramalan (forecasting)</strong> adalah titik awal hampir semua keputusan perencanaan di dunia industri dan bisnis. Tanpa peramalan yang memadai, perusahaan akan beroperasi secara reaktif — baru bertindak setelah masalah muncul, bukan mengantisipasinya. Berikut adalah beberapa area kritis di mana peramalan memegang peranan sentral:</p>
+    <ul>
+      <li><strong>Perencanaan Produksi (Production Planning):</strong> Forecast permintaan menentukan berapa unit produk yang harus diproduksi dalam suatu periode. Jika forecast terlalu rendah, perusahaan menghadapi risiko <em>stockout</em> — kehilangan penjualan dan kepercayaan pelanggan. Sebaliknya, forecast yang terlalu tinggi menyebabkan kelebihan produksi, mengikat modal pada barang jadi yang belum tentu terjual, dan meningkatkan biaya penyimpanan.</li>
+      <li><strong>Manajemen Persediaan (Inventory Management):</strong> Forecast yang akurat memungkinkan penentuan <em>reorder point</em> dan <em>safety stock</em> yang optimal. Dalam sistem Material Requirements Planning (MRP), forecast permintaan produk jadi menjadi input utama untuk menghitung kebutuhan bahan baku dan komponen di setiap level Bill of Materials.</li>
+      <li><strong>Perencanaan Kapasitas (Capacity Planning):</strong> Keputusan strategis seperti pembelian mesin baru, penambahan shift kerja, atau pembangunan pabrik baru semuanya bergantung pada proyeksi permintaan jangka menengah hingga panjang. Kesalahan peramalan di level ini berdampak sangat besar karena investasi kapasitas biasanya bersifat irreversible dalam jangka pendek.</li>
+      <li><strong>Perencanaan Tenaga Kerja:</strong> Berapa operator yang perlu dijadwalkan di setiap shift? Apakah perlu merekrut tenaga kerja kontrak untuk menghadapi lonjakan musiman? Semua pertanyaan ini dijawab berdasarkan forecast permintaan.</li>
+      <li><strong>Penganggaran dan Keuangan:</strong> Proyeksi pendapatan, arus kas, dan kebutuhan modal kerja semuanya berakar pada peramalan volume penjualan dan harga.</li>
+    </ul>
+
+    <h3>Pola-Pola Permintaan</h3>
+    <p>Sebelum memilih metode peramalan, seorang analis perlu mengenali pola yang terkandung dalam data historis. Terdapat empat pola dasar permintaan yang umum ditemui:</p>
+    <ul>
+      <li><strong>Pola Horizontal (Level/Stasioner):</strong> Data berfluktuasi di sekitar nilai rata-rata yang relatif konstan dari waktu ke waktu. Tidak ada kecenderungan naik atau turun yang sistematis. Contoh: permintaan produk kebutuhan pokok yang sudah mapan di pasar. Metode MA dan ES sederhana sangat cocok untuk pola ini.</li>
+      <li><strong>Pola Tren (Trend):</strong> Data menunjukkan kecenderungan naik atau turun secara konsisten dalam jangka panjang. Contoh: penjualan smartphone di tahun-tahun awal adopsi teknologi menunjukkan tren naik. Untuk pola ini, diperlukan metode yang mengandung komponen tren seperti Double Exponential Smoothing (Holt) atau regresi linier.</li>
+      <li><strong>Pola Musiman (Seasonal):</strong> Data menunjukkan fluktuasi yang berulang pada interval waktu tetap — bulanan, kuartalan, atau tahunan. Contoh: penjualan payung yang melonjak di musim hujan, atau penjualan es krim yang meningkat di musim panas. Metode Triple Exponential Smoothing (Holt-Winters) atau dekomposisi musiman digunakan untuk menangkap pola ini.</li>
+      <li><strong>Pola Siklikal (Cyclical):</strong> Mirip musiman, tetapi panjang siklusnya tidak tetap dan biasanya lebih panjang dari satu tahun. Pola ini sering dikaitkan dengan siklus ekonomi — ekspansi dan resesi. Pola siklikal lebih sulit diramalkan karena panjang dan amplitudo siklusnya bervariasi.</li>
+    </ul>
+    <p>Dalam praktiknya, data riil sering kali mengandung kombinasi beberapa pola sekaligus — misalnya tren naik dengan komponen musiman. Kemampuan mengenali pola ini menjadi fondasi dalam memilih metode peramalan yang tepat.</p>
+
+    <hr class="divider">
+
+    <h2>Memilih Metode yang Tepat</h2>
+    <p>Tidak ada metode peramalan yang "terbaik untuk semua kasus." Pemilihan metode yang tepat bergantung pada beberapa kriteria penting:</p>
+    <ul>
+      <li><strong>Ketersediaan Data:</strong> Berapa banyak data historis yang tersedia? Moving Average membutuhkan minimal n data, sementara Exponential Smoothing bisa dimulai hanya dengan satu data awal. Metode musiman seperti Holt-Winters membutuhkan setidaknya dua siklus penuh data (misalnya 24 bulan data bulanan).</li>
+      <li><strong>Horizon Peramalan:</strong> Untuk peramalan jangka pendek (1-3 periode ke depan), metode time-series sederhana seperti MA, WMA, dan ES umumnya cukup memadai. Untuk jangka menengah (3-12 bulan), metode dengan komponen tren dan musiman lebih sesuai. Untuk jangka panjang (lebih dari 1 tahun), metode kausal (regresi) atau bahkan metode kualitatif sering kali diperlukan.</li>
+      <li><strong>Kesederhanaan Komputasi:</strong> Di lingkungan industri di mana ratusan atau ribuan SKU (Stock Keeping Unit) harus diramalkan secara rutin, kesederhanaan metode menjadi pertimbangan penting. ES sangat populer di industri justru karena efisiensinya — hanya membutuhkan penyimpanan satu angka forecast sebelumnya per SKU.</li>
+      <li><strong>Stasioneritas Data:</strong> Apakah data stasioner (rata-rata dan variansi konstan sepanjang waktu)? Jika ya, MA dan ES sederhana sudah memadai. Jika data memiliki tren atau musiman, diperlukan metode yang lebih canggih atau transformasi data terlebih dahulu.</li>
+      <li><strong>Biaya Kesalahan Forecast:</strong> Jika biaya <em>stockout</em> jauh lebih besar dari biaya kelebihan stok (misalnya produk medis), maka diperlukan metode yang lebih canggih dan cenderung memberikan forecast yang sedikit lebih tinggi (bias positif).</li>
+    </ul>
+
+    <h3>Tabel Perbandingan MA vs WMA vs ES</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Kriteria</th>
+          <th>Moving Average (MA)</th>
+          <th>Weighted MA (WMA)</th>
+          <th>Exponential Smoothing (ES)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Data yang dibutuhkan</td>
+          <td>n data terakhir</td>
+          <td>n data terakhir + bobot</td>
+          <td>Hanya F<sub>t</sub> dan A<sub>t</sub></td>
+        </tr>
+        <tr>
+          <td>Penyimpanan data</td>
+          <td>Harus menyimpan n data</td>
+          <td>Harus menyimpan n data + bobot</td>
+          <td>Cukup 1 angka (F<sub>t</sub>)</td>
+        </tr>
+        <tr>
+          <td>Responsivitas</td>
+          <td>Rendah (semua data berbobot sama)</td>
+          <td>Sedang (bobot bisa diatur)</td>
+          <td>Tinggi (diatur via alpha)</td>
+        </tr>
+        <tr>
+          <td>Parameter yang diatur</td>
+          <td>n (jumlah periode)</td>
+          <td>n dan w<sub>i</sub> (bobot)</td>
+          <td>alpha (0 &lt; alpha &lt; 1)</td>
+        </tr>
+        <tr>
+          <td>Cocok untuk pola</td>
+          <td>Horizontal/stasioner</td>
+          <td>Horizontal, sedikit tren</td>
+          <td>Horizontal, adaptif</td>
+        </tr>
+        <tr>
+          <td>Menangani tren?</td>
+          <td>Tidak (selalu tertinggal)</td>
+          <td>Terbatas</td>
+          <td>Tidak (perlu Double ES)</td>
+        </tr>
+        <tr>
+          <td>Kemudahan implementasi</td>
+          <td>Sangat mudah</td>
+          <td>Mudah, tapi perlu menentukan bobot</td>
+          <td>Sangat mudah</td>
+        </tr>
+        <tr>
+          <td>Popularitas di industri</td>
+          <td>Tinggi</td>
+          <td>Sedang</td>
+          <td>Sangat tinggi</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr class="divider">
 
     <h2>1. Moving Average (MA)</h2>
     <div class="formula-block">F<sub>t+1</sub> = (A<sub>t</sub> + A<sub>t−1</sub> + … + A<sub>t−n+1</sub>) / n</div>
-    <p>Forecast periode berikutnya adalah rata-rata dari n data aktual terakhir. Semakin besar n, semakin halus (stabil) forecast tetapi semakin lambat merespons perubahan. MA cocok untuk permintaan yang relatif stabil tanpa tren atau musiman.</p>
+    <p>Forecast periode berikutnya adalah rata-rata aritmatika dari <strong>n</strong> data aktual terakhir. Prinsip dasarnya sederhana: setiap observasi yang masuk ke dalam "jendela" (window) dianggap sama pentingnya. Ketika data baru masuk, data tertua dikeluarkan dari perhitungan — inilah mengapa disebut <em>moving</em> average.</p>
+    <p><strong>Logika di balik MA:</strong> Metode ini mengasumsikan bahwa fluktuasi acak (noise) dalam data akan saling meniadakan jika dirata-ratakan. Semakin besar nilai n, semakin banyak noise yang diredam, tetapi semakin lambat pula forecast bereaksi terhadap perubahan nyata dalam pola permintaan. Sebaliknya, n kecil membuat forecast lebih sensitif tetapi juga lebih "berisik." Pemilihan n yang optimal biasanya dilakukan secara empiris — coba beberapa nilai n dan pilih yang menghasilkan error terkecil pada data historis.</p>
+    <p><strong>Keterbatasan utama MA:</strong> Karena semua data dalam jendela diberi bobot yang sama, MA tidak bisa memberikan penekanan lebih pada data terbaru. Selain itu, MA selalu <em>lag</em> (tertinggal) di belakang tren — jika data naik terus, forecast MA akan selalu lebih rendah dari aktual.</p>
 
     <h2>2. Weighted Moving Average (WMA)</h2>
     <div class="formula-block">F<sub>t+1</sub> = w₁·A<sub>t</sub> + w₂·A<sub>t−1</sub> + … + w<sub>n</sub>·A<sub>t−n+1</sub>,&nbsp;&nbsp; Σw = 1</div>
-    <p>Sama seperti MA tetapi periode terbaru diberi bobot lebih besar (misal 0,5 ; 0,3 ; 0,2). WMA lebih responsif terhadap perubahan terbaru dibanding MA biasa, dengan syarat total bobot harus = 1.</p>
+    <p>WMA mengatasi salah satu kelemahan MA dengan memperbolehkan analis memberikan bobot yang berbeda untuk setiap periode. Periode yang lebih baru biasanya diberi bobot lebih besar, mencerminkan asumsi bahwa data terbaru lebih relevan untuk meramalkan masa depan.</p>
+    <p><strong>Logika di balik WMA:</strong> Dalam banyak situasi bisnis, kondisi terbaru memang lebih mencerminkan situasi saat ini dibanding kondisi beberapa bulan lalu. Misalnya, jika ada perubahan harga atau promosi baru-baru ini, data penjualan terbaru sudah mencerminkan dampak tersebut, sementara data lama masih mencerminkan kondisi sebelumnya. Dengan memberi bobot lebih besar pada data terbaru, WMA bisa menangkap perubahan ini lebih cepat daripada MA biasa.</p>
+    <p><strong>Syarat total bobot = 1:</strong> Ini memastikan bahwa forecast tetap berada pada skala yang sama dengan data asli. Jika total bobot melebihi 1, forecast akan secara sistematis lebih tinggi; jika kurang dari 1, forecast akan secara sistematis lebih rendah. Contoh skema bobot untuk WMA 3-periode: w₁ = 0,5 (terbaru), w₂ = 0,3, w₃ = 0,2 (tertua), dengan total 0,5 + 0,3 + 0,2 = 1,0.</p>
+    <p><strong>Tantangan WMA:</strong> Penentuan bobot bersifat subjektif. Tidak ada formula baku untuk menentukan bobot terbaik — analis harus mengandalkan pengalaman, pengetahuan domain, atau optimasi empiris (trial-and-error pada data historis).</p>
 
     <h2>3. Exponential Smoothing (ES)</h2>
     <div class="formula-block">F<sub>t+1</sub> = α·A<sub>t</sub> + (1 − α)·F<sub>t</sub></div>
-    <p>ES menggabungkan data aktual terakhir (A<sub>t</sub>) dengan forecast sebelumnya (F<sub>t</sub>) menggunakan konstanta pemulusan α (0 &lt; α &lt; 1). α kecil → forecast halus dan stabil; α besar → forecast cepat mengejar perubahan. Keunggulan ES: hanya perlu menyimpan satu angka forecast sebelumnya, sehingga sangat efisien.</p>
+    <p>ES menggabungkan data aktual terakhir (A<sub>t</sub>) dengan forecast sebelumnya (F<sub>t</sub>) menggunakan konstanta pemulusan alpha (0 &lt; alpha &lt; 1). Nilai alpha kecil menghasilkan forecast yang halus dan stabil; alpha besar membuat forecast cepat mengejar perubahan.</p>
+    <p><strong>Logika di balik ES:</strong> Formula di atas terlihat sederhana, tetapi sebenarnya menyimpan kedalaman matematis yang elegan. Jika kita substitusikan F<sub>t</sub> secara rekursif, didapatkan:</p>
+    <div class="formula-block">F<sub>t+1</sub> = α·A<sub>t</sub> + α(1−α)·A<sub>t−1</sub> + α(1−α)²·A<sub>t−2</sub> + α(1−α)³·A<sub>t−3</sub> + …</div>
+    <p>Artinya, ES sebenarnya adalah rata-rata tertimbang dari <strong>seluruh</strong> data historis, di mana bobot menurun secara eksponensial seiring bertambahnya usia data. Data terbaru mendapat bobot alpha, data satu periode sebelumnya mendapat alpha(1-alpha), dua periode sebelumnya alpha(1-alpha)², dan seterusnya. Inilah asal nama "exponential" smoothing.</p>
+    <p><strong>Keunggulan utama ES:</strong></p>
+    <ul>
+      <li><strong>Efisiensi penyimpanan:</strong> Hanya perlu menyimpan satu angka forecast terakhir, berbeda dengan MA/WMA yang harus menyimpan n data.</li>
+      <li><strong>Adaptif:</strong> Secara otomatis memasukkan pengaruh seluruh data historis, dengan bobot yang semakin kecil untuk data yang semakin tua.</li>
+      <li><strong>Satu parameter:</strong> Hanya perlu menentukan satu parameter (alpha), sedangkan WMA memerlukan n bobot.</li>
+    </ul>
+    <p><strong>Pedoman pemilihan alpha:</strong> Nilai alpha antara 0,1 sampai 0,3 umum digunakan untuk permintaan yang stabil dan dapat diprediksi. Nilai alpha yang lebih besar (0,5 sampai 0,9) digunakan ketika data berubah cepat dan responsivitas menjadi prioritas. Cara terbaik menentukan alpha optimal adalah dengan mencoba beberapa nilai pada data historis dan memilih yang meminimalkan error (MAD atau MAPE).</p>
 
-    <h2>Contoh Soal dan Pembahasan (MA 3-Periode)</h2>
+    <hr class="divider">
+
+    <h2>Contoh Soal 1: Moving Average 3-Periode</h2>
     <p><strong>Soal:</strong> Penjualan 10 bulan terakhir: 42, 45, 48, 50, 55, 60, 58, 62, 65, 70 unit. Hitung forecast bulan ke-11 dengan Moving Average 3 periode dan ukur akurasinya dengan MAD.</p>
     <p><strong>Langkah 1 —</strong> Forecast baru bisa dihitung mulai periode ke-4 (butuh 3 data sebelumnya):</p>
     <table class="data-table">
@@ -137,45 +267,244 @@
     <div class="formula-block">MAD = 42,0 / 7 = 6,0 unit</div>
     <p>Artinya, rata-rata forecast meleset 6 unit dari aktual. Karena data ini sebenarnya memiliki tren naik, MA(3) konsisten <em>underforecast</em> — di kasus seperti ini metode dengan komponen tren (misal Holt's/double exponential smoothing) akan lebih akurat.</p>
 
-    <h2>Mengukur Akurasi: MAD, MSE, dan MAPE</h2>
+    <h2>Contoh Soal 2: Perbandingan MA, WMA, dan ES pada Dataset yang Sama</h2>
+    <p><strong>Soal:</strong> Sebuah toko bahan bangunan mencatat permintaan semen (dalam ton) selama 8 bulan: 120, 125, 130, 118, 122, 128, 135, 140. Hitung forecast bulan ke-9 menggunakan ketiga metode: MA(3), WMA(3) dengan bobot 0,5; 0,3; 0,2, dan ES dengan alpha = 0,3. Bandingkan akurasinya menggunakan MAD dan MAPE.</p>
+
+    <h3>Metode 1: MA(3)</h3>
     <table class="data-table">
-      <thead><tr><th>Ukuran</th><th>Rumus</th><th>Karakteristik</th></tr></thead>
+      <thead><tr><th>Bulan</th><th>Aktual</th><th>Forecast MA(3)</th><th>Error</th><th>|Error|</th><th>|Error|/Aktual</th></tr></thead>
       <tbody>
-        <tr><td>MAD</td><td>Σ|A−F| / n</td><td>Mudah dipahami, satuan sama dengan data</td></tr>
-        <tr><td>MSE</td><td>Σ(A−F)² / n</td><td>Menghukum error besar lebih berat</td></tr>
-        <tr><td>MAPE</td><td>Σ(|A−F|/A) / n × 100%</td><td>Dalam persen, bisa dibandingkan antar produk</td></tr>
+        <tr><td>4</td><td>118</td><td>(120+125+130)/3 = 125,00</td><td>-7,00</td><td>7,00</td><td>5,93%</td></tr>
+        <tr><td>5</td><td>122</td><td>(125+130+118)/3 = 124,33</td><td>-2,33</td><td>2,33</td><td>1,91%</td></tr>
+        <tr><td>6</td><td>128</td><td>(130+118+122)/3 = 123,33</td><td>4,67</td><td>4,67</td><td>3,65%</td></tr>
+        <tr><td>7</td><td>135</td><td>(118+122+128)/3 = 122,67</td><td>12,33</td><td>12,33</td><td>9,13%</td></tr>
+        <tr><td>8</td><td>140</td><td>(122+128+135)/3 = 128,33</td><td>11,67</td><td>11,67</td><td>8,33%</td></tr>
+        <tr><td><strong>9</strong></td><td>—</td><td><strong>(128+135+140)/3 = 134,33</strong></td><td>—</td><td>—</td><td>—</td></tr>
       </tbody>
     </table>
-    <p>Cara memilih metode terbaik: hitung forecast dengan beberapa metode/parameter pada data historis yang sama, lalu pilih yang menghasilkan MAD/MSE/MAPE terkecil. Sebagai patokan kasar, MAPE di bawah 10% tergolong sangat baik, 10–20% baik, 20–50% wajar, dan di atas 50% tidak akurat.</p>
+    <p>MAD = (7,00 + 2,33 + 4,67 + 12,33 + 11,67) / 5 = <strong>7,60 ton</strong></p>
+    <p>MAPE = (5,93 + 1,91 + 3,65 + 9,13 + 8,33) / 5 = <strong>5,79%</strong></p>
+
+    <h3>Metode 2: WMA(3) dengan bobot 0,5; 0,3; 0,2</h3>
+    <table class="data-table">
+      <thead><tr><th>Bulan</th><th>Aktual</th><th>Forecast WMA(3)</th><th>|Error|</th><th>|Error|/Aktual</th></tr></thead>
+      <tbody>
+        <tr><td>4</td><td>118</td><td>0,5(130)+0,3(125)+0,2(120) = 126,50</td><td>8,50</td><td>7,20%</td></tr>
+        <tr><td>5</td><td>122</td><td>0,5(118)+0,3(130)+0,2(125) = 123,00</td><td>1,00</td><td>0,82%</td></tr>
+        <tr><td>6</td><td>128</td><td>0,5(122)+0,3(118)+0,2(130) = 122,40</td><td>5,60</td><td>4,38%</td></tr>
+        <tr><td>7</td><td>135</td><td>0,5(128)+0,3(122)+0,2(118) = 124,20</td><td>10,80</td><td>8,00%</td></tr>
+        <tr><td>8</td><td>140</td><td>0,5(135)+0,3(128)+0,2(122) = 130,30</td><td>9,70</td><td>6,93%</td></tr>
+        <tr><td><strong>9</strong></td><td>—</td><td><strong>0,5(140)+0,3(135)+0,2(128) = 136,10</strong></td><td>—</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p>MAD = (8,50 + 1,00 + 5,60 + 10,80 + 9,70) / 5 = <strong>7,12 ton</strong></p>
+    <p>MAPE = (7,20 + 0,82 + 4,38 + 8,00 + 6,93) / 5 = <strong>5,47%</strong></p>
+
+    <h3>Metode 3: ES dengan alpha = 0,3 (F₂ = A₁ = 120)</h3>
+    <table class="data-table">
+      <thead><tr><th>Bulan</th><th>Aktual</th><th>Forecast ES</th><th>|Error|</th><th>|Error|/Aktual</th></tr></thead>
+      <tbody>
+        <tr><td>2</td><td>125</td><td>120,00</td><td>5,00</td><td>4,00%</td></tr>
+        <tr><td>3</td><td>130</td><td>0,3(125)+0,7(120) = 121,50</td><td>8,50</td><td>6,54%</td></tr>
+        <tr><td>4</td><td>118</td><td>0,3(130)+0,7(121,5) = 124,05</td><td>6,05</td><td>5,13%</td></tr>
+        <tr><td>5</td><td>122</td><td>0,3(118)+0,7(124,05) = 122,24</td><td>0,24</td><td>0,19%</td></tr>
+        <tr><td>6</td><td>128</td><td>0,3(122)+0,7(122,24) = 122,17</td><td>5,83</td><td>4,56%</td></tr>
+        <tr><td>7</td><td>135</td><td>0,3(128)+0,7(122,17) = 123,92</td><td>11,08</td><td>8,21%</td></tr>
+        <tr><td>8</td><td>140</td><td>0,3(135)+0,7(123,92) = 127,24</td><td>12,76</td><td>9,11%</td></tr>
+        <tr><td><strong>9</strong></td><td>—</td><td><strong>0,3(140)+0,7(127,24) = 131,07</strong></td><td>—</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p>MAD (periode 4-8, agar sebanding) = (6,05 + 0,24 + 5,83 + 11,08 + 12,76) / 5 = <strong>7,19 ton</strong></p>
+    <p>MAPE (periode 4-8) = (5,13 + 0,19 + 4,56 + 8,21 + 9,11) / 5 = <strong>5,44%</strong></p>
+
+    <h3>Ringkasan Perbandingan Contoh Soal 2</h3>
+    <table class="data-table">
+      <thead><tr><th>Metode</th><th>Forecast Bulan 9</th><th>MAD</th><th>MAPE</th></tr></thead>
+      <tbody>
+        <tr><td>MA(3)</td><td>134,33 ton</td><td>7,60</td><td>5,79%</td></tr>
+        <tr><td>WMA(3) [0,5; 0,3; 0,2]</td><td>136,10 ton</td><td>7,12</td><td>5,47%</td></tr>
+        <tr><td>ES (alpha = 0,3)</td><td>131,07 ton</td><td>7,19</td><td>5,44%</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Analisis:</strong> Ketiga metode menghasilkan MAPE di bawah 10% (kategori "sangat baik"). ES dan WMA sedikit lebih unggul dalam MAPE karena memberi bobot lebih pada data terbaru. Namun perhatikan bahwa forecast bulan 9 berbeda-beda: WMA memberikan angka tertinggi (136,10), diikuti MA (134,33), lalu ES (131,07). ES dengan alpha = 0,3 paling lambat mengejar tren naik di akhir data karena alpha-nya relatif kecil. Jika alpha diperbesar, misalnya 0,5, ES akan lebih responsif dan forecastnya lebih mendekati WMA.</p>
+
+    <hr class="divider">
+
+    <h2>Mengukur Akurasi Peramalan: MAD, MSE, dan MAPE</h2>
+    <p>Setiap metode peramalan pasti menghasilkan error (selisih antara aktual dan forecast). Yang penting adalah mengukur seberapa besar error tersebut secara sistematis, sehingga kita bisa membandingkan kinerja berbagai metode dan parameter. Tiga ukuran akurasi yang paling umum digunakan di teknik industri adalah:</p>
+
+    <h3>1. Mean Absolute Deviation (MAD)</h3>
+    <div class="formula-block">MAD = (1/n) × Σ|A<sub>t</sub> − F<sub>t</sub>|</div>
+    <p>MAD menghitung rata-rata dari nilai absolut setiap error. Keunggulannya: mudah dipahami dan satuannya sama dengan satuan data asli (misalnya unit, ton, rupiah). Kelemahannya: tidak memberikan penalti ekstra untuk error yang sangat besar. MAD sering digunakan sebagai dasar untuk menghitung <em>tracking signal</em> dan <em>safety stock</em>.</p>
+
+    <h3>2. Mean Squared Error (MSE)</h3>
+    <div class="formula-block">MSE = (1/n) × Σ(A<sub>t</sub> − F<sub>t</sub>)²</div>
+    <p>MSE mengkuadratkan setiap error sebelum dirata-ratakan. Akibatnya, error yang besar mendapat "hukuman" yang jauh lebih berat dibanding error kecil. Satu error 10 unit memberikan kontribusi 100 terhadap MSE, sementara dua error masing-masing 5 unit hanya memberikan total 50. MSE sangat berguna jika kita ingin menghindari error besar yang sesekali terjadi. Kelemahannya: satuannya berupa kuadrat dari satuan data asli, sehingga kurang intuitif (misalnya "unit kuadrat").</p>
+
+    <h3>3. Mean Absolute Percentage Error (MAPE)</h3>
+    <div class="formula-block">MAPE = (1/n) × Σ(|A<sub>t</sub> − F<sub>t</sub>| / A<sub>t</sub>) × 100%</div>
+    <p>MAPE menyatakan error sebagai persentase dari nilai aktual. Keunggulan utamanya: bisa digunakan untuk membandingkan akurasi forecast antar produk yang berbeda skala — misalnya membandingkan forecast semen (ratusan ton) dengan forecast cat (puluhan liter). Kelemahannya: tidak terdefinisi jika ada data aktual bernilai nol, dan cenderung asimetris (lebih "menghukum" forecast yang lebih tinggi dari aktual dibanding yang lebih rendah).</p>
+
+    <h3>Tabel Interpretasi MAPE</h3>
+    <table class="data-table">
+      <thead><tr><th>Nilai MAPE</th><th>Interpretasi</th><th>Tindakan</th></tr></thead>
+      <tbody>
+        <tr><td>&lt; 10%</td><td>Sangat baik (highly accurate)</td><td>Metode layak digunakan untuk perencanaan operasional</td></tr>
+        <tr><td>10% – 20%</td><td>Baik (good forecast)</td><td>Cukup untuk sebagian besar kebutuhan industri</td></tr>
+        <tr><td>20% – 50%</td><td>Wajar (reasonable)</td><td>Perlu pertimbangan tambahan, mungkin perlu metode lain</td></tr>
+        <tr><td>&gt; 50%</td><td>Tidak akurat (inaccurate)</td><td>Ganti metode atau evaluasi kualitas data</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Catatan penting:</strong> Interpretasi di atas bersifat umum. Dalam beberapa industri dengan variabilitas permintaan tinggi (misalnya fashion atau produk baru), MAPE 20-30% sudah dianggap baik. Sebaliknya, untuk produk komoditas yang permintaannya stabil, MAPE di atas 5% sudah perlu dievaluasi.</p>
+
+    <h3>Perbandingan Karakteristik Ukuran Akurasi</h3>
+    <table class="data-table">
+      <thead><tr><th>Aspek</th><th>MAD</th><th>MSE</th><th>MAPE</th></tr></thead>
+      <tbody>
+        <tr><td>Satuan</td><td>Sama dengan data</td><td>Kuadrat satuan data</td><td>Persentase (%)</td></tr>
+        <tr><td>Sensitivitas terhadap outlier</td><td>Sedang</td><td>Sangat tinggi</td><td>Sedang</td></tr>
+        <tr><td>Bisa dibandingkan antar produk?</td><td>Tidak (skala berbeda)</td><td>Tidak</td><td>Ya</td></tr>
+        <tr><td>Bisa digunakan jika A<sub>t</sub> = 0?</td><td>Ya</td><td>Ya</td><td>Tidak (pembagian nol)</td></tr>
+        <tr><td>Kemudahan interpretasi</td><td>Tinggi</td><td>Rendah</td><td>Sangat tinggi</td></tr>
+        <tr><td>Penggunaan umum</td><td>Tracking signal, safety stock</td><td>Optimasi parameter</td><td>Pelaporan manajemen</td></tr>
+      </tbody>
+    </table>
+
+    <hr class="divider">
+
+    <h2>Bias dan Tracking Signal</h2>
+    <p>Selain mengukur besarnya error, penting juga untuk mengetahui apakah forecast kita secara konsisten terlalu tinggi (<em>overforecast</em>) atau terlalu rendah (<em>underforecast</em>). Kecenderungan ini disebut <strong>bias peramalan (forecast bias)</strong>.</p>
+    <p>Bias dihitung dengan menjumlahkan error tanpa nilai absolut (mempertahankan tanda positif dan negatif):</p>
+    <div class="formula-block">Bias = Σ(A<sub>t</sub> − F<sub>t</sub>) = Σe<sub>t</sub></div>
+    <p>Jika bias bernilai positif besar, forecast cenderung terlalu rendah (underforecast). Jika negatif besar, forecast cenderung terlalu tinggi (overforecast). Forecast yang baik seharusnya memiliki bias mendekati nol — artinya error positif dan negatif saling meniadakan.</p>
+
+    <h3>Tracking Signal</h3>
+    <p>Tracking signal adalah alat monitoring yang mendeteksi apakah forecast mulai "menyimpang" dari pola aktual. Formulanya:</p>
+    <div class="formula-block">Tracking Signal = RSFE / MAD</div>
+    <p>di mana RSFE (<em>Running Sum of Forecast Errors</em>) adalah jumlah kumulatif dari error peramalan:</p>
+    <div class="formula-block">RSFE = Σ(A<sub>t</sub> − F<sub>t</sub>)</div>
+    <p><strong>Interpretasi:</strong> Tracking signal yang berada dalam rentang <strong>-4 sampai +4</strong> umumnya dianggap masih terkendali (beberapa referensi menggunakan batas -3 sampai +3 atau -6 sampai +6, tergantung kebijakan perusahaan). Jika tracking signal melampaui batas ini, itu menjadi sinyal bahwa metode atau parameter peramalan perlu dievaluasi ulang.</p>
+    <ul>
+      <li><strong>Tracking signal positif besar (&gt; +4):</strong> Forecast secara konsisten di bawah aktual (underforecast). Mungkin ada tren naik yang tidak tertangkap oleh model.</li>
+      <li><strong>Tracking signal negatif besar (&lt; -4):</strong> Forecast secara konsisten di atas aktual (overforecast). Mungkin ada tren turun atau perubahan pasar yang tidak terantisipasi.</li>
+      <li><strong>Tracking signal di sekitar nol:</strong> Forecast cukup baik — error positif dan negatif seimbang.</li>
+    </ul>
+    <p><strong>Contoh:</strong> Dari contoh soal MA(3) di atas, semua error bersifat negatif (underforecast). RSFE = (−5) + (−7,33) + (−9) + (−3) + (−4,33) + (−5) + (−8,33) = −42,0 (catatan: error = A − F, dan karena A selalu lebih besar dari F, semua error bernilai positif). RSFE = +42,0, MAD = 6,0, sehingga Tracking Signal = 42,0 / 6,0 = +7,0 — jauh melebihi batas +4, mengonfirmasi bahwa MA(3) tidak memadai untuk data dengan tren naik ini.</p>
+
+    <hr class="divider">
+
+    <h2>Metode Peramalan Lanjutan</h2>
+    <p>Ketiga metode dasar (MA, WMA, ES sederhana) memiliki satu kesamaan: semuanya paling cocok untuk data yang bersifat stasioner (horizontal). Ketika data mengandung tren atau pola musiman, diperlukan metode yang lebih canggih. Berikut adalah tiga metode lanjutan yang sering diajarkan di mata kuliah teknik industri:</p>
+
+    <h3>1. Double Exponential Smoothing (Metode Holt)</h3>
+    <p>Metode Holt memperluas ES sederhana dengan menambahkan komponen kedua untuk menangkap tren. Metode ini menggunakan dua persamaan smoothing dan dua parameter:</p>
+    <div class="formula-block">
+      Level: L<sub>t</sub> = α·A<sub>t</sub> + (1 − α)(L<sub>t−1</sub> + T<sub>t−1</sub>)<br>
+      Tren: T<sub>t</sub> = β(L<sub>t</sub> − L<sub>t−1</sub>) + (1 − β)T<sub>t−1</sub><br>
+      Forecast: F<sub>t+m</sub> = L<sub>t</sub> + m·T<sub>t</sub>
+    </div>
+    <p>Di mana alpha adalah parameter smoothing untuk level (sama seperti ES biasa), beta adalah parameter smoothing untuk tren (0 &lt; beta &lt; 1), L<sub>t</sub> adalah estimasi level data pada periode t, T<sub>t</sub> adalah estimasi tren pada periode t, dan m adalah jumlah periode ke depan yang ingin diramalkan.</p>
+    <p><strong>Kapan digunakan:</strong> Ketika data menunjukkan tren naik atau turun yang jelas tetapi tanpa pola musiman. Misalnya, penjualan produk baru yang sedang tumbuh, atau permintaan produk lama yang mengalami penurunan gradual.</p>
+
+    <h3>2. Triple Exponential Smoothing (Metode Holt-Winters)</h3>
+    <p>Metode Holt-Winters menambahkan komponen ketiga untuk menangkap pola musiman. Terdapat dua varian: <strong>aditif</strong> (pola musiman konstan) dan <strong>multiplikatif</strong> (pola musiman proporsional terhadap level). Varian multiplikatif lebih umum digunakan dan memiliki tiga persamaan:</p>
+    <div class="formula-block">
+      Level: L<sub>t</sub> = α(A<sub>t</sub>/S<sub>t−s</sub>) + (1 − α)(L<sub>t−1</sub> + T<sub>t−1</sub>)<br>
+      Tren: T<sub>t</sub> = β(L<sub>t</sub> − L<sub>t−1</sub>) + (1 − β)T<sub>t−1</sub><br>
+      Musiman: S<sub>t</sub> = γ(A<sub>t</sub>/L<sub>t</sub>) + (1 − γ)S<sub>t−s</sub><br>
+      Forecast: F<sub>t+m</sub> = (L<sub>t</sub> + m·T<sub>t</sub>) × S<sub>t−s+m</sub>
+    </div>
+    <p>Di mana gamma adalah parameter smoothing untuk komponen musiman, S<sub>t</sub> adalah indeks musiman, dan s adalah panjang satu siklus musiman (misalnya s = 12 untuk data bulanan dengan musiman tahunan).</p>
+    <p><strong>Kapan digunakan:</strong> Ketika data menunjukkan pola musiman yang berulang — misalnya penjualan minuman dingin yang naik setiap musim panas, atau permintaan bahan bangunan yang turun di musim hujan. Metode ini membutuhkan data minimal dua siklus musiman penuh (24 bulan untuk musiman tahunan).</p>
+
+    <h3>3. Regresi Linier Sederhana</h3>
+    <p>Berbeda dengan metode smoothing yang bersifat adaptif, regresi linier mengasumsikan hubungan linier antara waktu (variabel independen) dan permintaan (variabel dependen):</p>
+    <div class="formula-block">
+      Y = a + b·X<br>
+      b = [n·ΣXY − (ΣX)(ΣY)] / [n·ΣX² − (ΣX)²]<br>
+      a = Y&#772; − b·X&#772;
+    </div>
+    <p>Di mana Y adalah permintaan, X adalah periode waktu, a adalah intercept (titik potong sumbu Y), dan b adalah slope (kemiringan garis — menunjukkan rata-rata perubahan permintaan per periode).</p>
+    <p><strong>Kapan digunakan:</strong> Ketika data menunjukkan tren linier yang jelas dan kita ingin meramalkan beberapa periode ke depan. Regresi juga berguna sebagai metode kausal — misalnya meramalkan penjualan berdasarkan anggaran iklan, atau meramalkan konsumsi energi berdasarkan suhu udara. Kelemahannya: mengasumsikan hubungan linier konstan, yang mungkin tidak berlaku dalam jangka panjang.</p>
+
+    <h3>Kapan Menggunakan Metode Mana?</h3>
+    <table class="data-table">
+      <thead><tr><th>Pola Data</th><th>Metode yang Direkomendasikan</th></tr></thead>
+      <tbody>
+        <tr><td>Horizontal/stasioner</td><td>MA, WMA, ES sederhana</td></tr>
+        <tr><td>Tren tanpa musiman</td><td>Double ES (Holt), Regresi linier</td></tr>
+        <tr><td>Musiman tanpa tren</td><td>Dekomposisi musiman, Holt-Winters (tanpa komponen tren)</td></tr>
+        <tr><td>Tren + musiman</td><td>Triple ES (Holt-Winters)</td></tr>
+        <tr><td>Hubungan sebab-akibat</td><td>Regresi (linier atau berganda)</td></tr>
+        <tr><td>Produk baru (tanpa data historis)</td><td>Metode kualitatif (Delphi, riset pasar, analogi historis)</td></tr>
+      </tbody>
+    </table>
+
+    <hr class="divider">
 
     <h2>Tips Memilih Metode</h2>
     <ul>
-      <li><strong>Data stabil tanpa tren</strong> → MA atau ES dengan α kecil (0,1–0,3).</li>
-      <li><strong>Perubahan terbaru penting</strong> → WMA atau ES dengan α besar (0,5–0,9).</li>
-      <li><strong>Ada tren jelas</strong> → metode dasar ini akan selalu tertinggal; gunakan double exponential smoothing atau regresi tren.</li>
-      <li><strong>Ada pola musiman</strong> → tambahkan indeks musiman atau gunakan dekomposisi/Winter's method.</li>
+      <li><strong>Data stabil tanpa tren</strong> — MA atau ES dengan alpha kecil (0,1-0,3). Kedua metode ini sederhana dan efektif untuk pola horizontal.</li>
+      <li><strong>Perubahan terbaru penting</strong> — WMA atau ES dengan alpha besar (0,5-0,9). Gunakan jika ada perubahan kondisi pasar baru-baru ini yang perlu segera tercermin dalam forecast.</li>
+      <li><strong>Ada tren jelas</strong> — Metode dasar (MA, WMA, ES sederhana) akan selalu tertinggal; gunakan Double Exponential Smoothing (Holt) atau regresi tren untuk hasil yang lebih akurat.</li>
+      <li><strong>Ada pola musiman</strong> — Tambahkan indeks musiman atau gunakan dekomposisi/Triple ES (Holt-Winters). Pastikan tersedia data minimal dua siklus penuh.</li>
+      <li><strong>Data sangat terbatas (&lt; 5 periode)</strong> — Pertimbangkan metode kualitatif atau ES sederhana yang hanya membutuhkan satu nilai awal.</li>
+      <li><strong>Ratusan SKU harus diramalkan</strong> — ES sederhana sering menjadi pilihan default di industri karena efisiensi komputasi dan penyimpanannya.</li>
     </ul>
+
+    <hr class="divider">
 
     <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
     <div class="faq-item">
       <h3>Berapa forecast awal (F₁) untuk Exponential Smoothing?</h3>
-      <p>Konvensi yang umum: gunakan data aktual periode pertama (F₂ = A₁) atau rata-rata beberapa periode awal. Pengaruh nilai awal akan memudar seiring bertambahnya periode.</p>
+      <p>Konvensi yang umum: gunakan data aktual periode pertama (F₂ = A₁) atau rata-rata beberapa periode awal. Beberapa praktisi menggunakan rata-rata 3-5 data pertama sebagai inisialisasi. Pengaruh nilai awal akan memudar seiring bertambahnya periode — setelah sekitar 10-15 periode, dampak nilai inisialisasi biasanya sudah sangat kecil.</p>
     </div>
     <div class="faq-item">
       <h3>Kenapa total bobot WMA harus 1?</h3>
-      <p>Agar forecast tetap berada pada skala data. Jika total bobot ≠ 1, forecast akan sistematis terlalu besar atau terlalu kecil.</p>
+      <p>Agar forecast tetap berada pada skala data. Jika total bobot lebih dari 1, forecast akan sistematis terlalu besar; jika kurang dari 1, forecast akan sistematis terlalu kecil. Secara matematis, total bobot = 1 memastikan bahwa WMA merupakan rata-rata tertimbang yang valid — artinya jika semua data bernilai sama, forecastnya juga akan sama persis dengan nilai tersebut.</p>
     </div>
     <div class="faq-item">
       <h3>Metode mana yang paling akurat?</h3>
-      <p>Tidak ada yang selalu menang — akurasi tergantung pola data. Uji beberapa metode pada data historis Anda dan bandingkan MAD/MAPE-nya; itulah cara yang diajarkan di hampir semua buku teks operations management.</p>
+      <p>Tidak ada yang selalu menang — akurasi tergantung pola data. Uji beberapa metode pada data historis Anda dan bandingkan MAD/MAPE-nya; itulah cara yang diajarkan di hampir semua buku teks operations management. Prinsip ini dikenal sebagai pendekatan <em>empiris</em> — biarkan data yang menentukan metode terbaik, bukan asumsi a priori.</p>
     </div>
+    <div class="faq-item">
+      <h3>Bagaimana menangani data musiman?</h3>
+      <p>Untuk data dengan pola musiman, terdapat beberapa pendekatan. Pertama, gunakan metode <strong>dekomposisi musiman</strong>: hitung indeks musiman dari data historis, "deseasonalisasi" data, lalu ramalkan data yang sudah dideseasonalisasi, dan terakhir kalikan kembali dengan indeks musiman. Kedua, gunakan metode <strong>Holt-Winters</strong> (Triple Exponential Smoothing) yang secara otomatis menangkap komponen musiman. Pastikan Anda memiliki data minimal dua siklus penuh (misalnya 24 bulan untuk musiman tahunan) agar pola musiman dapat diidentifikasi dengan andal.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Berapa banyak data historis yang diperlukan?</h3>
+      <p>Jawabannya tergantung pada metode yang digunakan. Untuk MA(n), minimal dibutuhkan n data. Untuk ES sederhana, secara teknis cukup 1 data untuk inisialisasi, tetapi untuk mendapatkan forecast yang stabil dan melakukan evaluasi akurasi, disarankan minimal 15-20 data. Untuk metode musiman (Holt-Winters), dibutuhkan setidaknya dua siklus penuh — misalnya 24 bulan data bulanan atau 8 kuartal data kuartalan. Untuk regresi, setidaknya 20-30 observasi diperlukan agar estimasi parameter cukup stabil.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apa bedanya forecast error dan forecast bias?</h3>
+      <p><strong>Forecast error</strong> mengukur <em>besarnya</em> penyimpangan forecast dari aktual, biasanya menggunakan nilai absolut atau kuadrat (MAD, MSE, MAPE). Error yang besar menunjukkan forecast yang tidak akurat. <strong>Forecast bias</strong> mengukur <em>arah</em> penyimpangan — apakah forecast secara sistematis terlalu tinggi atau terlalu rendah. Bias dihitung dari jumlah error tanpa nilai absolut (mempertahankan tanda positif/negatif). Mungkin saja forecast memiliki MAD kecil (akurat) tetapi bias besar (secara konsisten sedikit terlalu tinggi atau rendah), atau sebaliknya.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Kapan harus menggunakan metode kualitatif?</h3>
+      <p>Metode kualitatif (seperti metode Delphi, riset pasar, analogi historis, atau <em>jury of executive opinion</em>) digunakan ketika: (1) tidak tersedia data historis — misalnya untuk produk baru yang belum pernah dijual; (2) terjadi perubahan struktural yang membuat data historis tidak relevan — misalnya peluncuran teknologi disruptif, perubahan regulasi, atau pandemi; (3) horizon peramalan sangat panjang (lebih dari 3-5 tahun) di mana pola historis mungkin tidak berlaku lagi. Dalam praktik, banyak perusahaan menggabungkan metode kuantitatif dan kualitatif — forecast statistik digunakan sebagai basis, lalu disesuaikan oleh para ahli berdasarkan pengetahuan pasar terkini.</p>
+    </div>
+
+    <hr class="divider">
+
+    <h2>Rangkuman (Key Takeaways)</h2>
+    <ul>
+      <li><strong>Peramalan adalah fondasi perencanaan:</strong> Hampir semua keputusan produksi, inventori, kapasitas, dan tenaga kerja berawal dari forecast permintaan. Forecast tidak harus sempurna, tetapi harus cukup baik untuk mendukung pengambilan keputusan.</li>
+      <li><strong>Kenali pola data sebelum memilih metode:</strong> Identifikasi apakah data berpola horizontal, tren, musiman, atau siklikal. Moving Average dan ES sederhana cocok untuk pola horizontal; gunakan metode lanjutan (Holt, Holt-Winters) untuk data dengan tren atau musiman.</li>
+      <li><strong>Ukur akurasi secara sistematis:</strong> Gunakan MAD untuk interpretasi yang mudah, MSE untuk menghukum error besar, dan MAPE untuk perbandingan antar produk. MAPE di bawah 10% tergolong sangat baik di sebagian besar konteks industri.</li>
+      <li><strong>Pantau bias dan tracking signal:</strong> Forecast yang baik bukan hanya yang error-nya kecil, tetapi juga yang tidak bias (tidak secara konsisten terlalu tinggi atau rendah). Tracking signal yang melampaui batas kontrol (biasanya plus/minus 4) menjadi sinyal untuk mengevaluasi ulang metode.</li>
+      <li><strong>Tidak ada metode yang selalu terbaik:</strong> Uji beberapa metode dan parameter pada data historis, lalu pilih yang menghasilkan MAD/MAPE terkecil. Pendekatan empiris ini lebih andal daripada memilih metode berdasarkan intuisi semata.</li>
+      <li><strong>Pertimbangkan trade-off praktis:</strong> Metode yang paling canggih belum tentu yang terbaik untuk situasi Anda. Faktor-faktor seperti jumlah SKU, ketersediaan data, kemampuan komputasi, dan kemudahan komunikasi ke manajemen juga perlu dipertimbangkan.</li>
+    </ul>
 
     <h2>Referensi</h2>
     <ul>
-      <li>Heizer, J., Render, B., &amp; Munson, C. (2020). <em>Operations Management</em> (13th ed.), Bab 4 "Forecasting". Pearson.</li>
+      <li>Heizer, J., Render, B., &amp; Munson, C. (2020). <em>Operations Management: Sustainability and Supply Chain Management</em> (13th ed.), Bab 4 "Forecasting". Pearson.</li>
       <li>Stevenson, W. J. (2021). <em>Operations Management</em> (14th ed.), Bab 3 "Forecasting". McGraw-Hill.</li>
       <li>Makridakis, S., Wheelwright, S. C., &amp; Hyndman, R. J. (1998). <em>Forecasting: Methods and Applications</em> (3rd ed.). Wiley.</li>
       <li>Hyndman, R. J., &amp; Athanasopoulos, G. (2021). <em>Forecasting: Principles and Practice</em> (3rd ed.). OTexts — tersedia gratis di otexts.com/fpp3.</li>
+      <li>Krajewski, L. J., Malhotra, M. K., &amp; Ritzman, L. P. (2019). <em>Operations Management: Processes and Supply Chains</em> (12th ed.), Bab 8 "Forecasting". Pearson.</li>
+      <li>Chase, R. B., Jacobs, F. R., &amp; Aquilano, N. J. (2006). <em>Operations Management for Competitive Advantage</em> (11th ed.), Bab 15 "Demand Management and Forecasting". McGraw-Hill.</li>
+      <li>Tersine, R. J. (1994). <em>Principles of Inventory and Materials Management</em> (4th ed.), Bab 2 "Forecasting". Prentice Hall.</li>
     </ul>
 
     <hr class="divider">
@@ -200,6 +529,7 @@
     <a href="about.html">Tentang</a>
     <a href="contact.html">Kontak</a>
     <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Syarat &amp; Ketentuan</a>
   </div>
   <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
 </footer>

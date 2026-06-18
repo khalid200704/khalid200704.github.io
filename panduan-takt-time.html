@@ -55,6 +55,26 @@
       "@type": "Question",
       "name": "Apa yang terjadi jika cycle time lebih besar dari takt time?",
       "acceptedAnswer": { "@type": "Answer", "text": "Lini produksi tidak mampu memenuhi permintaan — terjadi backlog atau lembur. Solusinya: kurangi waktu siklus (perbaikan proses), tambah kapasitas/jalur, atau tambah jam kerja." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bisakah takt time berubah setiap hari?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Secara teori bisa, namun dalam praktik lean, takt time dihitung berdasarkan permintaan rata-rata per periode perencanaan (mingguan atau bulanan). Mengubah takt time setiap hari menyulitkan penyeimbangan lini dan pelatihan operator. Fluktuasi harian diatasi dengan heijunka (production leveling) dan buffer stock." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bagaimana takt time untuk produk campuran (mixed-model)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Untuk lini produksi campuran, hitung total permintaan semua varian produk, lalu bagi waktu tersedia dengan total permintaan tersebut. Hasilnya adalah weighted takt time. Jika varian memiliki waktu proses berbeda, gunakan heijunka untuk meratakan urutan produksi." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa hubungan takt time dengan efisiensi lini?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Takt time digunakan sebagai dasar line balancing. Efisiensi lini = (total waktu kerja semua stasiun) / (jumlah stasiun x takt time) x 100%. Semakin mendekati 100%, semakin seimbang dan efisien lini tersebut. Takt time yang tepat membantu mengidentifikasi stasiun yang kelebihan atau kekurangan beban kerja." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah takt time sama dengan target produksi per jam?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Keduanya dua sisi mata uang: target per jam = 60 menit / takt time (menit per unit). Takt 2 menit per unit setara target 30 unit per jam." }
     }
   ]
 }
@@ -103,66 +123,256 @@
 
 
     <h2>Apa itu Takt Time?</h2>
-    <p><strong>Takt time</strong> berasal dari kata Jerman <em>Takt</em> yang berarti ketukan/irama (seperti metronom musik). Dalam lean manufacturing dan Toyota Production System, takt time adalah <strong>irama produksi yang dibutuhkan untuk memenuhi permintaan pelanggan</strong>: satu unit harus selesai setiap sekian menit/detik agar output harian persis sama dengan permintaan harian.</p>
-    <p>Memproduksi lebih lambat dari takt time berarti tidak memenuhi permintaan; memproduksi lebih cepat berarti <em>overproduction</em> — pemborosan (muda) nomor satu dalam lean karena menumpuk persediaan.</p>
+    <p><strong>Takt time</strong> adalah konsep fundamental dalam lean manufacturing yang mendefinisikan <strong>irama produksi yang dibutuhkan untuk memenuhi permintaan pelanggan</strong>. Secara sederhana, takt time menjawab pertanyaan: "Setiap berapa menit (atau detik) satu unit produk harus selesai agar total output harian sama persis dengan total permintaan harian?"</p>
+    <p>Konsep ini menjadi detak jantung dari seluruh sistem produksi lean. Ketika seluruh lini bekerja mengikuti irama takt, aliran produksi menjadi stabil, persediaan terkendali, dan masalah terlihat lebih cepat karena setiap penyimpangan dari ritme langsung terdeteksi.</p>
+    <p>Memproduksi lebih lambat dari takt time berarti tidak memenuhi permintaan pelanggan dan menciptakan <em>backlog</em>. Sebaliknya, memproduksi lebih cepat dari takt time berarti <em>overproduction</em> — yang menurut Taiichi Ohno adalah pemborosan (<em>muda</em>) paling berbahaya dalam lean karena menumpuk persediaan berlebih, menyembunyikan masalah kualitas, dan mengikat modal kerja secara tidak perlu.</p>
+
+    <h2>Asal Usul Takt Time</h2>
+    <p>Kata <strong>"Takt"</strong> berasal dari bahasa Jerman yang berarti "ketukan" atau "irama" — seperti ketukan metronom yang mengatur tempo musik dalam sebuah orkestra. Dalam konteks manufaktur, istilah ini pertama kali digunakan di industri penerbangan Jerman pada era 1930-an, di mana pesawat dirakit dalam stasiun-stasiun kerja yang bergerak sesuai interval waktu tetap (<em>Taktzeit</em>).</p>
+    <p>Konsep ini kemudian diadopsi oleh <strong>Toyota</strong> setelah Perang Dunia II, ketika insinyur-insinyur Jepang mempelajari metode produksi Barat dan mengadaptasinya ke dalam apa yang kelak dikenal sebagai <strong>Toyota Production System (TPS)</strong>. Taiichi Ohno, yang dianggap sebagai bapak TPS, menjadikan takt time sebagai salah satu pilar utama sistem produksi Toyota bersama dengan <em>just-in-time</em> (JIT) dan <em>jidoka</em> (otomasi cerdas).</p>
+    <p>Dalam filosofi lean manufacturing, takt time bukan sekadar rumus perhitungan — melainkan prinsip berpikir. Takt time menghubungkan lantai produksi langsung dengan "suara pelanggan" (<em>Voice of Customer</em>). Setiap keputusan desain lini, penempatan operator, pengaturan mesin, dan jadwal produksi didasarkan pada ritme ini. Jeffrey Liker dalam bukunya <em>The Toyota Way</em> menyebut takt time sebagai "heartbeat of lean production" — detak jantung produksi lean.</p>
 
     <h2>Rumus Takt Time</h2>
     <div class="formula-block">Takt Time = Waktu Produksi Tersedia / Permintaan Pelanggan</div>
-    <p>Hal penting saat menghitung <strong>waktu produksi tersedia</strong>: kurangi waktu yang memang tidak dipakai untuk produksi — istirahat, meeting pagi, pembersihan terjadwal. Jangan kurangi downtime tak terencana; itu masalah yang harus diperbaiki, bukan diakomodasi dalam takt.</p>
+    <p>Satuan takt time biasanya dalam <strong>menit per unit</strong> atau <strong>detik per unit</strong>, bergantung pada kecepatan lini. Lini perakitan mobil mungkin memiliki takt time dalam hitungan menit, sementara lini pengemasan makanan ringan bisa dalam hitungan detik.</p>
+    <p>Hal penting saat menghitung <strong>waktu produksi tersedia</strong>: kurangi waktu yang memang tidak dipakai untuk produksi — istirahat, meeting pagi, pembersihan terjadwal, dan pergantian alat (<em>changeover</em>). Jangan kurangi <em>downtime</em> tak terencana (kerusakan mesin, keterlambatan material); itu adalah masalah yang harus diperbaiki melalui <em>kaizen</em>, bukan diakomodasi dalam perhitungan takt.</p>
 
-    <h2>Takt Time vs Cycle Time vs Lead Time</h2>
-    <p>Tiga istilah ini sering tertukar di ujian — padahal bedanya tegas:</p>
+    <h2>Menghitung Waktu Produksi Tersedia</h2>
+    <p>Salah satu kesalahan paling umum dalam menghitung takt time adalah salah menentukan waktu produksi tersedia (<em>net available time</em>). Berikut cara menghitungnya secara sistematis:</p>
+    <div class="formula-block">Waktu Tersedia = Total Waktu Shift - (Istirahat + Meeting + Pembersihan + Changeover Terjadwal)</div>
+
+    <h3>Contoh Perhitungan Satu Shift</h3>
     <table class="data-table">
-      <thead><tr><th>Istilah</th><th>Definisi</th><th>Ditentukan oleh</th></tr></thead>
+      <thead><tr><th>Komponen Waktu</th><th>Durasi</th></tr></thead>
       <tbody>
-        <tr><td>Takt Time</td><td>Kecepatan yang <em>dibutuhkan</em> per unit</td><td>Permintaan pelanggan</td></tr>
-        <tr><td>Cycle Time</td><td>Kecepatan <em>aktual</em> proses per unit</td><td>Kemampuan proses/mesin</td></tr>
-        <tr><td>Lead Time</td><td>Total waktu dari order masuk sampai produk diterima</td><td>Keseluruhan aliran proses</td></tr>
+        <tr><td>Total waktu shift</td><td>480 menit (8 jam)</td></tr>
+        <tr><td>Istirahat makan siang</td><td>-30 menit</td></tr>
+        <tr><td>2 x istirahat pendek (coffee break)</td><td>-20 menit (2 x 10 menit)</td></tr>
+        <tr><td>Meeting pagi (briefing)</td><td>-10 menit</td></tr>
+        <tr><td>Pembersihan akhir shift (5S)</td><td>-10 menit</td></tr>
+        <tr><td><strong>Waktu produksi tersedia (net)</strong></td><td><strong>410 menit</strong></td></tr>
       </tbody>
     </table>
+    <p>Jika permintaan pelanggan adalah 205 unit per hari, maka takt time = 410 / 205 = <strong>2 menit/unit</strong>.</p>
+
+    <h3>Contoh Perhitungan Multi-Shift</h3>
+    <p>Pabrik beroperasi <strong>2 shift</strong>, masing-masing 8 jam. Setiap shift memiliki pengurangan waktu yang sama seperti contoh di atas (70 menit per shift). Permintaan pelanggan adalah 600 unit per hari.</p>
+    <table class="data-table">
+      <thead><tr><th>Parameter</th><th>Nilai</th></tr></thead>
+      <tbody>
+        <tr><td>Waktu tersedia per shift</td><td>410 menit</td></tr>
+        <tr><td>Jumlah shift per hari</td><td>2</td></tr>
+        <tr><td>Total waktu tersedia per hari</td><td>820 menit</td></tr>
+        <tr><td>Permintaan pelanggan per hari</td><td>600 unit</td></tr>
+        <tr><td><strong>Takt time</strong></td><td><strong>820 / 600 = 1,367 menit/unit (82 detik/unit)</strong></td></tr>
+      </tbody>
+    </table>
+    <p>Perhatikan bahwa waktu istirahat, meeting, dan pembersihan harus dihitung <em>per shift</em>, bukan di-rata-rata. Jika shift malam memiliki jadwal istirahat berbeda, hitung secara terpisah kemudian jumlahkan total waktu tersedia.</p>
+
+    <h2>Takt Time vs Cycle Time vs Lead Time</h2>
+    <p>Tiga istilah ini adalah sumber kebingungan paling umum bagi mahasiswa Teknik Industri dan praktisi baru. Padahal perbedaannya tegas dan penting untuk dipahami:</p>
+    <table class="data-table">
+      <thead><tr><th>Aspek</th><th>Takt Time</th><th>Cycle Time</th><th>Lead Time</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Definisi</strong></td><td>Kecepatan produksi yang <em>dibutuhkan</em> untuk memenuhi permintaan</td><td>Kecepatan <em>aktual</em> proses menghasilkan satu unit</td><td>Total waktu dari order masuk hingga produk diterima pelanggan</td></tr>
+        <tr><td><strong>Rumus</strong></td><td>Waktu tersedia / Permintaan</td><td>Waktu total proses / Jumlah unit yang diproduksi</td><td>Tanggal selesai - Tanggal order</td></tr>
+        <tr><td><strong>Ditentukan oleh</strong></td><td>Permintaan pelanggan (eksternal)</td><td>Kemampuan proses/mesin (internal)</td><td>Keseluruhan aliran nilai (<em>value stream</em>)</td></tr>
+        <tr><td><strong>Sifat</strong></td><td>Target/acuan</td><td>Pengukuran aktual</td><td>Pengukuran aktual</td></tr>
+        <tr><td><strong>Perspektif</strong></td><td>Apa yang pelanggan butuhkan</td><td>Apa yang proses mampu hasilkan</td><td>Apa yang pelanggan alami</td></tr>
+        <tr><td><strong>Contoh</strong></td><td>2 menit/unit</td><td>1,5 menit/unit</td><td>5 hari kerja</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Analogi sederhana:</strong> Bayangkan Anda seorang pelari marathon. Takt time adalah pace yang Anda <em>harus</em> capai untuk finish tepat waktu (target). Cycle time adalah pace <em>aktual</em> Anda saat berlari (kenyataan). Lead time adalah total waktu dari Anda mendaftar lomba sampai medali diterima (keseluruhan pengalaman).</p>
+
+    <h3>Hubungan Ideal antara Takt Time dan Cycle Time</h3>
     <ul>
-      <li><strong>CT &gt; Takt</strong> → lini terlalu lambat, permintaan tidak terpenuhi (backlog/lembur).</li>
-      <li><strong>CT ≈ Takt</strong> (sedikit di bawah) → kondisi ideal lean.</li>
-      <li><strong>CT jauh &lt; Takt</strong> → overproduction atau kapasitas menganggur; pertimbangkan realokasi sumber daya.</li>
+      <li><strong>CT &gt; Takt</strong> — lini terlalu lambat, permintaan tidak terpenuhi. Terjadi backlog, keterlambatan pengiriman, atau kebutuhan lembur. Ini adalah situasi krisis yang memerlukan tindakan segera.</li>
+      <li><strong>CT mendekati Takt</strong> (sedikit di bawah, sekitar 85-95% dari takt) — kondisi ideal lean. Lini mampu memenuhi permintaan dengan sedikit <em>buffer</em> untuk menangani variabilitas normal.</li>
+      <li><strong>CT jauh &lt; Takt</strong> — kapasitas berlebih. Terjadi overproduction atau waktu menganggur (<em>idle time</em>). Pertimbangkan realokasi sumber daya atau pengurangan jumlah stasiun kerja.</li>
     </ul>
 
-    <h2>Contoh Soal Takt Time dan Pembahasan</h2>
+    <h2>Contoh Soal 1: Lini Perakitan Manufaktur</h2>
     <p><strong>Soal:</strong> Sebuah lini perakitan bekerja 1 shift = 8 jam (480 menit) per hari. Permintaan pelanggan 240 unit per hari. Cycle time aktual stasiun bottleneck adalah 1,5 menit/unit. (a) Hitung takt time. (b) Apakah lini mampu memenuhi permintaan? (c) Berapa kapasitas maksimum lini?</p>
     <p><strong>Langkah 1 — Takt time:</strong></p>
     <div class="formula-block">Takt = 480 menit / 240 unit = 2 menit/unit</div>
     <p>Artinya satu unit harus keluar dari lini setiap 2 menit.</p>
-    <p><strong>Langkah 2 — Bandingkan dengan cycle time:</strong> CT = 1,5 menit &lt; Takt = 2 menit → lini <strong>mampu</strong> memenuhi permintaan, dengan kelonggaran 0,5 menit per unit (25% margin kapasitas).</p>
+    <p><strong>Langkah 2 — Bandingkan dengan cycle time:</strong> CT = 1,5 menit &lt; Takt = 2 menit. Lini <strong>mampu</strong> memenuhi permintaan, dengan kelonggaran 0,5 menit per unit (25% margin kapasitas). Rasio CT/Takt = 1,5/2 = 75%, artinya ada 25% kapasitas cadangan.</p>
     <p><strong>Langkah 3 — Kapasitas maksimum:</strong> 480 / 1,5 = 320 unit/hari. Jadi lini bisa melayani kenaikan permintaan hingga 320 unit/hari sebelum perlu perbaikan proses atau penambahan kapasitas.</p>
-    <p><strong>Variasi umum di soal:</strong> jika ada 2 kali istirahat 15 menit di dalam shift, waktu tersedia menjadi 450 menit dan takt time = 450/240 = 1,875 menit/unit — sekarang margin terhadap CT 1,5 menit menipis. Selalu baca teliti apakah break time sudah dikeluarkan dari waktu tersedia.</p>
+    <p><strong>Variasi umum di soal:</strong> jika ada 2 kali istirahat 15 menit di dalam shift, waktu tersedia menjadi 450 menit dan takt time = 450/240 = 1,875 menit/unit — sekarang margin terhadap CT 1,5 menit menipis menjadi hanya 20%. Selalu baca teliti apakah <em>break time</em> sudah dikeluarkan dari waktu tersedia.</p>
+
+    <h2>Contoh Soal 2: Takt Time di Industri Jasa (Rumah Sakit)</h2>
+    <p><strong>Soal:</strong> Unit Gawat Darurat (UGD) sebuah rumah sakit beroperasi 24 jam. Rata-rata ada 120 pasien per hari yang memerlukan penanganan di ruang triase. Dari 24 jam tersebut, 2 jam digunakan untuk pergantian shift, briefing, dan pembersihan ruangan. Tersedia 4 ruang triase identik. (a) Hitung takt time per ruang triase. (b) Jika rata-rata waktu penanganan triase adalah 25 menit per pasien, apakah kapasitas cukup?</p>
+    <p><strong>Langkah 1 — Waktu tersedia total:</strong></p>
+    <div class="formula-block">Waktu tersedia = (24 jam - 2 jam) x 60 menit = 22 x 60 = 1.320 menit/hari</div>
+    <p><strong>Langkah 2 — Takt time keseluruhan:</strong></p>
+    <div class="formula-block">Takt = 1.320 menit / 120 pasien = 11 menit/pasien</div>
+    <p>Artinya, secara keseluruhan UGD harus menyelesaikan satu pasien triase setiap 11 menit.</p>
+    <p><strong>Langkah 3 — Takt time per ruang triase:</strong> Karena ada 4 ruang identik yang bekerja paralel, permintaan dibagi 4: masing-masing ruang melayani 120/4 = 30 pasien/hari. Takt per ruang = 1.320 / 30 = <strong>44 menit/pasien</strong>.</p>
+    <p><strong>Langkah 4 — Bandingkan dengan cycle time:</strong> CT (waktu penanganan aktual) = 25 menit &lt; Takt per ruang = 44 menit. Kapasitas <strong>cukup</strong>, dengan margin 19 menit per pasien (43% cadangan). Margin ini penting di UGD karena waktu penanganan sangat bervariasi — pasien kritis memerlukan waktu jauh lebih lama.</p>
+    <p><strong>Insight:</strong> Contoh ini menunjukkan bahwa takt time tidak hanya berlaku di pabrik. Di industri jasa, takt time membantu menentukan jumlah sumber daya (ruang, tenaga medis, konter layanan) yang dibutuhkan untuk memenuhi permintaan.</p>
+
+    <h2>Apa yang Terjadi Jika Cycle Time &gt; Takt Time?</h2>
+    <p>Ketika cycle time melebihi takt time, lini produksi <strong>tidak mampu memenuhi permintaan pelanggan</strong>. Ini adalah situasi yang memerlukan penanganan segera. Dampak dan solusinya:</p>
+    <p><strong>Dampak langsung:</strong></p>
+    <ul>
+      <li><strong>Backlog pesanan</strong> — pesanan menumpuk dan waktu pengiriman molor.</li>
+      <li><strong>Kebutuhan lembur (overtime)</strong> — biaya tenaga kerja meningkat 1,5-2x untuk jam lembur.</li>
+      <li><strong>Tekanan pada operator</strong> — stres kerja meningkat, risiko kesalahan dan kecelakaan naik.</li>
+      <li><strong>Pelanggan kecewa</strong> — keterlambatan berulang merusak kepercayaan dan hubungan bisnis.</li>
+    </ul>
+    <p><strong>Solusi yang dapat diterapkan (dari yang paling cepat ke paling fundamental):</strong></p>
+    <ol>
+      <li><strong>Lembur (overtime)</strong> — solusi jangka pendek paling cepat, tapi mahal dan tidak berkelanjutan.</li>
+      <li><strong>Penambahan shift</strong> — menambah shift kedua atau ketiga meningkatkan waktu tersedia secara signifikan.</li>
+      <li><strong>Kaizen di stasiun bottleneck</strong> — analisis elemen kerja di stasiun paling lambat, eliminasi gerakan tidak perlu, perbaiki layout, gunakan jig/fixture yang lebih baik.</li>
+      <li><strong>Line rebalancing</strong> — redistribusi elemen kerja antar stasiun agar beban lebih merata (lihat <a href="panduan-line-balancing.html">panduan line balancing</a>).</li>
+      <li><strong>Penambahan stasiun kerja/mesin</strong> — duplikasi stasiun bottleneck sehingga dua stasiun bekerja paralel, efektif memotong cycle time menjadi setengah di titik tersebut.</li>
+      <li><strong>Investasi teknologi</strong> — otomasi, mesin lebih cepat, atau perubahan desain produk untuk mempermudah perakitan (Design for Manufacturing).</li>
+    </ol>
+
+    <h2>Apa yang Terjadi Jika Cycle Time &lt; Takt Time?</h2>
+    <p>Pada pandangan pertama, cycle time lebih cepat dari takt time terdengar bagus — lini "lebih dari mampu" memenuhi permintaan. Namun dalam filosofi lean, kelebihan kapasitas yang signifikan juga merupakan masalah:</p>
+    <p><strong>Risiko overproduction (muda #1):</strong></p>
+    <ul>
+      <li><strong>Penumpukan persediaan barang jadi</strong> — membutuhkan ruang gudang, mengikat modal, dan berisiko obsolete (kedaluwarsa atau model lama).</li>
+      <li><strong>Menyembunyikan masalah</strong> — ketika ada "bantalan" kapasitas besar, masalah kualitas dan inefisiensi tidak terasa mendesak untuk diperbaiki.</li>
+      <li><strong>Biaya penyimpanan</strong> — carrying cost (biaya simpan) persediaan berlebih menambah biaya produksi per unit.</li>
+    </ul>
+    <p><strong>Idle time (waktu menganggur):</strong></p>
+    <ul>
+      <li>Operator menunggu karena sudah selesai lebih awal dari irama takt.</li>
+      <li>Mesin berjalan tidak penuh — utilisasi rendah.</li>
+    </ul>
+    <p><strong>Peluang yang bisa dimanfaatkan:</strong></p>
+    <ul>
+      <li><strong>Preventive maintenance</strong> — gunakan waktu luang untuk perawatan mesin terjadwal sehingga mengurangi <em>unplanned downtime</em>.</li>
+      <li><strong>Cross-training</strong> — latih operator untuk menguasai beberapa stasiun kerja, meningkatkan fleksibilitas tim.</li>
+      <li><strong>Kaizen dan improvement</strong> — alokasikan waktu untuk aktivitas perbaikan berkelanjutan.</li>
+      <li><strong>Pengurangan jumlah stasiun/operator</strong> — jika margin terlalu besar, pertimbangkan mengurangi stasiun kerja dan realokasi tenaga kerja ke area yang membutuhkan.</li>
+    </ul>
+
+    <h2>Takt Time dalam Lean Manufacturing</h2>
+    <p>Takt time bukan konsep yang berdiri sendiri — ia merupakan bagian integral dari ekosistem lean manufacturing yang saling terkait. Berikut hubungan takt time dengan konsep-konsep lean utama:</p>
+
+    <h3>One-Piece Flow (Aliran Satu Unit)</h3>
+    <p>Takt time menjadi dasar bagi <strong>one-piece flow</strong>, di mana setiap stasiun kerja memproses satu unit pada satu waktu dan langsung meneruskannya ke stasiun berikutnya sesuai irama takt. Ini menghilangkan antrian antar-proses (<em>work-in-process</em>) dan memperpendek lead time secara dramatis.</p>
+
+    <h3>Kanban</h3>
+    <p>Sistem <strong>kanban</strong> (sinyal tarik) menggunakan takt time untuk menentukan kecepatan pengisian ulang material. Ketika produksi berjalan sesuai takt, konsumsi material menjadi stabil dan dapat diprediksi, sehingga jumlah kanban (kartu sinyal) yang beredar bisa dihitung secara presisi.</p>
+
+    <h3>Heijunka (Production Leveling)</h3>
+    <p><strong>Heijunka</strong> adalah teknik meratakan volume dan campuran produk dalam jadwal produksi harian. Tanpa heijunka, takt time sulit diterapkan karena permintaan yang berfluktuasi membuat irama produksi tidak stabil. Dengan heijunka, permintaan bulanan dipecah menjadi jadwal harian yang merata, sehingga takt time konsisten dari hari ke hari.</p>
+
+    <h3>Continuous Improvement (Kaizen)</h3>
+    <p>Takt time berfungsi sebagai <strong>standar pembanding</strong> dalam kaizen. Ketika cycle time suatu stasiun melebihi takt, itu menjadi sinyal jelas bahwa perbaikan dibutuhkan di titik tersebut. Sebaliknya, ketika kaizen berhasil menurunkan cycle time, perubahan bisa diukur terhadap takt time untuk memastikan perbaikan berdampak nyata pada kemampuan memenuhi permintaan.</p>
+
+    <h3>Value Stream Mapping (VSM)</h3>
+    <p>Dalam peta aliran nilai (<em>Value Stream Mapping</em>), takt time selalu dicantumkan sebagai garis referensi horizontal. Semua cycle time stasiun kerja dibandingkan terhadap garis ini, sehingga bottleneck dan ketidakseimbangan lini terlihat jelas secara visual. Ini menjadikan VSM sebagai alat diagnostik yang sangat efektif.</p>
+
+    <h2>Takt Time untuk Operasi Jasa</h2>
+    <p>Meskipun takt time lahir di lingkungan manufaktur, konsep ini sangat relevan dan semakin banyak diterapkan di <strong>industri jasa</strong>. Prinsipnya sama: menyelaraskan kecepatan pelayanan dengan permintaan pelanggan.</p>
+
+    <h3>Rumah Sakit</h3>
+    <p>Takt time digunakan untuk menentukan <strong>patient takt</strong> — kecepatan yang dibutuhkan untuk memproses pasien di berbagai titik layanan: pendaftaran, triase, konsultasi dokter, farmasi. Contoh: jika klinik rawat jalan beroperasi 8 jam dan melayani 48 pasien/hari, takt time = 480/48 = 10 menit/pasien. Ini membantu menentukan jumlah dokter, perawat, dan ruang periksa yang dibutuhkan.</p>
+
+    <h3>Restoran</h3>
+    <p>Restoran cepat saji menggunakan takt time untuk <strong>drive-through operations</strong>. Jika target 180 pelanggan dalam 3 jam makan siang (180 menit), takt = 180/180 = 1 menit/pelanggan. Dapur harus menyelesaikan satu pesanan per menit. Ini menentukan jumlah jalur penyajian, peralatan memasak, dan staf yang bertugas.</p>
+
+    <h3>Call Center</h3>
+    <p>Call center menghitung takt time untuk menentukan jumlah agen yang dibutuhkan. Jika masuk 300 panggilan dalam 10 jam operasional (600 menit), takt = 600/300 = 2 menit/panggilan. Namun rata-rata handling time (AHT) adalah 6 menit/panggilan, maka diperlukan minimal 6/2 = 3 agen bekerja paralel.</p>
+
+    <h3>Logistik dan Pergudangan</h3>
+    <p>Di gudang distribusi, takt time diterapkan pada proses <em>order picking</em>. Jika harus memenuhi 500 pesanan dalam shift 8 jam (410 menit bersih), takt = 410/500 = 0,82 menit/pesanan (sekitar 49 detik). Ini menentukan desain layout gudang, jumlah picker, dan kebutuhan teknologi (conveyor, pick-to-light, dll.).</p>
+
+    <h2>Pitch dan Multiple Takt</h2>
+    <p>Dalam proses yang berorientasi batch (bukan one-piece flow), konsep <strong>pitch</strong> lebih praktis daripada takt time mentah.</p>
+    <div class="formula-block">Pitch = Takt Time x Jumlah Unit per Kemasan (Pack Quantity)</div>
+    <p><strong>Contoh:</strong> Takt time = 30 detik/unit, dan produk dikemas dalam kotak berisi 20 unit. Maka pitch = 30 x 20 = <strong>600 detik = 10 menit</strong>. Artinya, setiap 10 menit satu kotak (berisi 20 unit) harus selesai dan siap dikirim.</p>
+    <p>Pitch berguna untuk:</p>
+    <ul>
+      <li><strong>Penjadwalan pengiriman internal</strong> — material handler mengambil satu kontainer setiap interval pitch, bukan satu unit setiap interval takt.</li>
+      <li><strong>Papan produksi (heijunka box)</strong> — slot waktu di papan heijunka biasanya dibagi per interval pitch, bukan per unit individual.</li>
+      <li><strong>Monitoring produksi</strong> — lebih mudah memantau output per kotak/pallet daripada per unit individual, terutama untuk produk kecil bervolume tinggi.</li>
+    </ul>
+    <p><strong>Multiple takt</strong> merujuk pada situasi di mana suatu proses memiliki cycle time yang merupakan kelipatan takt time. Misalnya, jika mesin oven memerlukan 8 menit untuk satu batch (memuat 4 unit) dan takt time adalah 2 menit/unit, maka mesin ini beroperasi pada "4x takt" — setiap 4 interval takt, satu batch selesai dan menghasilkan 4 unit sekaligus. Ini umum di proses batch seperti furnace, oven, dan autoclave.</p>
 
     <h2>Untuk Apa Takt Time Digunakan?</h2>
     <ul>
-      <li><strong>Line balancing</strong> — takt time biasanya dijadikan cycle time target saat membagi elemen kerja ke workstation (lihat <a href="panduan-line-balancing.html">panduan line balancing</a>).</li>
-      <li><strong>Menentukan jumlah operator/mesin</strong> — jumlah minimum stasiun ≈ total waktu kerja per unit ÷ takt time.</li>
-      <li><strong>Visual management</strong> — papan produksi per jam (hourly output board) dibuat dari takt time.</li>
-      <li><strong>Mendeteksi masalah lebih cepat</strong> — jika output per jam meleset dari irama takt, ada abnormalitas yang harus segera ditangani.</li>
+      <li><strong>Line balancing</strong> — takt time dijadikan cycle time target saat membagi elemen kerja ke workstation. Setiap stasiun kerja diisi elemen-elemen kerja hingga total waktunya mendekati takt time tanpa melebihinya (lihat <a href="panduan-line-balancing.html">panduan line balancing</a>).</li>
+      <li><strong>Menentukan jumlah operator/mesin</strong> — jumlah minimum stasiun kerja yang dibutuhkan dihitung dari: total waktu kerja per unit dibagi takt time, dibulatkan ke atas.</li>
+      <li><strong>Visual management</strong> — papan produksi per jam (<em>hourly output board</em>) dibuat berdasarkan takt time. Target per jam = 60 menit / takt time. Deviasi dari target langsung terlihat dan memicu respons cepat.</li>
+      <li><strong>Mendeteksi masalah lebih cepat</strong> — jika output per jam meleset dari irama takt, ada abnormalitas yang harus segera ditangani. Takt time menjadi "alarm alami" sistem produksi.</li>
+      <li><strong>Perencanaan kapasitas</strong> — perbandingan takt time dengan cycle time aktual menunjukkan apakah kapasitas saat ini cukup untuk memenuhi permintaan di masa depan.</li>
+      <li><strong>Desain sel produksi (cell design)</strong> — layout sel produksi dan penentuan jumlah operator dalam sel didasarkan pada takt time target.</li>
     </ul>
+
+    <h2>Kesalahan Umum dalam Menghitung dan Menerapkan Takt Time</h2>
+    <p>Berikut adalah kesalahan-kesalahan yang sering ditemui, baik di ujian akademik maupun dalam praktik di lapangan:</p>
+    <ol>
+      <li><strong>Tidak mengurangi waktu non-produktif.</strong> Menggunakan 480 menit (total shift 8 jam) tanpa mengurangi istirahat, meeting, dan pembersihan. Waktu tersedia harus bersih (<em>net available time</em>).</li>
+      <li><strong>Mengakomodasi downtime tidak terencana.</strong> Mengurangi takt time karena "mesin biasanya rusak 30 menit/hari." Ini salah — downtime tak terencana harus diperbaiki, bukan dijadikan bagian dari perhitungan. Jika Anda mengakomodasinya, Anda kehilangan insentif untuk memperbaikinya.</li>
+      <li><strong>Mencampur takt time dengan cycle time.</strong> Mengatakan "takt time lini kami 3 menit" padahal yang dimaksud adalah cycle time aktual. Takt time ditentukan oleh permintaan (eksternal), bukan oleh kemampuan proses (internal).</li>
+      <li><strong>Menggunakan permintaan puncak sebagai dasar.</strong> Menghitung takt dari permintaan tertinggi (misalnya hari Senin saja) alih-alih rata-rata periode perencanaan. Ini menghasilkan takt time yang terlalu ketat dan kapasitas berlebih di hari-hari biasa.</li>
+      <li><strong>Mengabaikan variabilitas.</strong> Mendesain lini agar CT persis sama dengan takt time tanpa buffer. Dalam kenyataan, selalu ada variabilitas proses — disarankan CT sekitar 85-95% dari takt time untuk menyerap variasi normal.</li>
+      <li><strong>Tidak memperbarui takt time.</strong> Menggunakan takt time yang sama selama berbulan-bulan padahal permintaan sudah berubah. Takt time harus dihitung ulang setiap kali permintaan atau jam kerja berubah signifikan.</li>
+      <li><strong>Menerapkan takt time tunggal untuk seluruh value stream.</strong> Proses yang berbeda dalam value stream mungkin memerlukan takt time berbeda jika ada percabangan, penggabungan, atau perbedaan yield rate.</li>
+    </ol>
 
     <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
     <div class="faq-item">
       <h3>Apakah takt time bisa berubah?</h3>
-      <p>Ya. Takt time berubah setiap kali permintaan pelanggan atau jam kerja berubah — biasanya dihitung ulang per bulan atau per periode perencanaan produksi.</p>
+      <p>Ya. Takt time berubah setiap kali permintaan pelanggan atau jam kerja berubah. Dalam praktik, takt time biasanya dihitung ulang per bulan atau per periode perencanaan produksi. Perubahan takt time yang signifikan mungkin memerlukan re-balancing lini produksi.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Bisakah takt time berubah setiap hari?</h3>
+      <p>Secara teori bisa, namun sangat tidak disarankan dalam praktik lean. Mengubah takt time setiap hari berarti mengubah target produksi, jumlah operator, dan kecepatan lini setiap hari — ini menciptakan kekacauan operasional. Pendekatan lean menggunakan <em>heijunka</em> (production leveling) untuk meratakan permintaan fluktuatif menjadi jadwal yang stabil, sehingga takt time bisa konsisten setidaknya selama satu periode perencanaan (biasanya mingguan atau bulanan).</p>
     </div>
     <div class="faq-item">
       <h3>Bagaimana jika permintaan sangat fluktuatif?</h3>
-      <p>Praktik lean umumnya menghitung takt dari permintaan rata-rata periode perencanaan dan meredam fluktuasi harian dengan <em>heijunka</em> (production leveling) plus sedikit stok penyangga barang jadi.</p>
+      <p>Praktik lean umumnya menghitung takt dari permintaan rata-rata periode perencanaan dan meredam fluktuasi harian dengan <em>heijunka</em> (production leveling) plus sedikit stok penyangga barang jadi. Untuk fluktuasi musiman yang besar, perusahaan bisa menggunakan strategi <em>chase</em> (menyesuaikan kapasitas) atau <em>level</em> (memproduksi stabil dan menyimpan stok) — lihat topik aggregate planning.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Bagaimana takt time untuk produk campuran (mixed-model)?</h3>
+      <p>Untuk lini yang memproduksi beberapa varian produk, hitung <strong>weighted takt time</strong> berdasarkan total permintaan semua varian. Misalnya: produk A = 100 unit/hari, produk B = 60 unit/hari, produk C = 40 unit/hari. Total permintaan = 200 unit/hari. Jika waktu tersedia = 400 menit, takt time = 400/200 = 2 menit/unit. Selanjutnya, gunakan heijunka untuk meratakan urutan produksi (misal: A-B-A-C-A-B-A-C...).</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apa hubungan takt time dengan efisiensi lini?</h3>
+      <p>Takt time digunakan sebagai pembagi dalam rumus efisiensi lini (<em>line efficiency</em>):</p>
+      <div class="formula-block">Efisiensi Lini = (Total Waktu Kerja Semua Stasiun) / (Jumlah Stasiun x Takt Time) x 100%</div>
+      <p>Semakin mendekati 100%, semakin seimbang dan efisien lini tersebut. Takt time yang tepat membantu mengidentifikasi stasiun yang kelebihan beban (CT > takt) maupun yang memiliki idle time berlebih (CT jauh di bawah takt).</p>
     </div>
     <div class="faq-item">
       <h3>Apakah takt time sama dengan target produksi per jam?</h3>
-      <p>Keduanya dua sisi mata uang: target per jam = 60 menit ÷ takt time (menit/unit). Takt 2 menit/unit setara target 30 unit/jam.</p>
+      <p>Keduanya dua sisi mata uang yang sama: target per jam = 60 menit / takt time (menit/unit). Takt 2 menit/unit setara target 30 unit/jam. Di papan produksi per jam (<em>hourly output board</em>), target ini dicantumkan agar operator dan supervisor bisa memantau apakah produksi sesuai irama.</p>
     </div>
+    <div class="faq-item">
+      <h3>Apakah takt time berlaku untuk proses non-manufaktur?</h3>
+      <p>Ya. Takt time bisa diterapkan di mana saja ada permintaan yang harus dipenuhi dalam waktu tertentu: rumah sakit (pasien per jam), call center (panggilan per shift), restoran (pesanan per jam makan siang), logistik (paket per hari), bahkan administrasi (dokumen diproses per hari). Prinsipnya universal: selaraskan kecepatan proses dengan kecepatan permintaan.</p>
+    </div>
+
+    <h2>Rangkuman</h2>
+    <p>Berikut poin-poin utama yang harus diingat tentang takt time:</p>
+    <ul>
+      <li><strong>Takt time</strong> = waktu produksi tersedia / permintaan pelanggan. Ia menentukan <em>irama</em> yang harus diikuti oleh seluruh lini produksi.</li>
+      <li>Berasal dari kata Jerman <em>"Takt"</em> (ketukan), diadopsi oleh Toyota Production System sebagai fondasi produksi lean.</li>
+      <li><strong>Takt time ditentukan oleh pelanggan</strong> (permintaan eksternal), sedangkan <strong>cycle time ditentukan oleh proses</strong> (kemampuan internal). Lead time mencakup keseluruhan waktu dari order hingga pengiriman.</li>
+      <li>Waktu produksi tersedia harus bersih (<em>net available time</em>) — sudah dikurangi istirahat, meeting, pembersihan, dan changeover terjadwal.</li>
+      <li>Kondisi ideal: <strong>cycle time sedikit di bawah takt time</strong> (85-95%). CT > takt = masalah kapasitas. CT jauh di bawah takt = potensi pemborosan overproduction.</li>
+      <li>Takt time terhubung erat dengan konsep lean lainnya: <em>one-piece flow</em>, <em>kanban</em>, <em>heijunka</em>, <em>kaizen</em>, dan <em>value stream mapping</em>.</li>
+      <li><strong>Pitch</strong> = takt time x pack quantity — konsep turunan yang berguna untuk proses batch dan penjadwalan pengiriman internal.</li>
+      <li>Takt time berlaku universal — tidak hanya di manufaktur, tetapi juga di rumah sakit, restoran, call center, logistik, dan operasi jasa lainnya.</li>
+      <li>Hitung ulang takt time setiap kali <strong>permintaan atau jam kerja berubah signifikan</strong> — takt time bukan angka tetap selamanya.</li>
+    </ul>
 
     <h2>Referensi</h2>
     <ul>
-      <li>Ohno, T. (1988). <em>Toyota Production System: Beyond Large-Scale Production</em>. Productivity Press. — sumber asli konsep produksi berirama permintaan.</li>
-      <li>Rother, M., &amp; Shook, J. (1999). <em>Learning to See: Value Stream Mapping to Add Value and Eliminate Muda</em>. Lean Enterprise Institute.</li>
-      <li>Liker, J. K. (2004). <em>The Toyota Way: 14 Management Principles from the World's Greatest Manufacturer</em>. McGraw-Hill.</li>
-      <li>Heizer, J., Render, B., &amp; Munson, C. (2020). <em>Operations Management</em> (13th ed.), Bab 16 "Lean Operations". Pearson.</li>
+      <li>Ohno, T. (1988). <em>Toyota Production System: Beyond Large-Scale Production</em>. Productivity Press. — Sumber asli konsep produksi berirama permintaan dan penjelasan mengapa overproduction adalah muda terburuk.</li>
+      <li>Liker, J. K. (2004). <em>The Toyota Way: 14 Management Principles from the World's Greatest Manufacturer</em>. McGraw-Hill. — Bab 5 dan 10 membahas takt time sebagai "heartbeat" produksi lean.</li>
+      <li>Rother, M., &amp; Shook, J. (1999). <em>Learning to See: Value Stream Mapping to Add Value and Eliminate Muda</em>. Lean Enterprise Institute. — Panduan VSM di mana takt time menjadi garis referensi utama.</li>
+      <li>Rother, M., &amp; Harris, R. (2001). <em>Creating Continuous Flow: An Action Guide for Managers, Engineers, and Production Associates</em>. Lean Enterprise Institute. — Panduan praktis mendesain sel produksi berbasis takt time.</li>
+      <li>Womack, J. P., &amp; Jones, D. T. (2003). <em>Lean Thinking: Banish Waste and Create Wealth in Your Corporation</em> (Rev. ed.). Free Press. — Kerangka lima prinsip lean di mana takt time mendukung prinsip "flow" dan "pull."</li>
+      <li>Heizer, J., Render, B., &amp; Munson, C. (2020). <em>Operations Management</em> (13th ed.), Bab 16 "Lean Operations". Pearson. — Buku teks standar manajemen operasi yang membahas takt time dalam konteks akademik.</li>
+      <li>Dennis, P. (2015). <em>Lean Production Simplified</em> (3rd ed.). Productivity Press. — Pengantar komprehensif lean manufacturing termasuk pembahasan takt time, pitch, dan heijunka.</li>
     </ul>
 
     <hr class="divider">
@@ -187,6 +397,7 @@
     <a href="about.html">Tentang</a>
     <a href="contact.html">Kontak</a>
     <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Syarat &amp; Ketentuan</a>
   </div>
   <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
 </footer>

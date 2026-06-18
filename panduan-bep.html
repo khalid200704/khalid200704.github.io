@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <title>Break-Even Point (BEP): Rumus, Cara Menghitung &amp; Contoh Soal</title>
-<meta name="description" content="Panduan lengkap Break-Even Point: rumus BEP unit dan rupiah, margin kontribusi, cara menghitung titik impas langkah demi langkah, contoh soal dengan jawaban, dan analisis target laba." />
+<meta name="description" content="Panduan lengkap Break-Even Point: rumus BEP unit dan rupiah, BEP multi-produk, margin kontribusi dan rasio margin, margin of safety, analisis sensitivitas, contoh soal single-product dan multi-product langkah demi langkah, serta aplikasi BEP dalam konteks industri Indonesia (UMKM, manufaktur, F&B)." />
 <meta name="author" content="TI Toolkit" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://khalid200704.github.io/panduan-bep.html" />
@@ -13,7 +13,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://khalid200704.github.io/panduan-bep.html" />
 <meta property="og:title" content="Break-Even Point (BEP): Rumus, Cara Menghitung &amp; Contoh Soal" />
-<meta property="og:description" content="Rumus BEP unit dan rupiah, margin kontribusi, contoh soal langkah demi langkah, dan analisis target laba." />
+<meta property="og:description" content="Panduan lengkap Break-Even Point: rumus BEP unit dan rupiah, BEP multi-produk, margin kontribusi, margin of safety, analisis sensitivitas, dan contoh soal langkah demi langkah." />
 <meta property="og:image" content="https://khalid200704.github.io/og-image.svg" />
 <meta property="og:locale" content="id_ID" />
 <meta property="og:site_name" content="TI Toolkit" />
@@ -29,7 +29,7 @@
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "Break-Even Point (BEP): Rumus, Cara Menghitung & Contoh Soal",
-  "description": "Rumus BEP unit dan rupiah, margin kontribusi, contoh soal langkah demi langkah, dan analisis target laba.",
+  "description": "Panduan lengkap Break-Even Point: rumus BEP unit dan rupiah, BEP multi-produk, margin kontribusi, margin of safety, analisis sensitivitas, contoh soal langkah demi langkah, dan aplikasi BEP dalam konteks industri Indonesia.",
   "inLanguage": "id-ID",
   "author": { "@type": "Organization", "name": "TI Toolkit" },
   "publisher": { "@type": "Organization", "name": "TI Toolkit", "url": "https://khalid200704.github.io/" },
@@ -55,6 +55,26 @@
       "@type": "Question",
       "name": "Apa itu margin kontribusi?",
       "acceptedAnswer": { "@type": "Answer", "text": "Margin kontribusi adalah selisih harga jual dan biaya variabel per unit (P − VC). Setiap unit terjual menyumbang sebesar margin kontribusi untuk menutup biaya tetap, lalu menjadi laba setelah BEP tercapai." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bagaimana menghitung BEP jika ada beberapa produk?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Gunakan metode Weighted Average Contribution Margin (WACM). Tentukan proporsi penjualan masing-masing produk, hitung WACM = jumlah dari (CM masing-masing produk × proporsinya), lalu BEP total = FC / WACM." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa perbedaan BEP dan payback period?",
+      "acceptedAnswer": { "@type": "Answer", "text": "BEP mengukur volume penjualan minimum agar tidak rugi pada satu periode, sedangkan payback period mengukur waktu yang diperlukan untuk mengembalikan investasi awal. BEP fokus pada operasional rutin, payback period fokus pada pengembalian modal." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah hasil BEP harus dibulatkan ke atas?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Ya. BEP 7.142,86 unit berarti pada 7.142 unit perusahaan masih sedikit rugi, sehingga titik impas praktisnya 7.143 unit. Pembulatan ke atas berlaku untuk produk yang dijual dalam satuan bulat." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bagaimana cara menangani biaya semi-variabel dalam analisis BEP?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Biaya semi-variabel perlu dipisahkan menjadi komponen tetap dan variabelnya menggunakan high-low method atau regresi linear (least-squares). Komponen tetap ditambahkan ke FC dan komponen variabel ke VC per unit." }
     }
   ]
 }
@@ -95,7 +115,7 @@
     <div class="meta-info">Panduan Analisis Kelayakan — bagian dari seri <a href="panduan.html">Panduan Teknik Industri</a> TI Toolkit.</div>
 
     <h1>Break-Even Point (BEP): Rumus &amp; Cara Menghitung</h1>
-    <p class="subtitle">Titik impas dalam unit dan rupiah, margin kontribusi, contoh soal langkah demi langkah, dan cara menghitung penjualan untuk target laba tertentu.</p>
+    <p class="subtitle">Titik impas dalam unit dan rupiah, margin kontribusi, rasio margin, margin of safety, analisis sensitivitas, contoh soal single-product dan multi-product langkah demi langkah, serta aplikasi BEP dalam konteks industri Indonesia.</p>
     <!-- AdSense In-Article -->
     <ins class="adsbygoogle" style="display:block;text-align:center" data-ad-client="ca-pub-8688855167346136" data-ad-slot="9074056144" data-ad-format="fluid" data-ad-layout="in-article"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -103,71 +123,297 @@
 
 
     <h2>Apa itu Break-Even Point?</h2>
-    <p><strong>Break-Even Point (BEP)</strong> atau titik impas adalah tingkat penjualan di mana <strong>total pendapatan sama persis dengan total biaya</strong> — perusahaan tidak untung dan tidak rugi. Analisis BEP (sering disebut <em>cost-volume-profit analysis</em>) dipakai untuk menilai kelayakan produk baru, menentukan harga jual minimum, dan menghitung berapa banyak yang harus terjual agar bisnis mulai menghasilkan laba.</p>
+    <p><strong>Break-Even Point (BEP)</strong> atau titik impas adalah tingkat penjualan di mana <strong>total pendapatan sama persis dengan total biaya</strong> — perusahaan tidak untung dan tidak rugi. Secara matematis, pada titik BEP berlaku persamaan: Total Revenue (TR) = Total Cost (TC), atau equivalennya: Laba (Profit) = TR - TC = 0. Analisis BEP merupakan bagian dari kerangka yang lebih luas bernama <em>Cost-Volume-Profit (CVP) Analysis</em>, yaitu analisis hubungan antara biaya, volume produksi/penjualan, dan laba.</p>
     <p>Konsep kuncinya adalah pemisahan biaya menjadi dua jenis:</p>
     <ul>
-      <li><strong>Biaya tetap (FC)</strong> — tidak berubah berapa pun unit yang diproduksi: sewa pabrik, gaji tetap, depresiasi mesin.</li>
-      <li><strong>Biaya variabel (VC)</strong> — proporsional terhadap jumlah unit: bahan baku, upah borongan, kemasan, listrik mesin per unit.</li>
+      <li><strong>Biaya tetap (Fixed Cost / FC)</strong> — tidak berubah berapa pun unit yang diproduksi dalam rentang kapasitas tertentu: sewa pabrik, gaji karyawan tetap, depresiasi mesin, asuransi, dan biaya administrasi umum.</li>
+      <li><strong>Biaya variabel (Variable Cost / VC)</strong> — berubah secara proporsional terhadap jumlah unit yang diproduksi: bahan baku, upah tenaga kerja langsung (borongan), kemasan, listrik mesin per unit, dan biaya pengiriman per unit.</li>
+    </ul>
+    <p>Dengan memahami titik impas, seorang manajer atau wirausahawan dapat mengetahui berapa unit minimum yang harus terjual agar bisnis tidak merugi, dan berapa unit yang harus terjual untuk mencapai target laba tertentu. Analisis ini menjadi fondasi dalam pengambilan keputusan bisnis mulai dari penetapan harga, perencanaan produksi, hingga evaluasi kelayakan investasi.</p>
+
+    <h2>Mengapa Analisis Break-Even Penting?</h2>
+    <p>Analisis break-even bukan sekadar rumus di buku teks — ia adalah alat pengambilan keputusan yang digunakan secara luas di dunia industri dan bisnis. Berikut beberapa alasan mengapa analisis BEP sangat penting:</p>
+
+    <h3>1. Studi Kelayakan (Feasibility Study)</h3>
+    <p>Sebelum meluncurkan produk baru atau membangun pabrik, investor dan manajemen perlu mengetahui apakah proyek tersebut layak secara finansial. Dengan menghitung BEP, mereka dapat menilai apakah volume penjualan yang dibutuhkan untuk impas realistis dibandingkan dengan ukuran pasar yang tersedia. Jika BEP terlalu tinggi dibandingkan kapasitas produksi atau potensi pasar, maka proyek tersebut berisiko tinggi dan mungkin perlu dirancang ulang.</p>
+    <p><strong>Contoh nyata:</strong> Sebuah startup di Bandung ingin memproduksi tas dari bahan daur ulang. Biaya tetap (sewa workshop, mesin jahit, gaji 3 karyawan tetap) = Rp 30 juta/bulan. Biaya variabel per tas = Rp 75.000, harga jual = Rp 150.000. BEP = 30.000.000 / (150.000 - 75.000) = 400 tas/bulan. Tim startup lalu mengevaluasi: apakah menjual 400 tas per bulan realistis untuk merek baru? Jika riset pasar menunjukkan potensi hanya 250 tas, maka perlu strategi lain — misalnya menaikkan harga, menekan biaya variabel, atau mencari cara mengurangi biaya tetap.</p>
+
+    <h3>2. Keputusan Penetapan Harga (Pricing Decision)</h3>
+    <p>Analisis BEP membantu menentukan harga jual minimum yang masih memungkinkan bisnis bertahan. Dengan mengetahui struktur biaya, manajemen dapat menghitung pada harga berapa volume penjualan yang dibutuhkan masih masuk akal. Jika harga jual diturunkan (misalnya untuk promosi), BEP akan naik — dan manajemen harus memastikan bahwa peningkatan volume akibat penurunan harga cukup untuk mengompensasi margin yang mengecil.</p>
+
+    <h3>3. Perencanaan Produksi dan Kapasitas</h3>
+    <p>Pabrik yang ingin memutuskan apakah perlu menambah shift produksi, membeli mesin baru, atau outsourcing sebagian proses dapat menggunakan analisis BEP. Penambahan mesin baru akan menaikkan biaya tetap (depresiasi, perawatan), tetapi mungkin menurunkan biaya variabel per unit (efisiensi produksi lebih tinggi). Dengan membandingkan BEP sebelum dan sesudah investasi, manajemen dapat menilai apakah penambahan kapasitas tersebut layak.</p>
+
+    <h3>4. Evaluasi Risiko Bisnis</h3>
+    <p>BEP memberikan gambaran tentang seberapa rentan bisnis terhadap perubahan kondisi pasar. Bisnis dengan BEP yang sangat tinggi relatif terhadap kapasitas produksinya memiliki risiko lebih besar karena hanya ada sedikit "ruang aman" jika permintaan menurun. Sebaliknya, bisnis dengan BEP rendah lebih tahan terhadap fluktuasi pasar.</p>
+
+    <h2>Komponen Biaya: Tetap vs Variabel</h2>
+    <p>Pemahaman yang benar tentang klasifikasi biaya adalah prasyarat mutlak untuk analisis BEP yang akurat. Kesalahan dalam mengkategorikan biaya akan menghasilkan perhitungan BEP yang menyesatkan. Berikut penjelasan rinci kedua kategori biaya beserta contoh-contohnya:</p>
+
+    <h3>Biaya Tetap (Fixed Cost)</h3>
+    <p>Biaya tetap adalah biaya yang jumlah totalnya tidak berubah dalam jangka pendek, terlepas dari berapa banyak unit yang diproduksi — selama masih dalam rentang kapasitas yang relevan (<em>relevant range</em>). Namun perlu dicatat bahwa biaya tetap per unit akan menurun seiring bertambahnya volume produksi (karena biaya total yang sama dibagi ke lebih banyak unit).</p>
+    <ul>
+      <li><strong>Sewa pabrik/gedung</strong> — Rp 10 juta/bulan tetap dibayar baik produksi 100 unit maupun 10.000 unit.</li>
+      <li><strong>Gaji karyawan tetap</strong> — gaji manajer produksi, staf administrasi, satpam yang dibayar bulanan tanpa melihat output.</li>
+      <li><strong>Depresiasi mesin dan peralatan</strong> — penyusutan nilai mesin yang dihitung berdasarkan umur ekonomis, bukan berdasarkan pemakaian.</li>
+      <li><strong>Asuransi</strong> — premi asuransi pabrik dan peralatan yang dibayar secara periodik.</li>
+      <li><strong>Biaya lisensi dan izin usaha</strong> — periodik dan tidak tergantung volume produksi.</li>
     </ul>
 
-    <h2>Rumus BEP</h2>
-    <div class="formula-block">BEP (unit) = FC / (P − VC)</div>
-    <div class="formula-block">BEP (rupiah) = FC / (1 − VC/P)</div>
+    <h3>Biaya Variabel (Variable Cost)</h3>
+    <p>Biaya variabel berubah secara proporsional terhadap volume produksi. Jika produksi naik 50%, maka total biaya variabel juga naik sekitar 50%. Biaya variabel per unit cenderung konstan (asumsi yang digunakan dalam analisis BEP dasar).</p>
+    <ul>
+      <li><strong>Bahan baku</strong> — kain untuk garmen, tepung untuk roti, plastik untuk kemasan.</li>
+      <li><strong>Tenaga kerja langsung</strong> — upah borongan pekerja yang dibayar per unit yang diproduksi.</li>
+      <li><strong>Kemasan (packaging)</strong> — kotak, label, plastik shrink wrap per unit produk.</li>
+      <li><strong>Biaya pengiriman per unit</strong> — ongkos kirim yang dihitung berdasarkan jumlah barang.</li>
+      <li><strong>Komisi penjualan</strong> — persentase dari harga jual yang dibayarkan kepada sales/agen.</li>
+    </ul>
+
+    <h3>Tabel Perbandingan Biaya Tetap vs Variabel</h3>
     <table class="data-table">
-      <thead><tr><th>Simbol</th><th>Arti</th><th>Satuan</th></tr></thead>
+      <thead><tr><th>Aspek</th><th>Biaya Tetap</th><th>Biaya Variabel</th></tr></thead>
       <tbody>
-        <tr><td>FC</td><td>Total biaya tetap per periode</td><td>Rp</td></tr>
-        <tr><td>P</td><td>Harga jual per unit</td><td>Rp/unit</td></tr>
-        <tr><td>VC</td><td>Biaya variabel per unit</td><td>Rp/unit</td></tr>
-        <tr><td>P − VC</td><td>Margin kontribusi per unit</td><td>Rp/unit</td></tr>
+        <tr><td>Perilaku total</td><td>Konstan dalam relevant range</td><td>Berubah proporsional terhadap volume</td></tr>
+        <tr><td>Perilaku per unit</td><td>Menurun saat volume naik</td><td>Konstan per unit</td></tr>
+        <tr><td>Contoh</td><td>Sewa, gaji tetap, depresiasi</td><td>Bahan baku, upah borongan, kemasan</td></tr>
+        <tr><td>Relevansi waktu</td><td>Jangka pendek (bisa berubah jangka panjang)</td><td>Berubah segera saat produksi berubah</td></tr>
+        <tr><td>Pengaruh pada BEP</td><td>Kenaikan FC menaikkan BEP</td><td>Kenaikan VC/unit menaikkan BEP</td></tr>
       </tbody>
     </table>
-    <p><strong>Margin kontribusi</strong> (P − VC) adalah jantung analisis ini: setiap unit yang terjual "menyumbang" sebesar margin kontribusi untuk menutup biaya tetap. Setelah biaya tetap tertutup (BEP tercapai), setiap unit tambahan menyumbang langsung ke laba.</p>
-    <p>Untuk mencapai <strong>target laba</strong> tertentu, tambahkan target laba ke biaya tetap:</p>
-    <div class="formula-block">Q<sub>target</sub> = (FC + Target Laba) / (P − VC)</div>
 
-    <h2>Contoh Soal BEP dan Pembahasan</h2>
+    <h3>Biaya Semi-Variabel (Mixed Cost)</h3>
+    <p>Dalam praktik, tidak semua biaya bisa dipisahkan dengan tegas menjadi tetap atau variabel. <strong>Biaya semi-variabel</strong> memiliki komponen tetap dan komponen variabel sekaligus. Contoh klasik adalah biaya listrik pabrik: ada biaya abonemen tetap setiap bulan (komponen tetap), ditambah biaya per kWh yang meningkat seiring pemakaian mesin (komponen variabel). Contoh lain adalah biaya telepon, biaya perawatan mesin (ada jadwal perawatan rutin yang tetap, ditambah perawatan akibat pemakaian intensif).</p>
+    <p>Untuk keperluan analisis BEP, biaya semi-variabel perlu dipisahkan menjadi komponen tetap dan variabelnya menggunakan metode seperti <em>high-low method</em> atau <em>regresi linear (least-squares)</em>. Ini penting agar analisis tetap akurat.</p>
+
+    <h2>Derivasi dan Variasi Rumus BEP</h2>
+    <p>Berikut adalah berbagai rumus BEP yang digunakan dalam analisis CVP, mulai dari yang paling dasar hingga multi-produk.</p>
+
+    <h3>1. BEP dalam Unit</h3>
+    <p>Titik impas dicapai ketika laba = 0, yaitu ketika total pendapatan sama dengan total biaya:</p>
+    <div class="formula-block">TR = TC &nbsp;→&nbsp; P × Q = FC + VC × Q &nbsp;→&nbsp; Q × (P - VC) = FC</div>
+    <div class="formula-block">BEP (unit) = FC / (P − VC) = FC / CM</div>
+    <p>Di mana CM = Contribution Margin per unit = P - VC. Rumus ini menunjukkan bahwa BEP adalah jumlah unit yang marjin kontribusi totalnya (CM x Q) tepat sama dengan biaya tetap.</p>
+
+    <h3>2. BEP dalam Rupiah (Revenue)</h3>
+    <p>Untuk mengetahui berapa nilai penjualan (dalam rupiah) yang diperlukan untuk mencapai titik impas:</p>
+    <div class="formula-block">BEP (Rp) = FC / CM Ratio = FC / (1 − VC/P)</div>
+    <p>Di mana CM Ratio (Rasio Margin Kontribusi) = CM/P = (P - VC)/P. Rumus ini sangat berguna ketika perusahaan menjual banyak produk dan lebih mudah berpikir dalam total revenue daripada jumlah unit.</p>
+
+    <h3>3. BEP dengan Target Laba</h3>
+    <p>Jika manajemen ingin mengetahui berapa unit yang harus terjual untuk mencapai laba tertentu, target laba ditambahkan ke pembilang:</p>
+    <div class="formula-block">Q<sub>target</sub> = (FC + Target Laba) / (P − VC)</div>
+    <p>Logikanya: margin kontribusi dari setiap unit harus menutup biaya tetap terlebih dahulu, baru kemudian "mengumpulkan" laba. Jadi total margin kontribusi yang dibutuhkan = FC + Target Laba.</p>
+
+    <h3>4. BEP Multi-Produk (Weighted Average Contribution Margin)</h3>
+    <p>Kebanyakan perusahaan menjual lebih dari satu produk. Untuk menghitung BEP dalam situasi multi-produk, digunakan <strong>weighted average contribution margin (WACM)</strong> berdasarkan bauran penjualan (sales mix):</p>
+    <div class="formula-block">WACM = Σ (CM<sub>i</sub> × proporsi<sub>i</sub>)</div>
+    <div class="formula-block">BEP total (unit) = FC / WACM</div>
+    <p>Kemudian BEP per produk dihitung dengan mengalikan BEP total dengan proporsi masing-masing produk. Asumsi penting: bauran penjualan (sales mix) dianggap konstan.</p>
+
+    <table class="data-table">
+      <thead><tr><th>Variasi Rumus</th><th>Formula</th><th>Kapan Digunakan</th></tr></thead>
+      <tbody>
+        <tr><td>BEP unit</td><td>FC / (P - VC)</td><td>Produk tunggal, ingin tahu jumlah unit</td></tr>
+        <tr><td>BEP rupiah</td><td>FC / CM Ratio</td><td>Multi-produk atau ingin tahu total revenue</td></tr>
+        <tr><td>BEP + target laba</td><td>(FC + Laba) / (P - VC)</td><td>Perencanaan laba</td></tr>
+        <tr><td>BEP multi-produk</td><td>FC / WACM</td><td>Perusahaan dengan beberapa lini produk</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Margin Kontribusi dan Rasio Margin</h2>
+    <p>Margin kontribusi adalah konsep sentral dalam seluruh analisis CVP dan BEP. Memahaminya dengan baik memungkinkan pengambilan keputusan yang cepat tanpa harus menghitung ulang BEP secara penuh setiap kali.</p>
+
+    <h3>Margin Kontribusi per Unit (CM)</h3>
+    <div class="formula-block">CM = P − VC (Harga Jual − Biaya Variabel per Unit)</div>
+    <p>Margin kontribusi per unit menunjukkan berapa rupiah dari setiap unit yang terjual yang tersedia untuk menutup biaya tetap. Setelah semua biaya tetap tertutup (BEP tercapai), seluruh margin kontribusi dari unit tambahan langsung menjadi laba. Inilah mengapa dinamakan "kontribusi" — setiap unit berkontribusi terhadap penutupan biaya tetap dan penciptaan laba.</p>
+
+    <h3>Rasio Margin Kontribusi (CM Ratio)</h3>
+    <div class="formula-block">CM Ratio = CM / P = (P − VC) / P</div>
+    <p>CM Ratio menunjukkan proporsi dari setiap rupiah pendapatan yang tersedia untuk menutup biaya tetap dan menghasilkan laba. Misalnya, CM Ratio = 0,40 berarti dari setiap Rp 1.000 penjualan, Rp 400 tersedia untuk menutup biaya tetap (dan sisanya Rp 600 adalah biaya variabel).</p>
+
+    <h3>Penggunaan CM Ratio untuk Keputusan Cepat</h3>
+    <p>CM Ratio sangat berguna untuk menjawab pertanyaan cepat seperti: "Jika penjualan naik Rp 10 juta, berapa tambahan laba?" Jawabannya langsung: tambahan laba = Rp 10 juta x CM Ratio. Ini berlaku selama masih di atas BEP dan dalam relevant range.</p>
+    <p>Dalam membandingkan produk-produk yang dijual, produk dengan CM Ratio lebih tinggi lebih "menguntungkan" per rupiah penjualannya. Jadi jika kapasitas produksi terbatas, prioritaskan produk dengan CM Ratio tertinggi untuk memaksimalkan laba.</p>
+
+    <h2>Contoh Soal 1: BEP Produk Tunggal (Single Product)</h2>
     <p><strong>Soal:</strong> Sebuah UKM memproduksi minuman kemasan dengan biaya tetap Rp 50.000.000 per bulan. Harga jual Rp 15.000 per unit dan biaya variabel Rp 8.000 per unit. (a) Berapa BEP dalam unit dan rupiah? (b) Berapa unit harus terjual untuk laba Rp 21.000.000 per bulan?</p>
     <p><strong>Langkah 1 — Margin kontribusi:</strong> P − VC = 15.000 − 8.000 = Rp 7.000 per unit.</p>
-    <p><strong>Langkah 2 — BEP unit:</strong></p>
+    <p><strong>Langkah 2 — CM Ratio:</strong> 7.000 / 15.000 = 0,4667 atau 46,67%.</p>
+    <p><strong>Langkah 3 — BEP unit:</strong></p>
     <div class="formula-block">BEP = 50.000.000 / 7.000 = 7.142,86 ≈ 7.143 unit</div>
-    <p><strong>Langkah 3 — BEP rupiah:</strong> 7.142,86 × 15.000 ≈ Rp 107.142.857. (Cek: 50.000.000 / (1 − 8.000/15.000) = 50.000.000 / 0,4667 ≈ Rp 107,14 juta — sama.)</p>
-    <p><strong>Langkah 4 — Target laba:</strong></p>
+    <p><strong>Langkah 4 — BEP rupiah:</strong> 7.142,86 × 15.000 ≈ Rp 107.142.857. (Cek: 50.000.000 / (1 − 8.000/15.000) = 50.000.000 / 0,4667 ≈ Rp 107,14 juta — sama.)</p>
+    <p><strong>Langkah 5 — Target laba:</strong></p>
     <div class="formula-block">Q = (50.000.000 + 21.000.000) / 7.000 = 10.143 unit</div>
-    <p><strong>Interpretasi:</strong> di bawah 7.143 unit per bulan UKM ini merugi; untuk membukukan laba Rp 21 juta dibutuhkan penjualan sekitar 10.143 unit, atau 42% di atas titik impas.</p>
+    <p><strong>Interpretasi:</strong> di bawah 7.143 unit per bulan UKM ini merugi; untuk membukukan laba Rp 21 juta dibutuhkan penjualan sekitar 10.143 unit, atau 42% di atas titik impas. CM Ratio sebesar 46,67% menunjukkan bahwa dari setiap Rp 1.000 penjualan, Rp 467 tersedia untuk menutup biaya tetap dan menghasilkan laba.</p>
+
+    <h2>Contoh Soal 2: BEP Multi-Produk</h2>
+    <p><strong>Soal:</strong> Sebuah pabrik roti memproduksi dua jenis produk dengan biaya tetap total Rp 36.000.000 per bulan:</p>
+    <table class="data-table">
+      <thead><tr><th>Produk</th><th>Harga Jual (P)</th><th>Biaya Variabel (VC)</th><th>CM per Unit</th><th>Proporsi Penjualan</th></tr></thead>
+      <tbody>
+        <tr><td>Roti Tawar</td><td>Rp 18.000</td><td>Rp 10.000</td><td>Rp 8.000</td><td>60%</td></tr>
+        <tr><td>Roti Manis</td><td>Rp 25.000</td><td>Rp 13.000</td><td>Rp 12.000</td><td>40%</td></tr>
+      </tbody>
+    </table>
+    <p>Tentukan: (a) BEP total dalam unit, (b) BEP per produk, (c) BEP dalam rupiah.</p>
+
+    <p><strong>Langkah 1 — Weighted Average Contribution Margin (WACM):</strong></p>
+    <div class="formula-block">WACM = (8.000 × 0,60) + (12.000 × 0,40) = 4.800 + 4.800 = Rp 9.600</div>
+
+    <p><strong>Langkah 2 — BEP total (unit):</strong></p>
+    <div class="formula-block">BEP total = 36.000.000 / 9.600 = 3.750 unit</div>
+
+    <p><strong>Langkah 3 — BEP per produk:</strong></p>
+    <ul>
+      <li>Roti Tawar: 3.750 × 60% = <strong>2.250 unit</strong></li>
+      <li>Roti Manis: 3.750 × 40% = <strong>1.500 unit</strong></li>
+    </ul>
+
+    <p><strong>Langkah 4 — BEP dalam rupiah:</strong></p>
+    <ul>
+      <li>Roti Tawar: 2.250 × 18.000 = Rp 40.500.000</li>
+      <li>Roti Manis: 1.500 × 25.000 = Rp 37.500.000</li>
+      <li><strong>Total BEP (Rp) = Rp 78.000.000</strong></li>
+    </ul>
+
+    <p><strong>Verifikasi:</strong> Total CM = (2.250 × 8.000) + (1.500 × 12.000) = 18.000.000 + 18.000.000 = 36.000.000 = FC. Laba = 0. Terbukti impas.</p>
+    <p><strong>Interpretasi:</strong> Pabrik roti ini harus menjual minimal 3.750 unit kombinasi (2.250 roti tawar + 1.500 roti manis) setiap bulan untuk impas. Jika bauran penjualan berubah — misalnya proporsi roti manis naik — maka BEP total akan turun karena roti manis memiliki CM per unit yang lebih tinggi.</p>
 
     <h2>Margin of Safety</h2>
-    <p>Jika penjualan aktual/yang direncanakan diketahui, hitung <strong>margin of safety</strong> — seberapa jauh penjualan boleh turun sebelum mulai rugi:</p>
-    <div class="formula-block">MoS (%) = (Penjualan − BEP) / Penjualan × 100%</div>
-    <p>Misal penjualan direncanakan 10.000 unit dengan BEP 7.143 unit, maka MoS = (10.000 − 7.143)/10.000 = 28,6%. Semakin besar MoS, semakin aman posisi bisnis terhadap penurunan permintaan.</p>
+    <p><strong>Margin of Safety (MoS)</strong> mengukur seberapa jauh penjualan aktual atau yang direncanakan berada di atas titik impas. Ini adalah indikator risiko: semakin besar MoS, semakin besar "bantalan" yang dimiliki bisnis sebelum mulai merugi jika terjadi penurunan penjualan.</p>
 
-    <h2>Asumsi dan Keterbatasan Analisis BEP</h2>
+    <h3>Rumus Margin of Safety</h3>
+    <div class="formula-block">MoS (unit) = Penjualan Aktual − BEP (unit)</div>
+    <div class="formula-block">MoS (Rp) = Pendapatan Aktual − BEP (Rp)</div>
+    <div class="formula-block">MoS (%) = (Penjualan − BEP) / Penjualan × 100%</div>
+
+    <h3>Interpretasi dan Contoh</h3>
+    <p>Misal penjualan direncanakan 10.000 unit dengan BEP 7.143 unit:</p>
     <ul>
-      <li>Harga jual dan biaya variabel per unit dianggap konstan (linear) di seluruh rentang produksi.</li>
-      <li>Semua biaya bisa dipisahkan dengan jelas menjadi tetap dan variabel — di praktik banyak biaya semi-variabel.</li>
-      <li>Semua unit yang diproduksi dianggap terjual (tidak ada perubahan persediaan).</li>
-      <li>Untuk multi-produk, perlu asumsi bauran penjualan (sales mix) yang tetap dan perhitungan margin kontribusi rata-rata tertimbang.</li>
+      <li>MoS (unit) = 10.000 - 7.143 = 2.857 unit</li>
+      <li>MoS (%) = 2.857 / 10.000 = <strong>28,6%</strong></li>
     </ul>
+    <p>Artinya penjualan boleh turun hingga 28,6% dari rencana sebelum bisnis mulai merugi. Dalam konteks manajemen risiko, nilai MoS ini menunjukkan seberapa tahan bisnis terhadap penurunan permintaan yang tidak terduga.</p>
+
+    <h3>Mengapa MoS Penting untuk Penilaian Risiko?</h3>
+    <p>Perusahaan dengan MoS yang tinggi (misalnya > 30%) memiliki fleksibilitas yang lebih besar untuk menghadapi penurunan musiman, persaingan harga, atau gangguan rantai pasok. Sebaliknya, perusahaan dengan MoS rendah (misalnya < 10%) sangat rentan — bahkan penurunan penjualan kecil bisa langsung menyebabkan kerugian. MoS juga berguna untuk membandingkan risiko antar lini produk atau antar periode.</p>
+    <p>Sebagai pedoman umum: MoS < 15% dianggap berisiko tinggi, 15-30% cukup aman, dan > 30% relatif nyaman — meskipun standar ini bervariasi antar industri.</p>
+
+    <h2>Analisis Sensitivitas BEP</h2>
+    <p>Analisis sensitivitas menjawab pertanyaan "bagaimana jika?" (<em>what-if analysis</em>) — yaitu bagaimana BEP berubah ketika satu atau lebih variabel berubah. Ini sangat penting karena dalam dunia nyata, harga, biaya, dan volume jarang tetap konstan.</p>
+    <p>Kita gunakan data dari Contoh Soal 1 sebagai basis: FC = Rp 50 juta, P = Rp 15.000, VC = Rp 8.000, BEP awal = 7.143 unit.</p>
+
+    <h3>Skenario 1: Biaya Tetap Naik 10%</h3>
+    <p>Jika sewa pabrik atau gaji karyawan naik sehingga FC menjadi Rp 55.000.000:</p>
+    <div class="formula-block">BEP baru = 55.000.000 / 7.000 = 7.857 unit (naik 714 unit atau +10%)</div>
+    <p>Kenaikan biaya tetap menaikkan BEP secara proporsional (FC naik 10%, BEP naik 10%).</p>
+
+    <h3>Skenario 2: Harga Jual Turun 5%</h3>
+    <p>Jika perusahaan menurunkan harga menjadi Rp 14.250 (turun 5% dari Rp 15.000) untuk menghadapi persaingan:</p>
+    <div class="formula-block">CM baru = 14.250 − 8.000 = Rp 6.250</div>
+    <div class="formula-block">BEP baru = 50.000.000 / 6.250 = 8.000 unit (naik 857 unit atau +12%)</div>
+    <p>Perhatikan: harga hanya turun 5%, tetapi BEP naik 12%! Ini karena penurunan harga langsung mengecilkan margin kontribusi, sehingga dampaknya pada BEP lebih besar dari proporsi penurunan harga itu sendiri.</p>
+
+    <h3>Skenario 3: Biaya Variabel Naik 10%</h3>
+    <p>Jika harga bahan baku naik sehingga VC menjadi Rp 8.800 per unit:</p>
+    <div class="formula-block">CM baru = 15.000 − 8.800 = Rp 6.200</div>
+    <div class="formula-block">BEP baru = 50.000.000 / 6.200 = 8.065 unit (naik 922 unit atau +12,9%)</div>
+    <p>Kenaikan biaya variabel juga mengecilkan margin kontribusi dan menaikkan BEP secara signifikan.</p>
+
+    <h3>Ringkasan Analisis Sensitivitas</h3>
+    <table class="data-table">
+      <thead><tr><th>Skenario</th><th>Perubahan</th><th>BEP Baru</th><th>Kenaikan BEP</th></tr></thead>
+      <tbody>
+        <tr><td>Basis</td><td>—</td><td>7.143 unit</td><td>—</td></tr>
+        <tr><td>FC naik 10%</td><td>FC: 50 jt → 55 jt</td><td>7.857 unit</td><td>+10,0%</td></tr>
+        <tr><td>Harga turun 5%</td><td>P: 15.000 → 14.250</td><td>8.000 unit</td><td>+12,0%</td></tr>
+        <tr><td>VC naik 10%</td><td>VC: 8.000 → 8.800</td><td>8.065 unit</td><td>+12,9%</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Kesimpulan penting:</strong> BEP paling sensitif terhadap perubahan yang memengaruhi margin kontribusi (harga jual dan biaya variabel). Perubahan kecil pada harga atau biaya variabel dapat menyebabkan lonjakan BEP yang signifikan. Oleh karena itu, manajemen harus sangat hati-hati dalam memberikan diskon harga atau ketika menghadapi kenaikan bahan baku.</p>
+
+    <h2>Keterbatasan Analisis BEP</h2>
+    <p>Analisis BEP adalah alat yang sangat berguna, tetapi memiliki sejumlah asumsi yang mungkin tidak selalu berlaku di dunia nyata. Memahami keterbatasan ini penting agar pengguna tidak terlalu mengandalkan hasil BEP tanpa pertimbangan tambahan.</p>
+    <ol>
+      <li><strong>Asumsi linearitas biaya dan pendapatan:</strong> BEP mengasumsikan bahwa harga jual konstan berapa pun unit yang terjual, dan biaya variabel per unit juga konstan. Dalam kenyataan, perusahaan mungkin perlu menurunkan harga untuk menjual lebih banyak (kurva permintaan), atau biaya variabel per unit bisa turun karena <em>economies of scale</em> (diskon bahan baku untuk pembelian besar).</li>
+      <li><strong>Asumsi produk tunggal atau bauran tetap:</strong> Rumus BEP dasar mengasumsikan satu produk saja. Untuk multi-produk, diperlukan asumsi bauran penjualan yang tetap — padahal dalam praktik, proporsi penjualan tiap produk bisa berubah dari waktu ke waktu.</li>
+      <li><strong>Mengabaikan time value of money:</strong> Analisis BEP tidak memperhitungkan nilai waktu uang. Biaya Rp 50 juta yang dikeluarkan hari ini tidak sama nilainya dengan Rp 50 juta yang diterima 6 bulan kemudian. Untuk analisis jangka panjang, BEP sebaiknya dilengkapi dengan analisis NPV atau IRR.</li>
+      <li><strong>Semua unit diproduksi dianggap terjual:</strong> BEP tidak memperhitungkan kemungkinan adanya persediaan yang tidak terjual, barang retur, atau barang cacat (defect). Dalam industri manufaktur, perlu memperhitungkan <em>yield rate</em> (persentase produk baik dari total produksi).</li>
+      <li><strong>Relevant range terbatas:</strong> Biaya tetap hanya "tetap" dalam rentang kapasitas tertentu. Jika volume produksi melampaui kapasitas mesin atau gedung saat ini, perlu investasi baru yang menaikkan biaya tetap secara bertingkat (<em>step fixed cost</em>).</li>
+      <li><strong>Mengabaikan faktor kualitatif:</strong> BEP bersifat kuantitatif murni dan tidak mempertimbangkan faktor-faktor seperti citra merek, kepuasan pelanggan, dampak lingkungan, atau pertimbangan strategis jangka panjang.</li>
+      <li><strong>Asumsi kondisi statis:</strong> Analisis BEP mengambil snapshot satu periode. Dalam bisnis nyata, harga bahan baku, upah, dan harga jual berubah terus-menerus. Oleh karena itu, analisis sensitivitas (dibahas di atas) menjadi pelengkap penting.</li>
+    </ol>
+
+    <h2>BEP dalam Konteks Industri Indonesia</h2>
+    <p>Analisis BEP memiliki relevansi yang sangat besar dalam lanskap bisnis Indonesia, mulai dari usaha mikro hingga pabrik besar. Berikut beberapa konteks penerapannya:</p>
+
+    <h3>UMKM (Usaha Mikro, Kecil, dan Menengah)</h3>
+    <p>Indonesia memiliki lebih dari 65 juta UMKM yang menjadi tulang punggung perekonomian nasional. Bagi pelaku UMKM, analisis BEP adalah alat pertama yang sebaiknya digunakan sebelum memulai usaha. Seorang penjual gorengan di pasar, misalnya, perlu tahu berapa porsi gorengan yang harus terjual per hari agar biaya sewa gerobak, minyak goreng, dan bahan baku tertutup. Tanpa menghitung BEP, banyak UMKM yang berjalan tanpa mengetahui apakah mereka sebenarnya sudah untung atau masih merugi.</p>
+    <p>Kementerian Koperasi dan UKM RI sering menyertakan analisis BEP dalam template rencana bisnis yang disediakan untuk pelaku UMKM yang ingin mengajukan kredit usaha rakyat (KUR). Ini menunjukkan bahwa BEP adalah alat yang diakui secara resmi untuk menilai kelayakan usaha kecil.</p>
+
+    <h3>Industri Manufaktur</h3>
+    <p>Pabrik-pabrik di kawasan industri seperti Cikarang, Karawang, atau Surabaya rutin menggunakan analisis BEP ketika mempertimbangkan penambahan lini produksi, pergantian mesin, atau perubahan supplier bahan baku. Misalnya, pabrik garmen yang ingin beralih dari konveksi manual ke mesin cutting otomatis harus menghitung: berapa peningkatan biaya tetap (harga mesin, perawatan) versus penghematan biaya variabel (tenaga kerja lebih sedikit per unit), dan apakah BEP dengan mesin baru masih realistis dicapai dengan volume order saat ini.</p>
+
+    <h3>Industri Food and Beverage (F&B)</h3>
+    <p>Bisnis F&B — mulai dari warung kopi hingga restoran besar — sangat cocok dianalisis dengan BEP karena strukturnya yang jelas: sewa tempat dan gaji karyawan sebagai biaya tetap, dan bahan makanan/minuman sebagai biaya variabel. Sebuah coffee shop di Jakarta dengan sewa Rp 15 juta/bulan, gaji 4 barista Rp 16 juta, dan biaya operasional tetap lainnya Rp 9 juta (total FC = Rp 40 juta) yang menjual kopi rata-rata Rp 30.000 dengan biaya bahan Rp 10.000 (CM = Rp 20.000) membutuhkan penjualan minimal 2.000 cup/bulan atau sekitar 67 cup/hari untuk impas. Angka ini menjadi target minimum yang harus dicapai setiap hari.</p>
+
+    <h3>Startup Teknologi</h3>
+    <p>Meskipun startup teknologi memiliki struktur biaya yang berbeda (biaya tetap tinggi berupa gaji developer, server, dan marketing; biaya variabel per user yang rendah), analisis BEP tetap relevan. Startup SaaS (Software as a Service) perlu menghitung berapa subscriber yang dibutuhkan untuk menutup burn rate bulanan. Bedanya, BEP di startup tech sering dihitung dalam bulan/kuartal ke depan (kapan tercapai profitabilitas) bukan hanya dalam unit.</p>
 
     <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
     <div class="faq-item">
       <h3>Apakah hasil BEP harus dibulatkan ke atas?</h3>
-      <p>Ya. BEP 7.142,86 unit berarti pada 7.142 unit perusahaan masih sedikit rugi, sehingga titik impas praktisnya 7.143 unit (selalu dibulatkan ke atas).</p>
+      <p>Ya. BEP 7.142,86 unit berarti pada 7.142 unit perusahaan masih sedikit rugi, sehingga titik impas praktisnya 7.143 unit (selalu dibulatkan ke atas). Ini berlaku untuk semua produk yang dijual dalam satuan bulat (unit, bungkus, porsi). Untuk produk yang bisa dijual dalam satuan pecahan (misalnya kilogram), pembulatan tidak diperlukan.</p>
     </div>
     <div class="faq-item">
       <h3>Apa yang terjadi pada BEP jika biaya tetap naik?</h3>
-      <p>BEP naik proporsional — butuh lebih banyak penjualan untuk impas. BEP juga naik jika harga jual turun atau biaya variabel naik (margin kontribusi mengecil).</p>
+      <p>BEP naik proporsional — butuh lebih banyak penjualan untuk impas. Misalnya, jika biaya tetap naik 20%, maka BEP juga naik 20% (selama margin kontribusi per unit tidak berubah). BEP juga naik jika harga jual turun atau biaya variabel naik, karena kedua perubahan tersebut mengecilkan margin kontribusi.</p>
     </div>
     <div class="faq-item">
       <h3>BEP dipakai di mata kuliah apa saja?</h3>
-      <p>Analisis BEP muncul di Ekonomi Teknik, Analisis Kelayakan Pabrik/Industri, Akuntansi Biaya, dan Perencanaan Bisnis — dengan inti rumus yang sama persis.</p>
+      <p>Analisis BEP muncul di berbagai mata kuliah: Ekonomi Teknik, Analisis Kelayakan Pabrik/Industri, Akuntansi Biaya, Akuntansi Manajemen, Manajemen Keuangan, dan Perencanaan Bisnis. Di program studi Teknik Industri, BEP biasanya diajarkan di semester 3-5 sebagai bagian dari analisis kelayakan proyek. Inti rumusnya sama di semua mata kuliah tersebut.</p>
     </div>
+    <div class="faq-item">
+      <h3>Bagaimana menghitung BEP jika ada beberapa produk?</h3>
+      <p>Gunakan metode Weighted Average Contribution Margin (WACM). Pertama, tentukan proporsi penjualan masing-masing produk (sales mix). Kemudian, hitung WACM = jumlah dari (CM masing-masing produk x proporsinya). BEP total = FC / WACM, dan BEP per produk = BEP total x proporsi produk tersebut. Lihat Contoh Soal 2 di atas untuk contoh perhitungan lengkap.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apa perbedaan BEP dan payback period?</h3>
+      <p>BEP mengukur volume penjualan minimum agar tidak rugi pada satu periode (biasanya bulanan), sedangkan payback period mengukur waktu yang diperlukan untuk mengembalikan investasi awal. BEP fokus pada operasional rutin, payback period fokus pada pengembalian modal investasi. Keduanya saling melengkapi dalam analisis kelayakan proyek.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apakah BEP sama dengan ROI?</h3>
+      <p>Tidak. BEP menunjukkan titik di mana laba = 0 (tidak untung, tidak rugi), sedangkan ROI (Return on Investment) mengukur persentase pengembalian dari investasi yang ditanamkan. ROI bisa positif (untung) atau negatif (rugi), sementara BEP hanyalah titik batas antara rugi dan untung. Sebuah bisnis yang sudah melewati BEP belum tentu memiliki ROI yang memuaskan bagi investor.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Bagaimana cara menangani biaya semi-variabel dalam analisis BEP?</h3>
+      <p>Biaya semi-variabel perlu dipisahkan menjadi komponen tetap dan variabelnya sebelum dimasukkan ke rumus BEP. Metode yang umum digunakan adalah <em>high-low method</em> (membandingkan biaya pada volume tertinggi dan terendah) atau <em>regresi linear</em> (least-squares method). Setelah dipisah, komponen tetap ditambahkan ke FC dan komponen variabel ditambahkan ke VC per unit.</p>
+    </div>
+
+    <h2>Rangkuman</h2>
+    <p>Berikut adalah poin-poin utama dari panduan analisis Break-Even Point ini:</p>
+    <ol>
+      <li><strong>BEP adalah titik di mana laba = 0</strong> — total pendapatan sama dengan total biaya. Di bawah BEP perusahaan rugi, di atas BEP perusahaan untung.</li>
+      <li><strong>Kunci analisis BEP adalah margin kontribusi</strong> (CM = P - VC), yaitu jumlah dari setiap unit penjualan yang tersedia untuk menutup biaya tetap dan menghasilkan laba.</li>
+      <li><strong>Rumus dasar BEP unit = FC / CM</strong> dan <strong>BEP rupiah = FC / CM Ratio</strong>. Untuk target laba, tambahkan target laba ke pembilang.</li>
+      <li><strong>Untuk multi-produk</strong>, gunakan Weighted Average Contribution Margin (WACM) berdasarkan bauran penjualan.</li>
+      <li><strong>Margin of Safety</strong> mengukur seberapa jauh penjualan saat ini di atas BEP — indikator penting untuk menilai risiko bisnis.</li>
+      <li><strong>Analisis sensitivitas</strong> menunjukkan bahwa BEP paling sensitif terhadap perubahan yang memengaruhi margin kontribusi (harga jual dan biaya variabel per unit).</li>
+      <li><strong>BEP memiliki keterbatasan</strong>: mengasumsikan linearitas, produk tunggal/bauran tetap, mengabaikan time value of money, dan mengasumsikan semua yang diproduksi terjual.</li>
+      <li><strong>Dalam konteks Indonesia</strong>, BEP sangat relevan untuk UMKM, manufaktur, F&B, dan bahkan startup teknologi sebagai alat pengambilan keputusan bisnis yang fundamental.</li>
+    </ol>
+    <p>Analisis BEP sebaiknya tidak berdiri sendiri — kombinasikan dengan analisis NPV (untuk mempertimbangkan time value of money), analisis sensitivitas (untuk memahami risiko), dan margin of safety (untuk menilai bantalan keamanan). Dengan pendekatan holistik ini, pengambilan keputusan bisnis menjadi lebih robust dan terinformasi.</p>
 
     <h2>Referensi</h2>
     <ul>
-      <li>Heizer, J., Render, B., &amp; Munson, C. (2020). <em>Operations Management</em> (13th ed.), Suplemen Bab 7 "Capacity and Constraint Management" (analisis break-even). Pearson.</li>
+      <li>Heizer, J., Render, B., &amp; Munson, C. (2020). <em>Operations Management: Sustainability and Supply Chain Management</em> (13th ed.), Suplemen Bab 7 "Capacity and Constraint Management" (analisis break-even). Pearson.</li>
       <li>Garrison, R. H., Noreen, E. W., &amp; Brewer, P. C. (2021). <em>Managerial Accounting</em> (17th ed.), bab Cost-Volume-Profit Analysis. McGraw-Hill.</li>
       <li>Blank, L., &amp; Tarquin, A. (2018). <em>Engineering Economy</em> (8th ed.), bab Breakeven and Payback Analysis. McGraw-Hill.</li>
+      <li>Horngren, C. T., Datar, S. M., &amp; Rajan, M. V. (2021). <em>Cost Accounting: A Managerial Emphasis</em> (16th ed.), bab Cost-Volume-Profit Analysis. Pearson.</li>
+      <li>Hansen, D. R., &amp; Mowen, M. M. (2019). <em>Cornerstones of Cost Management</em> (4th ed.), bab Cost-Volume-Profit Analysis: A Managerial Planning Tool. Cengage Learning.</li>
+      <li>Hilton, R. W., &amp; Platt, D. E. (2020). <em>Managerial Accounting: Creating Value in a Dynamic Business Environment</em> (12th ed.), bab Cost-Volume-Profit Analysis. McGraw-Hill.</li>
+      <li>Mulyadi. (2018). <em>Akuntansi Biaya</em> (Edisi 6). UPP STIM YKPN. — referensi akuntansi biaya dalam bahasa Indonesia yang membahas analisis CVP secara komprehensif.</li>
     </ul>
 
     <hr class="divider">
@@ -192,6 +438,7 @@
     <a href="about.html">Tentang</a>
     <a href="contact.html">Kontak</a>
     <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Syarat &amp; Ketentuan</a>
   </div>
   <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
 </footer>

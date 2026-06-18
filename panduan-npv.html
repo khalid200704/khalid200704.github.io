@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <title>NPV &amp; Payback Period: Rumus, Cara Menghitung &amp; Contoh Soal</title>
-<meta name="description" content="Panduan ekonomi teknik: rumus NPV (Net Present Value), konsep time value of money, discount rate/MARR, payback period, contoh soal evaluasi kelayakan investasi langkah demi langkah." />
+<meta name="description" content="Panduan lengkap ekonomi teknik: rumus NPV (Net Present Value), time value of money, discount rate/MARR, payback period (simple &amp; discounted), IRR, BCR, analisis sensitivitas, dua contoh soal evaluasi kelayakan investasi langkah demi langkah." />
 <meta name="author" content="TI Toolkit" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://khalid200704.github.io/panduan-npv.html" />
@@ -43,18 +43,38 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Apa arti NPV positif?",
-      "acceptedAnswer": { "@type": "Answer", "text": "NPV positif berarti nilai sekarang seluruh arus kas masuk melebihi investasi awal pada tingkat diskonto yang dipilih — proyek menambah nilai dan layak diterima. NPV negatif berarti proyek sebaiknya ditolak." }
+      "name": "Apa bedanya payback period biasa dan discounted payback?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Payback period biasa menghitung balik modal berdasarkan arus kas nominal tanpa memperhitungkan time value of money. Discounted payback menghitung balik modal dari arus kas yang sudah didiskontokan, sehingga selalu menghasilkan angka yang lebih lama tetapi lebih akurat secara finansial." }
     },
     {
       "@type": "Question",
-      "name": "Apa itu MARR (Minimum Attractive Rate of Return)?",
-      "acceptedAnswer": { "@type": "Answer", "text": "MARR adalah tingkat pengembalian minimum yang disyaratkan investor untuk mau menanamkan modal, biasanya ditetapkan dari biaya modal ditambah premi risiko. MARR dipakai sebagai discount rate dalam perhitungan NPV." }
+      "name": "Bagaimana jika ada nilai sisa (salvage value) mesin?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Tambahkan nilai sisa sebagai arus kas masuk di tahun terakhir sebelum didiskontokan. Contoh: nilai sisa 10 juta di tahun 5 dengan MARR 10% menambah PV sebesar 10 × 0,6209 = 6,21 juta." }
     },
     {
       "@type": "Question",
-      "name": "Apa kelemahan metode payback period?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Payback period sederhana mengabaikan nilai waktu uang dan seluruh arus kas setelah titik balik modal, sehingga bisa menyesatkan. Karena itu payback biasanya dipakai sebagai pelengkap NPV, bukan pengganti." }
+      "name": "Kenapa NPV bisa berbeda dengan keputusan IRR?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Untuk proyek tunggal dengan arus kas konvensional, keputusan NPV dan IRR selalu konsisten. Konflik bisa muncul saat membandingkan proyek mutually exclusive dengan skala atau pola arus kas berbeda — dalam kasus itu, teori keuangan menganjurkan mengikuti NPV." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah NPV bisa digunakan untuk proyek non-profit atau pemerintah?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Ya. Untuk proyek publik, NPV sering diaplikasikan bersama analisis Benefit-Cost Ratio (BCR). Manfaat yang sulit diukur secara moneter perlu dikuantifikasi menggunakan teknik valuasi ekonomi. Discount rate yang digunakan biasanya adalah social discount rate." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bagaimana menangani inflasi dalam perhitungan NPV?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Ada dua pendekatan: gunakan arus kas nominal dengan discount rate nominal, atau gunakan arus kas riil dengan discount rate riil. Kedua pendekatan menghasilkan NPV yang sama jika diterapkan dengan benar. Jangan mencampurkan arus kas nominal dengan discount rate riil." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa yang dimaksud dengan incremental NPV?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Incremental NPV digunakan ketika membandingkan dua alternatif mutually exclusive dengan skala investasi berbeda. Hitung selisih arus kas antara alternatif yang lebih mahal dan yang lebih murah, lalu hitung NPV dari selisih tersebut. Jika incremental NPV positif, investasi tambahan terjustifikasi." }
+    },
+    {
+      "@type": "Question",
+      "name": "Berapa umur proyek yang sebaiknya digunakan dalam analisis NPV?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Gunakan umur ekonomis (economic life), yaitu periode di mana biaya tahunan ekuivalen paling rendah. Untuk proyek dengan umur berbeda, gunakan metode Least Common Multiple (LCM) atau Annual Worth (AW) untuk perbandingan yang adil." }
     }
   ]
 }
@@ -102,25 +122,80 @@
 
 
 
-    <h2>Time Value of Money: Konsep Dasarnya</h2>
-    <p>Uang Rp 1 juta hari ini lebih berharga daripada Rp 1 juta tahun depan, karena uang hari ini bisa diinvestasikan dan menghasilkan bunga. Konsep <strong>nilai waktu uang (time value of money)</strong> inilah dasar seluruh ekonomi teknik: arus kas di masa depan harus "ditarik" ke nilai sekarang (present value) sebelum bisa dibandingkan secara adil:</p>
-    <div class="formula-block">PV = FV / (1 + i)<sup>t</sup></div>
-    <p>dengan i = tingkat diskonto per periode dan t = jumlah periode. Proses ini disebut <em>discounting</em>.</p>
+    <h2>1. Konsep Time Value of Money (TVM)</h2>
+    <p>Mengapa Rp 1 juta yang Anda terima hari ini <strong>tidak sama nilainya</strong> dengan Rp 1 juta yang akan Anda terima 5 tahun lagi? Jawaban singkatnya: uang memiliki <em>nilai waktu</em> (<strong>time value of money</strong>, disingkat TVM). Konsep ini menjadi fondasi utama seluruh analisis ekonomi teknik, keuangan perusahaan, dan evaluasi kelayakan investasi. Ada tiga alasan mendasar mengapa TVM berlaku:</p>
+    <ul>
+      <li><strong>Inflasi.</strong> Harga barang dan jasa cenderung naik seiring waktu. Jika inflasi rata-rata 5% per tahun, maka daya beli Rp 1 juta hari ini setara dengan kurang lebih Rp 784 ribu dalam 5 tahun ke depan. Artinya, uang yang sama membeli lebih sedikit barang di masa depan.</li>
+      <li><strong>Opportunity cost (biaya kesempatan).</strong> Uang yang Anda pegang hari ini bisa diinvestasikan — misalnya ditabung di deposito, dibelikan saham, atau dipakai sebagai modal usaha — sehingga menghasilkan imbal hasil (return). Menunggu berarti kehilangan potensi keuntungan tersebut.</li>
+      <li><strong>Risiko dan ketidakpastian.</strong> Arus kas masa depan belum tentu terealisasi. Perusahaan bisa mengalami penurunan penjualan, proyek bisa terlambat, atau kondisi ekonomi bisa berubah. Semakin jauh di masa depan, semakin besar ketidakpastiannya.</li>
+    </ul>
 
-    <h2>Rumus NPV</h2>
-    <p><strong>Net Present Value (NPV)</strong> adalah jumlah nilai sekarang seluruh arus kas proyek dikurangi investasi awal:</p>
-    <div class="formula-block">NPV = Σ [ CF<sub>t</sub> / (1 + i)<sup>t</sup> ] − I₀</div>
+    <h3>Present Value vs Future Value</h3>
+    <p>Dua konsep utama dalam TVM adalah <strong>Present Value (PV)</strong> dan <strong>Future Value (FV)</strong>. Keduanya saling terkait melalui tingkat bunga (atau tingkat diskonto) dan jumlah periode:</p>
+    <div class="formula-block">FV = PV × (1 + i)<sup>t</sup></div>
+    <p>Rumus di atas menghitung berapa nilai uang sekarang (<em>PV</em>) jika diinvestasikan selama <em>t</em> periode pada tingkat bunga <em>i</em> per periode. Proses ini disebut <strong>compounding</strong> (pemajemukan). Sebaliknya, jika kita ingin mengetahui berapa nilai sekarang dari sejumlah uang yang akan diterima di masa depan, kita membalik rumusnya:</p>
+    <div class="formula-block">PV = FV / (1 + i)<sup>t</sup></div>
+    <p>Proses ini disebut <strong>discounting</strong> (pendiskontoan). Faktor 1/(1 + i)<sup>t</sup> sering disebut <em>present worth factor</em> atau <em>discount factor</em>. Dalam tabel faktor bunga standar, faktor ini ditulis sebagai (P/F, i%, t).</p>
+    <p><strong>Contoh sederhana:</strong> Anda akan menerima Rp 10 juta tiga tahun dari sekarang. Jika tingkat diskonto 8% per tahun, nilai sekarangnya adalah:</p>
+    <div class="formula-block">PV = 10.000.000 / (1 + 0,08)<sup>3</sup> = 10.000.000 / 1,2597 = Rp 7.938.322</div>
+    <p>Artinya, menerima Rp 7,94 juta hari ini secara ekonomis setara dengan menerima Rp 10 juta tiga tahun lagi, jika tingkat pengembalian yang tersedia di pasar adalah 8%.</p>
+
+    <h2>2. Discount Rate dan MARR</h2>
+    <p>Tingkat diskonto (<strong>discount rate</strong>) adalah tingkat pengembalian yang digunakan untuk mengkonversi arus kas masa depan ke nilai sekarang. Pemilihan discount rate sangat menentukan hasil NPV. Ada beberapa komponen yang menentukan besarnya discount rate:</p>
+
+    <h3>Komponen Discount Rate</h3>
+    <ul>
+      <li><strong>Biaya modal (cost of capital).</strong> Jika perusahaan membiayai proyek dengan campuran utang dan ekuitas, biaya modal dihitung sebagai <em>Weighted Average Cost of Capital</em> (WACC). WACC mempertimbangkan proporsi utang (dengan bunga pinjaman) dan ekuitas (dengan imbal hasil yang diharapkan pemegang saham), termasuk efek pajak dari bunga utang.</li>
+      <li><strong>Premi risiko (risk premium).</strong> Proyek yang lebih berisiko memerlukan discount rate lebih tinggi sebagai kompensasi. Misalnya, proyek eksplorasi tambang memiliki risiko lebih tinggi daripada proyek penggantian mesin di pabrik yang sudah beroperasi, sehingga discount rate-nya juga harus lebih tinggi.</li>
+      <li><strong>Tingkat inflasi.</strong> Jika arus kas diproyeksikan dalam nilai nominal (sudah termasuk inflasi), maka discount rate juga harus nominal. Jika arus kas dalam nilai riil (konstan), maka discount rate harus riil pula. Hubungan keduanya mengikuti rumus Fisher: (1 + i<sub>nominal</sub>) = (1 + i<sub>riil</sub>) × (1 + inflasi).</li>
+    </ul>
+
+    <h3>MARR (Minimum Attractive Rate of Return)</h3>
+    <p>Dalam ekonomi teknik, istilah yang lebih sering dipakai adalah <strong>MARR</strong> — tingkat pengembalian minimum yang harus dipenuhi agar suatu proyek dianggap layak diterima. MARR ditetapkan oleh manajemen perusahaan dan biasanya sama dengan atau lebih tinggi dari WACC. Logikanya: jika suatu proyek menghasilkan return di bawah biaya modal, maka proyek tersebut justru menghancurkan nilai perusahaan.</p>
+    <p>Dalam soal kuliah ekonomi teknik, MARR hampir selalu diberikan sebagai data soal. Dalam praktik nyata, penetapan MARR adalah keputusan manajerial strategis yang mempertimbangkan kondisi pasar keuangan, profil risiko perusahaan, dan peluang investasi alternatif yang tersedia.</p>
+
+    <h2>3. Rumus NPV: Detail Derivasi</h2>
+    <p><strong>Net Present Value (NPV)</strong> adalah penjumlahan nilai sekarang dari seluruh arus kas bersih proyek selama umur ekonomisnya, termasuk investasi awal. NPV mengukur seberapa besar nilai yang diciptakan (atau dihancurkan) oleh suatu proyek dalam satuan rupiah hari ini.</p>
+
+    <h3>Derivasi dari PV ke NPV</h3>
+    <p>Kita mulai dari rumus dasar Present Value untuk satu arus kas di masa depan:</p>
+    <div class="formula-block">PV<sub>t</sub> = CF<sub>t</sub> / (1 + i)<sup>t</sup></div>
+    <p>Jika proyek memiliki arus kas di banyak periode (t = 0, 1, 2, ..., n), maka kita jumlahkan seluruh PV tersebut. Arus kas di tahun ke-0 biasanya merupakan investasi awal (bernilai negatif):</p>
+    <div class="formula-block">NPV = CF₀ + CF₁/(1+i)¹ + CF₂/(1+i)² + ... + CF<sub>n</sub>/(1+i)<sup>n</sup></div>
+    <p>Atau dalam notasi sigma:</p>
+    <div class="formula-block">NPV = Σ<sub>t=0</sub><sup>n</sup> [ CF<sub>t</sub> / (1 + i)<sup>t</sup> ]</div>
+    <p>Karena CF₀ biasanya negatif (investasi awal = -I₀), rumus ini sering ditulis ulang sebagai:</p>
+    <div class="formula-block">NPV = -I₀ + Σ<sub>t=1</sub><sup>n</sup> [ CF<sub>t</sub> / (1 + i)<sup>t</sup> ]</div>
+
     <table class="data-table">
       <thead><tr><th>Simbol</th><th>Arti</th></tr></thead>
       <tbody>
-        <tr><td>CF<sub>t</sub></td><td>Arus kas bersih tahun ke-t</td></tr>
+        <tr><td>CF<sub>t</sub></td><td>Arus kas bersih tahun ke-t (pendapatan dikurangi biaya operasional)</td></tr>
         <tr><td>i</td><td>Discount rate / MARR (Minimum Attractive Rate of Return)</td></tr>
-        <tr><td>I₀</td><td>Investasi awal (tahun ke-0)</td></tr>
+        <tr><td>I₀</td><td>Investasi awal (tahun ke-0, bernilai positif dalam rumus kedua)</td></tr>
+        <tr><td>n</td><td>Umur ekonomis proyek (jumlah periode)</td></tr>
       </tbody>
     </table>
-    <p><strong>Kriteria keputusan:</strong> NPV &gt; 0 → proyek layak (menambah nilai); NPV &lt; 0 → tolak; NPV = 0 → impas terhadap MARR. Untuk membandingkan beberapa alternatif dengan umur sama, pilih NPV terbesar.</p>
 
-    <h2>Contoh Soal NPV dan Pembahasan</h2>
+    <h3>Shortcut Anuitas (Arus Kas Seragam)</h3>
+    <p>Jika arus kas bersih setiap tahun konstan sebesar A, maka penjumlahan di atas dapat disederhanakan menggunakan faktor nilai sekarang anuitas (P/A, i%, n):</p>
+    <div class="formula-block">NPV = -I₀ + A × [(1 + i)<sup>n</sup> - 1] / [i × (1 + i)<sup>n</sup>]</div>
+    <p>Faktor dalam kurung siku itulah yang disebut <em>Uniform Series Present Worth Factor</em> dan sering ditabelkan dalam buku ekonomi teknik. Shortcut ini sangat mempersingkat perhitungan manual ketika arus kas seragam.</p>
+
+    <h2>4. Interpretasi Hasil NPV</h2>
+    <p>Setelah menghitung NPV, langkah berikutnya adalah menginterpretasikan hasilnya untuk pengambilan keputusan. Berikut aturan keputusan (<em>decision rule</em>) NPV:</p>
+    <table class="data-table">
+      <thead><tr><th>Hasil NPV</th><th>Interpretasi</th><th>Keputusan</th></tr></thead>
+      <tbody>
+        <tr><td>NPV &gt; 0</td><td>Proyek menghasilkan nilai lebih dari biaya modal (MARR). Secara ekonomis, proyek menambah kekayaan pemegang saham.</td><td><strong>Terima / Layak</strong></td></tr>
+        <tr><td>NPV = 0</td><td>Proyek tepat menghasilkan return sebesar MARR. Secara ekonomis marginal — tidak menambah maupun mengurangi nilai. Keputusan bergantung pada faktor non-finansial.</td><td><strong>Marginal / Netral</strong></td></tr>
+        <tr><td>NPV &lt; 0</td><td>Proyek menghasilkan return di bawah MARR. Proyek akan mengurangi nilai perusahaan jika diterima.</td><td><strong>Tolak / Tidak layak</strong></td></tr>
+      </tbody>
+    </table>
+    <p><strong>Catatan penting:</strong> Ketika membandingkan beberapa alternatif yang <em>mutually exclusive</em> (hanya satu yang bisa dipilih), pilih alternatif dengan NPV terbesar, asalkan NPV-nya positif. Jika semua alternatif memiliki NPV negatif, maka tidak ada yang layak — pilih opsi "do nothing" (tidak melakukan investasi).</p>
+    <p>Perlu diingat bahwa NPV adalah ukuran <em>absolut</em> (dalam rupiah), bukan relatif (dalam persen). Proyek besar cenderung memiliki NPV besar pula, sehingga NPV paling tepat digunakan ketika membandingkan alternatif dengan skala investasi yang serupa atau ketika modal tidak terbatas.</p>
+
+    <h2>5. Contoh Soal 1: Evaluasi Investasi Mesin</h2>
     <p><strong>Soal:</strong> Sebuah investasi mesin membutuhkan modal awal Rp 100 juta. Arus kas bersih yang diproyeksikan selama 5 tahun: 30, 35, 40, 45, dan 25 (dalam juta rupiah). MARR perusahaan 10% per tahun. Apakah investasi layak? Hitung juga payback period-nya.</p>
     <p><strong>Langkah 1 — Diskontokan setiap arus kas:</strong></p>
     <table class="data-table">
@@ -138,41 +213,239 @@
     <div class="formula-block">NPV = 132,51 − 100 = +Rp 32,51 juta &nbsp;→&nbsp; LAYAK</div>
     <p><strong>Langkah 4 — Payback period (sederhana):</strong> kumulatif arus kas mencapai Rp 100 juta di antara tahun 2 (65) dan tahun 3 (105). Sisa yang harus tertutup setelah tahun 2 = 100 − 65 = 35, dengan CF tahun 3 = 40:</p>
     <div class="formula-block">Payback = 2 + 35/40 = 2,88 tahun</div>
-    <p><strong>Interpretasi:</strong> modal kembali dalam ±2 tahun 10,5 bulan, dan pada MARR 10% proyek menghasilkan nilai tambah bersih Rp 32,51 juta — keputusan: terima investasi.</p>
+    <p><strong>Interpretasi:</strong> modal kembali dalam kurang lebih 2 tahun 10,5 bulan, dan pada MARR 10% proyek menghasilkan nilai tambah bersih Rp 32,51 juta — keputusan: terima investasi.</p>
 
-    <h2>Memilih Discount Rate (MARR)</h2>
-    <p>MARR umumnya ditetapkan dari <em>biaya modal</em> (bunga pinjaman atau imbal hasil yang hilang dari alternatif investasi) ditambah <em>premi risiko</em> proyek. Semakin tinggi MARR, semakin kecil NPV — proyek dengan arus kas jauh di masa depan paling terpukul oleh MARR tinggi. Di soal kuliah, MARR hampir selalu diberikan; di praktik, penetapannya adalah keputusan manajerial penting.</p>
-
-    <h2>NPV vs Metode Evaluasi Lain</h2>
+    <h2>6. Contoh Soal 2: Perbandingan Dua Alternatif (Mutually Exclusive)</h2>
+    <p><strong>Soal:</strong> Sebuah pabrik garmen harus memilih antara dua mesin potong otomatis. Hanya satu mesin yang akan dibeli (<em>mutually exclusive</em>). MARR perusahaan 12%. Data kedua alternatif:</p>
     <table class="data-table">
-      <thead><tr><th>Metode</th><th>Kriteria layak</th><th>Catatan</th></tr></thead>
+      <thead><tr><th>Parameter</th><th>Mesin A</th><th>Mesin B</th></tr></thead>
       <tbody>
-        <tr><td>NPV</td><td>NPV &gt; 0</td><td>Paling andal secara teori; hasil dalam rupiah</td></tr>
-        <tr><td>IRR</td><td>IRR &gt; MARR</td><td>Intuitif (dalam %), tetapi bisa multiganda untuk arus kas tak konvensional</td></tr>
-        <tr><td>Payback</td><td>&lt; batas yang ditetapkan</td><td>Sederhana; mengabaikan TVM dan arus kas setelah payback</td></tr>
-        <tr><td>BCR (B/C Ratio)</td><td>BCR &gt; 1</td><td>Umum untuk proyek publik/pemerintah</td></tr>
+        <tr><td>Investasi awal</td><td>Rp 80 juta</td><td>Rp 120 juta</td></tr>
+        <tr><td>Arus kas bersih per tahun (seragam)</td><td>Rp 25 juta</td><td>Rp 38 juta</td></tr>
+        <tr><td>Umur ekonomis</td><td>5 tahun</td><td>5 tahun</td></tr>
+        <tr><td>Nilai sisa</td><td>Rp 5 juta</td><td>Rp 10 juta</td></tr>
       </tbody>
     </table>
+    <p><strong>Langkah 1 — Hitung faktor anuitas (P/A, 12%, 5):</strong></p>
+    <div class="formula-block">(P/A, 12%, 5) = [(1,12)<sup>5</sup> - 1] / [0,12 × (1,12)<sup>5</sup>] = [1,7623 - 1] / [0,12 × 1,7623] = 0,7623 / 0,2115 = 3,6048</div>
+    <p><strong>Langkah 2 — Hitung faktor nilai sekarang tunggal (P/F, 12%, 5):</strong></p>
+    <div class="formula-block">(P/F, 12%, 5) = 1 / (1,12)<sup>5</sup> = 1 / 1,7623 = 0,5674</div>
+    <p><strong>Langkah 3 — NPV Mesin A:</strong></p>
+    <div class="formula-block">NPV<sub>A</sub> = -80 + 25 × 3,6048 + 5 × 0,5674 = -80 + 90,12 + 2,84 = +Rp 12,96 juta</div>
+    <p><strong>Langkah 4 — NPV Mesin B:</strong></p>
+    <div class="formula-block">NPV<sub>B</sub> = -120 + 38 × 3,6048 + 10 × 0,5674 = -120 + 136,98 + 5,67 = +Rp 22,65 juta</div>
+    <p><strong>Keputusan:</strong> Kedua mesin memiliki NPV positif (keduanya layak), tetapi NPV Mesin B (Rp 22,65 juta) lebih besar dari NPV Mesin A (Rp 12,96 juta). Oleh karena itu, <strong>Mesin B dipilih</strong> karena memberikan tambahan nilai yang lebih besar bagi perusahaan pada MARR 12%.</p>
+    <p>Perhatikan bahwa meskipun Mesin B memerlukan investasi awal 50% lebih besar, arus kas tahunan yang lebih tinggi lebih dari mengkompensasi selisih investasi tersebut — itulah kekuatan analisis NPV dalam membandingkan alternatif dengan skala investasi berbeda.</p>
+
+    <h2>7. Payback Period: Simple vs Discounted</h2>
+    <p><strong>Payback period</strong> adalah waktu yang dibutuhkan agar kumulatif arus kas masuk menyamai investasi awal — dengan kata lain, berapa lama modal yang dikeluarkan "kembali". Metode ini populer karena sederhana dan mudah dipahami oleh non-finansial, tetapi memiliki kelemahan serius jika digunakan sebagai satu-satunya kriteria keputusan.</p>
+
+    <h3>Simple Payback Period</h3>
+    <p>Payback period sederhana menghitung balik modal berdasarkan arus kas nominal (tanpa memperhitungkan nilai waktu uang). Jika arus kas seragam setiap tahun, rumusnya sangat sederhana:</p>
+    <div class="formula-block">Payback = Investasi Awal / Arus Kas Tahunan</div>
+    <p>Jika arus kas tidak seragam, payback dihitung dengan menjumlahkan arus kas kumulatif tahun demi tahun sampai mencapai nilai investasi awal, lalu dilakukan interpolasi linier untuk tahun terakhir (seperti pada Contoh Soal 1).</p>
+
+    <h3>Discounted Payback Period</h3>
+    <p>Discounted payback period memperbaiki kelemahan utama simple payback dengan mendiskontokan setiap arus kas terlebih dahulu sebelum dijumlahkan secara kumulatif. Dengan demikian, discounted payback memperhitungkan time value of money.</p>
+    <p><strong>Contoh:</strong> Menggunakan data Contoh Soal 1 (investasi Rp 100 juta, MARR 10%):</p>
+    <table class="data-table">
+      <thead><tr><th>Tahun</th><th>CF (juta)</th><th>PV (juta)</th><th>Kumulatif PV</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>30</td><td>27,27</td><td>27,27</td></tr>
+        <tr><td>2</td><td>35</td><td>28,93</td><td>56,20</td></tr>
+        <tr><td>3</td><td>40</td><td>30,05</td><td>86,25</td></tr>
+        <tr><td>4</td><td>45</td><td>30,74</td><td>116,99</td></tr>
+        <tr><td>5</td><td>25</td><td>15,52</td><td>132,51</td></tr>
+      </tbody>
+    </table>
+    <p>Kumulatif PV melewati Rp 100 juta antara tahun 3 (86,25) dan tahun 4 (116,99). Sisa yang harus tertutup = 100 - 86,25 = 13,75, dengan PV tahun 4 = 30,74:</p>
+    <div class="formula-block">Discounted Payback = 3 + 13,75/30,74 = 3,45 tahun</div>
+    <p>Bandingkan dengan simple payback 2,88 tahun — discounted payback selalu lebih lama karena arus kas yang didiskontokan nilainya lebih kecil dari nilai nominalnya.</p>
+
+    <h3>Kelebihan dan Kelemahan Payback Period</h3>
+    <table class="data-table">
+      <thead><tr><th>Aspek</th><th>Kelebihan</th><th>Kelemahan</th></tr></thead>
+      <tbody>
+        <tr><td>Kemudahan</td><td>Sangat mudah dihitung dan dipahami, bahkan oleh non-engineer</td><td>Kesederhanaan bisa menyesatkan</td></tr>
+        <tr><td>Time value of money</td><td>Discounted payback sudah memperhitungkan TVM</td><td>Simple payback mengabaikan TVM sepenuhnya</td></tr>
+        <tr><td>Arus kas setelah payback</td><td>—</td><td>Mengabaikan seluruh arus kas setelah titik payback, sehingga proyek dengan manfaat jangka panjang bisa ditolak secara keliru</td></tr>
+        <tr><td>Profitabilitas</td><td>—</td><td>Tidak mengukur seberapa menguntungkan suatu proyek, hanya mengukur kecepatan balik modal</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Kesimpulan:</strong> Payback period sebaiknya digunakan sebagai <em>pelengkap</em> NPV, bukan sebagai pengganti. Payback berguna untuk menilai risiko likuiditas (semakin cepat balik modal, semakin rendah risiko), tetapi keputusan investasi utama harus tetap didasarkan pada NPV.</p>
+
+    <h2>8. Internal Rate of Return (IRR)</h2>
+    <p><strong>Internal Rate of Return (IRR)</strong> adalah tingkat diskonto yang membuat NPV suatu proyek tepat sama dengan nol. Secara matematis, IRR adalah nilai <em>i*</em> yang memenuhi persamaan:</p>
+    <div class="formula-block">0 = -I₀ + Σ<sub>t=1</sub><sup>n</sup> [ CF<sub>t</sub> / (1 + i*)<sup>t</sup> ]</div>
+    <p>IRR sering diinterpretasikan sebagai "tingkat pengembalian efektif" yang dihasilkan oleh suatu proyek. Kriteria keputusannya adalah:</p>
+    <ul>
+      <li><strong>IRR &gt; MARR</strong> → proyek layak (setara dengan NPV &gt; 0)</li>
+      <li><strong>IRR = MARR</strong> → proyek marginal (setara dengan NPV = 0)</li>
+      <li><strong>IRR &lt; MARR</strong> → proyek tidak layak (setara dengan NPV &lt; 0)</li>
+    </ul>
+
+    <h3>Hubungan IRR dengan NPV</h3>
+    <p>IRR dan NPV saling berkaitan erat. Jika kita membuat grafik NPV terhadap discount rate, kurva tersebut akan memotong sumbu horizontal (NPV = 0) pada titik yang nilainya sama dengan IRR. Untuk proyek tunggal dengan arus kas konvensional (investasi di awal, arus kas positif setelahnya), keputusan IRR dan NPV akan selalu konsisten.</p>
+
+    <h3>Cara Menghitung IRR</h3>
+    <p>Persamaan IRR bersifat polinomial dan umumnya tidak bisa diselesaikan secara analitik untuk n &gt; 2. Ada beberapa pendekatan:</p>
+    <ul>
+      <li><strong>Trial and error (coba-coba):</strong> Hitung NPV pada dua tingkat diskonto berbeda (satu menghasilkan NPV positif, satu menghasilkan NPV negatif), lalu lakukan interpolasi linier.</li>
+      <li><strong>Kalkulator finansial atau spreadsheet:</strong> Fungsi IRR() di Excel atau Google Sheets langsung menyelesaikan persamaan ini secara iteratif.</li>
+      <li><strong>Kalkulator TI Toolkit:</strong> Masukkan arus kas Anda dan dapatkan hasil NPV serta estimasi IRR secara otomatis.</li>
+    </ul>
+    <p><strong>Contoh interpolasi IRR (dari Contoh Soal 1):</strong> Kita sudah tahu NPV pada 10% = +32,51 juta. Jika kita hitung NPV pada 25%:</p>
+    <div class="formula-block">NPV<sub>25%</sub> = 30/1,25 + 35/1,5625 + 40/1,9531 + 45/2,4414 + 25/3,0518 − 100 = 24 + 22,4 + 20,48 + 18,43 + 8,19 − 100 = −6,50 juta</div>
+    <p>NPV berubah tanda antara 10% dan 25%, maka IRR berada di antara keduanya. Dengan interpolasi linier:</p>
+    <div class="formula-block">IRR ≈ 10% + [32,51 / (32,51 + 6,50)] × (25% - 10%) = 10% + 0,833 × 15% = 22,5%</div>
+    <p>Karena IRR (22,5%) &gt; MARR (10%), proyek layak — konsisten dengan hasil NPV positif sebelumnya.</p>
+
+    <h3>Kapan IRR dan NPV Bisa Berbeda?</h3>
+    <p>Untuk proyek tunggal dengan arus kas konvensional, keputusan IRR dan NPV selalu sejalan. Namun, ada situasi di mana keduanya bisa memberikan ranking yang berbeda:</p>
+    <ul>
+      <li><strong>Proyek mutually exclusive dengan skala berbeda.</strong> Proyek kecil bisa memiliki IRR lebih tinggi tetapi NPV lebih rendah daripada proyek besar. Dalam kasus ini, teori keuangan menganjurkan mengikuti NPV karena NPV mengukur nilai absolut yang diciptakan.</li>
+      <li><strong>Proyek dengan arus kas tak konvensional.</strong> Jika arus kas berganti tanda lebih dari sekali (misalnya: investasi → pendapatan → biaya penutupan), bisa ada lebih dari satu IRR (multiple IRR). Dalam kasus ini, IRR menjadi ambigu dan NPV lebih andal.</li>
+      <li><strong>Proyek dengan umur berbeda.</strong> IRR tidak mempertimbangkan skala reinvestasi, sehingga bisa menyesatkan ketika membandingkan proyek jangka pendek dengan proyek jangka panjang.</li>
+    </ul>
+
+    <h2>9. Benefit-Cost Ratio (BCR)</h2>
+    <p><strong>Benefit-Cost Ratio (BCR)</strong>, atau sering disebut juga <em>B/C Ratio</em>, adalah perbandingan antara nilai sekarang dari seluruh manfaat (benefits) terhadap nilai sekarang dari seluruh biaya (costs):</p>
+    <div class="formula-block">BCR = PV(Benefits) / PV(Costs)</div>
+    <p>Kriteria keputusan BCR sederhana dan intuitif:</p>
+    <ul>
+      <li><strong>BCR &gt; 1</strong> → manfaat melebihi biaya → proyek layak</li>
+      <li><strong>BCR = 1</strong> → manfaat sama dengan biaya → marginal</li>
+      <li><strong>BCR &lt; 1</strong> → biaya melebihi manfaat → proyek tidak layak</li>
+    </ul>
+
+    <h3>Penggunaan BCR dalam Proyek Publik</h3>
+    <p>BCR sangat umum digunakan dalam evaluasi proyek-proyek sektor publik dan pemerintah (infrastruktur, kesehatan, pendidikan) karena beberapa alasan:</p>
+    <ul>
+      <li>Proyek publik sering memiliki manfaat yang sulit diukur dalam rupiah (misalnya, pengurangan kecelakaan lalu lintas, peningkatan kualitas udara). BCR memaksa analis untuk mengkuantifikasi manfaat-manfaat ini.</li>
+      <li>Regulator dan lembaga donor (misalnya, World Bank, Asian Development Bank) sering mensyaratkan analisis BCR sebagai bagian dari studi kelayakan proyek.</li>
+      <li>BCR memungkinkan perbandingan lintas sektor — misalnya, membandingkan manfaat proyek jalan tol dengan proyek rumah sakit.</li>
+    </ul>
+    <p><strong>Contoh singkat:</strong> Proyek pembangunan jalan baru memiliki biaya konstruksi (PV) Rp 500 miliar dan biaya pemeliharaan (PV) Rp 80 miliar. Manfaat berupa penghematan waktu tempuh, pengurangan kecelakaan, dan peningkatan nilai properti (PV) Rp 750 miliar. BCR = 750 / (500 + 80) = 750 / 580 = 1,29. Karena BCR &gt; 1, proyek layak secara ekonomis.</p>
+    <p><strong>Catatan:</strong> BCR bisa menghasilkan ranking berbeda dari NPV untuk proyek mutually exclusive karena BCR adalah ukuran relatif (rasio), sedangkan NPV adalah ukuran absolut (rupiah). Seperti halnya IRR, ketika terjadi konflik, keputusan sebaiknya didasarkan pada NPV dengan analisis incremental (tambahan).</p>
+
+    <h2>10. Analisis Sensitivitas untuk NPV</h2>
+    <p>Perhitungan NPV sangat bergantung pada asumsi-asumsi yang digunakan: estimasi arus kas, discount rate, umur proyek, dan variabel lainnya. <strong>Analisis sensitivitas</strong> menguji seberapa sensitif NPV terhadap perubahan asumsi-asumsi tersebut, sehingga pengambil keputusan dapat memahami risiko proyek dengan lebih baik.</p>
+
+    <h3>Variabel Kunci yang Diuji</h3>
+    <ul>
+      <li><strong>Discount rate.</strong> Bagaimana NPV berubah jika MARR naik atau turun 2-5%? Proyek dengan arus kas yang terkonsentrasi di tahun-tahun akhir akan sangat sensitif terhadap perubahan discount rate.</li>
+      <li><strong>Arus kas (cash flows).</strong> Bagaimana jika pendapatan 10-20% lebih rendah dari proyeksi? Bagaimana jika biaya operasional meningkat? Analisis ini membantu mengidentifikasi "titik impas" — tingkat arus kas minimum yang masih menghasilkan NPV = 0.</li>
+      <li><strong>Umur proyek.</strong> Bagaimana jika mesin rusak lebih cepat dari perkiraan, atau jika teknologi menjadi usang lebih awal? Mempersingkat umur proyek mengurangi jumlah arus kas positif dan bisa mengubah keputusan kelayakan.</li>
+      <li><strong>Investasi awal.</strong> Bagaimana jika biaya konstruksi atau pembelian mesin lebih tinggi dari anggaran? Overrun biaya adalah risiko umum dalam proyek teknik.</li>
+    </ul>
+
+    <h3>Contoh Analisis Sensitivitas</h3>
+    <p>Menggunakan data Contoh Soal 1, kita dapat menguji sensitivitas NPV terhadap perubahan MARR:</p>
+    <table class="data-table">
+      <thead><tr><th>MARR</th><th>NPV (juta Rp)</th><th>Keputusan</th></tr></thead>
+      <tbody>
+        <tr><td>5%</td><td>+53,07</td><td>Layak</td></tr>
+        <tr><td>10%</td><td>+32,51</td><td>Layak</td></tr>
+        <tr><td>15%</td><td>+15,76</td><td>Layak</td></tr>
+        <tr><td>20%</td><td>+2,06</td><td>Layak (marginal)</td></tr>
+        <tr><td>22,5%</td><td>≈ 0</td><td>Titik impas (= IRR)</td></tr>
+        <tr><td>25%</td><td>-6,50</td><td>Tidak layak</td></tr>
+      </tbody>
+    </table>
+    <p>Dari tabel di atas, kita bisa melihat bahwa proyek tetap layak bahkan jika MARR dinaikkan hingga sekitar 20%, dan baru menjadi tidak layak pada MARR di atas 22,5% (yang merupakan IRR proyek). Informasi ini sangat berharga bagi manajemen — proyek memiliki "bantalan keamanan" yang cukup besar terhadap kenaikan biaya modal.</p>
+    <p>Pendekatan analisis sensitivitas yang lebih canggih mencakup <em>scenario analysis</em> (skenario optimis, realistis, pesimis) dan <em>simulasi Monte Carlo</em> (menggunakan distribusi probabilitas untuk setiap variabel input).</p>
+
+    <h2>11. NPV dalam Evaluasi Proyek Teknik Industri</h2>
+    <p>Dalam konteks Teknik Industri, NPV digunakan secara luas untuk mengevaluasi berbagai jenis proyek dan keputusan operasional. Berikut beberapa aplikasi praktis:</p>
+
+    <h3>Penggantian Peralatan (Equipment Replacement)</h3>
+    <p>Salah satu keputusan paling umum dalam manajemen operasi adalah kapan mengganti mesin lama dengan mesin baru. Analisis NPV membandingkan biaya mempertahankan mesin lama (biaya perawatan yang meningkat, efisiensi yang menurun, risiko breakdown) terhadap biaya pembelian mesin baru (investasi awal yang besar tetapi biaya operasi lebih rendah). Teknik yang digunakan biasanya melibatkan <em>defender-challenger analysis</em> dan konsep <em>Economic Service Life</em> (umur ekonomis optimal).</p>
+
+    <h3>Perubahan Tata Letak Fasilitas (Facility Layout)</h3>
+    <p>Perubahan layout pabrik membutuhkan investasi (biaya relokasi mesin, downtime produksi, pelatihan ulang karyawan) tetapi bisa menghasilkan penghematan jangka panjang (pengurangan jarak material handling, peningkatan throughput, pengurangan work-in-process). NPV membantu mengkuantifikasi apakah penghematan tersebut cukup besar untuk menjustifikasi investasi perubahan layout.</p>
+
+    <h3>Investasi Otomasi dan Teknologi</h3>
+    <p>Keputusan untuk mengotomasi suatu proses (misalnya, memasang robot welding, sistem conveyor otomatis, atau software ERP) melibatkan trade-off antara investasi awal yang besar dan penghematan biaya tenaga kerja, peningkatan kualitas, dan peningkatan kapasitas di masa depan. NPV sangat tepat untuk mengevaluasi keputusan ini karena manfaat otomasi biasanya tersebar selama bertahun-tahun.</p>
+
+    <h3>Pemilihan Supplier dan Kontrak Jangka Panjang</h3>
+    <p>Ketika membandingkan penawaran dari beberapa supplier yang memiliki struktur harga berbeda (misalnya, satu menawarkan harga satuan rendah tetapi minimum order tinggi, sementara yang lain menawarkan fleksibilitas lebih tinggi), analisis NPV terhadap total biaya siklus hidup (<em>life cycle cost</em>) membantu memilih opsi yang paling ekonomis dalam jangka panjang.</p>
+
+    <h2>12. Memilih Discount Rate (MARR): Panduan Praktis</h2>
+    <p>MARR umumnya ditetapkan dari <em>biaya modal</em> (bunga pinjaman atau imbal hasil yang hilang dari alternatif investasi) ditambah <em>premi risiko</em> proyek. Berikut panduan praktis untuk menentukan MARR dalam berbagai konteks:</p>
+    <table class="data-table">
+      <thead><tr><th>Konteks</th><th>MARR Tipikal</th><th>Pertimbangan</th></tr></thead>
+      <tbody>
+        <tr><td>Soal kuliah</td><td>Diberikan dalam soal</td><td>Tinggal digunakan langsung</td></tr>
+        <tr><td>Proyek pemerintah</td><td>6-10%</td><td>Biasanya menggunakan social discount rate</td></tr>
+        <tr><td>Perusahaan manufaktur (risiko rendah)</td><td>10-15%</td><td>Berdasarkan WACC + premi risiko kecil</td></tr>
+        <tr><td>Startup / proyek berisiko tinggi</td><td>20-30%+</td><td>Premi risiko besar karena ketidakpastian tinggi</td></tr>
+      </tbody>
+    </table>
+    <p>Semakin tinggi MARR, semakin kecil NPV — proyek dengan arus kas jauh di masa depan paling terpukul oleh MARR tinggi. Ini secara implisit mencerminkan fakta bahwa proyek jangka panjang cenderung lebih berisiko.</p>
+
+    <h2>13. NPV vs Metode Evaluasi Lain: Perbandingan Lengkap</h2>
+    <table class="data-table">
+      <thead><tr><th>Metode</th><th>Kriteria Layak</th><th>Kelebihan</th><th>Kelemahan</th></tr></thead>
+      <tbody>
+        <tr><td>NPV</td><td>NPV &gt; 0</td><td>Paling andal secara teori; mengukur nilai absolut dalam rupiah; konsisten dengan tujuan maksimisasi kekayaan</td><td>Sensitif terhadap estimasi discount rate; tidak intuitif bagi non-engineer; bias terhadap proyek berskala besar</td></tr>
+        <tr><td>IRR</td><td>IRR &gt; MARR</td><td>Intuitif (dalam persen); tidak memerlukan penentuan discount rate eksplisit</td><td>Bisa menghasilkan multiple IRR; bisa bertentangan dengan NPV untuk proyek mutually exclusive</td></tr>
+        <tr><td>Payback Period</td><td>&lt; batas yang ditetapkan</td><td>Sangat sederhana; mengukur risiko likuiditas</td><td>Mengabaikan TVM (versi sederhana) dan arus kas setelah payback</td></tr>
+        <tr><td>BCR (B/C Ratio)</td><td>BCR &gt; 1</td><td>Umum untuk proyek publik; memungkinkan perbandingan lintas sektor</td><td>Sensitif terhadap klasifikasi item sebagai "manfaat" vs "pengurangan biaya"</td></tr>
+      </tbody>
+    </table>
+    <p>Dalam praktik, pengambil keputusan yang baik tidak hanya mengandalkan satu metode evaluasi, melainkan menggunakan beberapa metode secara bersamaan (NPV sebagai kriteria utama, dilengkapi IRR, payback, dan analisis sensitivitas) untuk mendapatkan gambaran yang lebih lengkap.</p>
 
     <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
     <div class="faq-item">
       <h3>Apa bedanya payback period biasa dan discounted payback?</h3>
-      <p>Discounted payback menghitung balik modal dari arus kas yang sudah didiskontokan, sehingga selalu lebih lama dari payback biasa tetapi lebih akurat secara finansial.</p>
+      <p>Payback period biasa (simple payback) menghitung balik modal berdasarkan arus kas nominal tanpa memperhitungkan time value of money. Discounted payback menghitung balik modal dari arus kas yang sudah didiskontokan, sehingga selalu menghasilkan angka yang lebih lama tetapi lebih akurat secara finansial karena mencerminkan nilai waktu uang.</p>
     </div>
     <div class="faq-item">
       <h3>Bagaimana jika ada nilai sisa (salvage value) mesin?</h3>
-      <p>Tambahkan nilai sisa sebagai arus kas masuk di tahun terakhir sebelum didiskontokan. Contoh: nilai sisa 10 juta di tahun 5 menambah PV sebesar 10 × 0,6209 = 6,21 juta.</p>
+      <p>Tambahkan nilai sisa sebagai arus kas masuk di tahun terakhir sebelum didiskontokan. Contoh: nilai sisa 10 juta di tahun 5 dengan MARR 10% menambah PV sebesar 10 × 0,6209 = 6,21 juta. Nilai sisa yang besar dapat secara signifikan meningkatkan NPV suatu proyek, terutama untuk aset-aset yang mempertahankan nilainya dengan baik seperti properti atau peralatan berat tertentu.</p>
     </div>
     <div class="faq-item">
       <h3>Kenapa NPV bisa berbeda dengan keputusan IRR?</h3>
-      <p>Untuk proyek tunggal keduanya konsisten. Konflik bisa muncul saat membandingkan proyek dengan skala atau pola arus kas berbeda — dalam kasus itu, teori keuangan menganjurkan mengikuti NPV.</p>
+      <p>Untuk proyek tunggal dengan arus kas konvensional (investasi di awal, diikuti arus kas positif), keputusan NPV dan IRR selalu konsisten. Konflik bisa muncul saat membandingkan proyek mutually exclusive dengan skala investasi atau pola arus kas berbeda. Dalam kasus itu, teori keuangan menganjurkan mengikuti NPV karena NPV langsung mengukur penambahan nilai bagi perusahaan.</p>
     </div>
+    <div class="faq-item">
+      <h3>Apakah NPV bisa digunakan untuk proyek non-profit atau pemerintah?</h3>
+      <p>Ya. Untuk proyek publik, NPV sering diaplikasikan bersama analisis Benefit-Cost Ratio (BCR). Manfaat yang sulit diukur secara moneter (seperti peningkatan kualitas hidup atau pengurangan polusi) perlu dikuantifikasi menggunakan teknik valuasi ekonomi seperti <em>willingness to pay</em>, <em>hedonic pricing</em>, atau <em>contingent valuation</em>. Discount rate yang digunakan biasanya adalah <em>social discount rate</em> yang lebih rendah dari MARR perusahaan swasta.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Bagaimana menangani inflasi dalam perhitungan NPV?</h3>
+      <p>Ada dua pendekatan yang konsisten: (1) gunakan arus kas nominal (sudah termasuk inflasi) dengan discount rate nominal, atau (2) gunakan arus kas riil (konstan, tanpa inflasi) dengan discount rate riil. Kedua pendekatan menghasilkan NPV yang sama jika diterapkan dengan benar. Yang penting, jangan mencampurkan arus kas nominal dengan discount rate riil atau sebaliknya — kesalahan ini sangat umum terjadi.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apa yang dimaksud dengan incremental NPV?</h3>
+      <p>Incremental NPV (atau NPV tambahan) digunakan ketika membandingkan dua alternatif mutually exclusive yang memiliki skala investasi berbeda. Caranya: hitung selisih arus kas antara alternatif yang lebih mahal dan yang lebih murah, lalu hitung NPV dari selisih tersebut. Jika incremental NPV positif, maka investasi tambahan pada alternatif yang lebih mahal terjustifikasi secara ekonomis.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Berapa umur proyek yang sebaiknya digunakan dalam analisis NPV?</h3>
+      <p>Umur proyek yang digunakan sebaiknya adalah <em>umur ekonomis</em> (economic life), yaitu periode di mana biaya tahunan ekuivalen (Annual Equivalent Cost) paling rendah. Umur ekonomis bisa berbeda dari umur fisik (berapa lama aset secara teknis masih bisa beroperasi) maupun umur akuntansi (periode penyusutan untuk tujuan pajak). Untuk proyek dengan umur berbeda, gunakan metode Least Common Multiple (LCM) atau Annual Worth (AW) untuk perbandingan yang adil.</p>
+    </div>
+
+    <h2>Rangkuman</h2>
+    <p>Berikut poin-poin utama yang telah dibahas dalam panduan ini:</p>
+    <ul>
+      <li><strong>Time Value of Money (TVM)</strong> adalah konsep fundamental bahwa uang hari ini lebih berharga dari uang di masa depan karena inflasi, opportunity cost, dan risiko. TVM menjadi dasar seluruh analisis ekonomi teknik.</li>
+      <li><strong>Net Present Value (NPV)</strong> menghitung selisih antara nilai sekarang seluruh arus kas masuk dan investasi awal pada discount rate tertentu. NPV &gt; 0 berarti proyek layak; NPV &lt; 0 berarti proyek tidak layak.</li>
+      <li><strong>Discount rate (MARR)</strong> ditentukan oleh biaya modal (WACC), premi risiko, dan inflasi. Pemilihan MARR sangat mempengaruhi hasil NPV dan harus dilakukan dengan hati-hati.</li>
+      <li><strong>Payback period</strong> mengukur kecepatan balik modal. Versi discounted lebih akurat tetapi keduanya mengabaikan arus kas setelah titik payback. Gunakan sebagai pelengkap NPV, bukan pengganti.</li>
+      <li><strong>IRR</strong> adalah discount rate yang membuat NPV = 0. Untuk proyek tunggal dengan arus kas konvensional, keputusan IRR dan NPV selalu konsisten. Hati-hati dengan multiple IRR pada arus kas tak konvensional.</li>
+      <li><strong>BCR</strong> membandingkan PV manfaat terhadap PV biaya. BCR &gt; 1 berarti layak. Sangat umum digunakan untuk evaluasi proyek-proyek pemerintah dan sektor publik.</li>
+      <li><strong>Analisis sensitivitas</strong> menguji keandalan keputusan NPV terhadap perubahan asumsi. Selalu lakukan analisis sensitivitas untuk variabel-variabel kritis sebelum mengambil keputusan investasi besar.</li>
+      <li>Dalam Teknik Industri, NPV diaplikasikan untuk evaluasi penggantian peralatan, perubahan tata letak fasilitas, investasi otomasi, dan pemilihan supplier — menjadikannya salah satu alat analisis terpenting bagi seorang engineer.</li>
+    </ul>
 
     <h2>Referensi</h2>
     <ul>
-      <li>Newnan, D. G., Eschenbach, T. G., Lavelle, J. P., &amp; Lewis, N. A. (2020). <em>Engineering Economic Analysis</em> (14th ed.). Oxford University Press.</li>
-      <li>Blank, L., &amp; Tarquin, A. (2018). <em>Engineering Economy</em> (8th ed.). McGraw-Hill.</li>
-      <li>Brealey, R. A., Myers, S. C., &amp; Allen, F. (2020). <em>Principles of Corporate Finance</em> (13th ed.), bab Net Present Value. McGraw-Hill.</li>
+      <li>Blank, L., &amp; Tarquin, A. (2018). <em>Engineering Economy</em> (8th ed.). McGraw-Hill. — Buku teks standar ekonomi teknik yang mencakup NPV, IRR, BCR, dan analisis sensitivitas secara komprehensif.</li>
+      <li>Newnan, D. G., Eschenbach, T. G., Lavelle, J. P., &amp; Lewis, N. A. (2020). <em>Engineering Economic Analysis</em> (14th ed.). Oxford University Press. — Referensi utama untuk analisis ekonomi teknik dengan banyak contoh soal.</li>
+      <li>Brealey, R. A., Myers, S. C., &amp; Allen, F. (2020). <em>Principles of Corporate Finance</em> (13th ed.), bab Net Present Value dan Capital Budgeting. McGraw-Hill. — Perspektif keuangan korporat terhadap NPV dan keputusan investasi.</li>
+      <li>Sullivan, W. G., Wicks, E. M., &amp; Koelling, C. P. (2015). <em>Engineering Economy</em> (16th ed.). Pearson. — Sumber tambahan untuk metode evaluasi ekonomi teknik termasuk analisis sensitivitas dan risiko.</li>
+      <li>Park, C. S. (2019). <em>Fundamentals of Engineering Economics</em> (4th ed.). Pearson. — Pengantar ekonomi teknik yang baik untuk mahasiswa tingkat sarjana.</li>
+      <li>Pujawan, I. N. (2012). <em>Ekonomi Teknik</em> (Edisi Kedua). Guna Widya. — Buku teks ekonomi teknik berbahasa Indonesia yang relevan dengan konteks lokal.</li>
     </ul>
 
     <hr class="divider">
@@ -197,6 +470,7 @@
     <a href="about.html">Tentang</a>
     <a href="contact.html">Kontak</a>
     <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Syarat &amp; Ketentuan</a>
   </div>
   <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
 </footer>

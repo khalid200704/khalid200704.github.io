@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <title>Line Balancing: Rumus Efisiensi Lini, Balance Delay &amp; Contoh Soal</title>
-<meta name="description" content="Panduan line balancing (keseimbangan lintasan): rumus jumlah workstation minimum, efisiensi lini, balance delay, smoothness index, dan contoh soal penyeimbangan lini produksi langkah demi langkah." />
+<meta name="description" content="Panduan lengkap line balancing (keseimbangan lintasan): definisi, terminologi, precedence diagram, metode heuristik (LCR, RPW Helgeson-Birnie, Kilbridge-Wester), rumus efisiensi lini, balance delay, smoothness index, dua contoh soal langkah demi langkah, multi-model line balancing, dan dampak pada produktivitas." />
 <meta name="author" content="TI Toolkit" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://khalid200704.github.io/panduan-line-balancing.html" />
@@ -55,6 +55,26 @@
       "@type": "Question",
       "name": "Bagaimana menentukan jumlah workstation minimum?",
       "acceptedAnswer": { "@type": "Answer", "text": "N minimum = pembulatan ke atas dari ΣTi / CT. Misal total waktu task 290 detik dan cycle time 60 detik, maka N minimum = ⌈4,83⌉ = 5 workstation." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa perbedaan antara metode LCR, RPW, dan Kilbridge-Wester?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Ketiganya adalah heuristik yang berbeda dalam cara memprioritaskan task: LCR memprioritaskan task dengan waktu terbesar, RPW memprioritaskan berdasarkan bobot posisi (waktu task + waktu seluruh penerusnya), dan Kilbridge-Wester mengelompokkan task berdasarkan level/kolom dalam precedence diagram." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bagaimana jika ada task yang waktunya melebihi cycle time?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Jika waktu suatu task lebih besar dari CT, solusinya: (1) pecah task menjadi sub-task lebih kecil, (2) tingkatkan CT, (3) gunakan parallel workstation, atau (4) redesain proses/produk untuk mengurangi waktu task." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa itu smoothness index dan kapan harus digunakan?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Smoothness Index (SI) mengukur seberapa merata beban kerja antar stasiun. SI = 0 berarti sempurna merata. Gunakan SI ketika membandingkan dua atau lebih solusi penugasan yang memiliki jumlah stasiun dan efisiensi sama." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah line balancing hanya berlaku untuk lini perakitan?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Konsep dasar line balancing paling sering diterapkan pada lini perakitan, tetapi prinsipnya dapat diaplikasikan pada setiap proses produksi yang bersifat serial dan repetitif, termasuk lini pengemasan, lini pengujian kualitas, dan proses layanan sekuensial." }
     }
   ]
 }
@@ -95,31 +115,198 @@
     <div class="meta-info">Panduan Perencanaan Produksi — bagian dari seri <a href="panduan.html">Panduan Teknik Industri</a> TI Toolkit.</div>
 
     <h1>Line Balancing: Menyeimbangkan Lintasan Produksi</h1>
-    <p class="subtitle">Cara menghitung jumlah workstation minimum, efisiensi lini, dan balance delay — lengkap dengan contoh soal keseimbangan lintasan perakitan.</p>
+    <p class="subtitle">Panduan lengkap line balancing (keseimbangan lintasan produksi): definisi, terminologi, precedence diagram, metode heuristik (LCR, RPW, Kilbridge-Wester), rumus efisiensi lini, balance delay, smoothness index, dua contoh soal langkah demi langkah, hingga multi-model line balancing.</p>
     <!-- AdSense In-Article -->
     <ins class="adsbygoogle" style="display:block;text-align:center" data-ad-client="ca-pub-8688855167346136" data-ad-slot="9074056144" data-ad-format="fluid" data-ad-layout="in-article"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
-
-
+    <!-- ============================================================ -->
+    <!--  1. APA ITU LINE BALANCING — EXPANDED                        -->
+    <!-- ============================================================ -->
     <h2>Apa itu Line Balancing?</h2>
-    <p><strong>Line balancing</strong> (keseimbangan lintasan) adalah teknik membagi seluruh elemen kerja perakitan ke sejumlah <em>workstation</em> sedemikian rupa sehingga beban kerja tiap stasiun hampir sama dan tidak ada stasiun yang melebihi <em>cycle time</em>. Lini yang tidak seimbang membuat sebagian operator menganggur menunggu stasiun bottleneck — pemborosan kapasitas yang langsung terlihat di lantai produksi.</p>
-    <p>Masalah ini dikenal sebagai <em>Assembly Line Balancing Problem</em> (ALBP) dan menjadi materi inti mata kuliah Sistem Produksi dan Perancangan Tata Letak Fasilitas.</p>
+    <p><strong>Line balancing</strong> (keseimbangan lintasan) adalah teknik membagi seluruh elemen kerja perakitan ke sejumlah <em>workstation</em> sedemikian rupa sehingga beban kerja tiap stasiun hampir sama dan tidak ada stasiun yang melebihi <em>cycle time</em>. Tujuan utamanya adalah memaksimalkan pemanfaatan kapasitas tenaga kerja dan peralatan sepanjang lintasan produksi.</p>
+    <p>Konsep lintasan perakitan pertama kali dipopulerkan oleh <strong>Henry Ford</strong> pada tahun 1913 di pabrik Highland Park, Michigan, untuk memproduksi Ford Model T. Sebelum Ford menerapkan assembly line, sebuah mobil dirakit oleh satu tim yang mengerjakan seluruh tahap — membutuhkan sekitar 12 jam per unit. Setelah penerapan lintasan bergerak (<em>moving assembly line</em>), waktu perakitan turun drastis menjadi sekitar 1 jam 33 menit per unit. Keberhasilan ini menunjukkan betapa pentingnya pembagian kerja yang seimbang di sepanjang lintasan.</p>
+    <p>Masalah ini secara formal dikenal sebagai <em>Assembly Line Balancing Problem</em> (ALBP) dan menjadi materi inti mata kuliah Sistem Produksi, Perancangan Tata Letak Fasilitas, dan Manajemen Operasi di program studi Teknik Industri.</p>
 
-    <h2>Rumus-Rumus Utama</h2>
+    <h3>Mengapa Lini yang Tidak Seimbang Menjadi Masalah?</h3>
+    <p>Ketika beban kerja antar stasiun tidak merata, beberapa masalah serius muncul di lantai produksi:</p>
+    <ul>
+      <li><strong>Idle time (waktu menganggur)</strong> — Stasiun dengan beban kerja rendah memiliki operator yang menunggu tanpa melakukan pekerjaan produktif. Jika satu stasiun memiliki waktu kerja 30 detik sementara cycle time adalah 60 detik, operator tersebut menganggur selama 30 detik setiap siklusnya — 50% kapasitasnya terbuang.</li>
+      <li><strong>Bottleneck (kemacetan)</strong> — Stasiun dengan beban kerja terberat menjadi titik hambat yang menentukan output keseluruhan lini. Seluruh stasiun lain "menunggu" stasiun bottleneck ini. Output lini tidak mungkin lebih cepat dari stasiun paling lambat.</li>
+      <li><strong>Work-In-Process (WIP) buildup</strong> — Ketidakseimbangan menyebabkan penumpukan barang setengah jadi di depan stasiun bottleneck. WIP yang tinggi berarti modal terikat pada inventori, membutuhkan ruang penyimpanan lebih besar, dan meningkatkan risiko kerusakan produk.</li>
+      <li><strong>Biaya tenaga kerja berlebih</strong> — Jika penugasan task buruk menghasilkan lebih banyak stasiun dari yang diperlukan, perusahaan harus membayar lebih banyak operator untuk output yang sama.</li>
+      <li><strong>Masalah kualitas</strong> — Operator yang terburu-buru di stasiun bottleneck cenderung membuat lebih banyak kesalahan, sementara operator yang menganggur di stasiun ringan kehilangan fokus dan ritme kerja.</li>
+    </ul>
+
+    <h3>Klasifikasi Masalah ALBP</h3>
+    <p>Dalam literatur akademik, ALBP dibagi menjadi beberapa tipe:</p>
+    <ul>
+      <li><strong>ALBP Tipe 1 (SALBP-1)</strong> — Cycle time sudah ditentukan; tujuannya meminimalkan jumlah workstation. Ini tipe paling umum di soal ujian dan praktikum.</li>
+      <li><strong>ALBP Tipe 2 (SALBP-2)</strong> — Jumlah workstation sudah ditentukan; tujuannya meminimalkan cycle time (memaksimalkan output).</li>
+      <li><strong>ALBP Tipe E</strong> — Meminimalkan jumlah workstation dan cycle time secara bersamaan; tujuannya memaksimalkan efisiensi lini.</li>
+      <li><strong>ALBP Tipe F</strong> — Memeriksa apakah solusi layak ada untuk kombinasi N workstation dan CT tertentu.</li>
+    </ul>
+    <p>Di panduan ini kita fokus pada <strong>SALBP-1</strong>, karena inilah yang paling sering diujikan dan paling relevan untuk perancangan lini baru.</p>
+
+    <!-- ============================================================ -->
+    <!--  2. TERMINOLOGI PENTING                                      -->
+    <!-- ============================================================ -->
+    <h2>Terminologi Penting dalam Line Balancing</h2>
+    <p>Sebelum masuk ke perhitungan, pastikan Anda memahami istilah-istilah kunci berikut. Tabel ini menjadi referensi cepat yang bisa Anda gunakan saat mengerjakan soal maupun proyek di lapangan.</p>
+    <table class="data-table">
+      <thead><tr><th>Istilah</th><th>Definisi</th><th>Contoh / Catatan</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Task (Elemen Kerja)</strong></td>
+          <td>Unit pekerjaan terkecil yang tidak dapat dipecah lagi secara praktis. Setiap task memiliki waktu pengerjaan tetap.</td>
+          <td>"Pasang baut A ke rangka" = 12 detik</td>
+        </tr>
+        <tr>
+          <td><strong>Workstation (Stasiun Kerja)</strong></td>
+          <td>Lokasi fisik di lintasan tempat satu atau beberapa task dilakukan oleh satu operator (atau satu tim).</td>
+          <td>Stasiun 3 berisi task T5 dan T6</td>
+        </tr>
+        <tr>
+          <td><strong>Precedence Constraint</strong></td>
+          <td>Hubungan urutan antar task — task tertentu harus diselesaikan sebelum task lain bisa dimulai.</td>
+          <td>T3 harus selesai sebelum T7 boleh dimulai</td>
+        </tr>
+        <tr>
+          <td><strong>Precedence Diagram</strong></td>
+          <td>Grafik berarah (directed graph) yang menunjukkan urutan ketergantungan antar task.</td>
+          <td>Node = task, panah = urutan</td>
+        </tr>
+        <tr>
+          <td><strong>Cycle Time (CT)</strong></td>
+          <td>Waktu maksimum yang tersedia di setiap stasiun untuk menyelesaikan semua task yang ditugaskan. Biasanya diturunkan dari takt time atau target output.</td>
+          <td>CT = Waktu tersedia per shift / Target output per shift</td>
+        </tr>
+        <tr>
+          <td><strong>Idle Time</strong></td>
+          <td>Selisih antara cycle time dan waktu kerja aktual di suatu stasiun. Total idle time = N x CT - ΣTi.</td>
+          <td>Stasiun dengan waktu 45 dtk dan CT 60 dtk memiliki idle 15 dtk</td>
+        </tr>
+        <tr>
+          <td><strong>Balance Delay (BD)</strong></td>
+          <td>Persentase total waktu menganggur terhadap total kapasitas waktu lini. BD = 100% - Efisiensi.</td>
+          <td>BD 15% berarti 15% kapasitas lini terbuang sia-sia</td>
+        </tr>
+        <tr>
+          <td><strong>Efisiensi Lini (E)</strong></td>
+          <td>Rasio total waktu kerja produktif terhadap total kapasitas waktu seluruh stasiun. E = ΣTi / (N x CT) x 100%.</td>
+          <td>E = 85% artinya 85% kapasitas digunakan produktif</td>
+        </tr>
+        <tr>
+          <td><strong>Smoothness Index (SI)</strong></td>
+          <td>Ukuran seberapa merata beban kerja antar stasiun. Semakin kecil SI, semakin merata beban kerja.</td>
+          <td>SI = 0 berarti semua stasiun memiliki waktu kerja identik (ideal)</td>
+        </tr>
+        <tr>
+          <td><strong>Positional Weight (PW)</strong></td>
+          <td>Bobot posisi suatu task, dihitung sebagai jumlah waktu task itu sendiri ditambah waktu seluruh task penerusnya (followers).</td>
+          <td>Digunakan dalam metode RPW (Helgeson-Birnie)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <!--  3. RUMUS-RUMUS UTAMA                                        -->
+    <!-- ============================================================ -->
+    <h2>Rumus-Rumus Utama Line Balancing</h2>
     <table class="data-table">
       <thead><tr><th>Ukuran</th><th>Rumus</th><th>Keterangan</th></tr></thead>
       <tbody>
         <tr><td>Cycle time maksimum</td><td>CT = Waktu tersedia / Output target</td><td>Sering diset = takt time</td></tr>
-        <tr><td>Workstation minimum</td><td>N* = ⌈ΣTi / CT⌉</td><td>Pembulatan ke atas</td></tr>
-        <tr><td>Efisiensi lini</td><td>E = ΣTi / (N × CT) × 100%</td><td>N = stasiun aktual</td></tr>
-        <tr><td>Balance delay</td><td>BD = 100% − E</td><td>Persentase waktu menganggur</td></tr>
-        <tr><td>Idle time total</td><td>IT = N × CT − ΣTi</td><td>Dalam satuan waktu</td></tr>
+        <tr><td>Workstation minimum</td><td>N* = ⌈ΣTi / CT⌉</td><td>Pembulatan ke atas (ceiling)</td></tr>
+        <tr><td>Efisiensi lini</td><td>E = ΣTi / (N × CT) × 100%</td><td>N = jumlah stasiun aktual</td></tr>
+        <tr><td>Balance delay</td><td>BD = 100% − E</td><td>Persentase waktu menganggur total</td></tr>
+        <tr><td>Idle time total</td><td>IT = N × CT − ΣTi</td><td>Dalam satuan waktu (detik/menit)</td></tr>
+        <tr><td>Smoothness index</td><td>SI = √(Σ(ST<sub>max</sub> − ST<sub>i</sub>)²)</td><td>ST<sub>max</sub> = waktu stasiun terbesar, ST<sub>i</sub> = waktu stasiun ke-i</td></tr>
       </tbody>
     </table>
-    <p>ΣTi adalah jumlah waktu seluruh task. Perlu diingat: penugasan task ke stasiun harus menghormati <strong>precedence constraint</strong> (urutan pengerjaan) — task tidak boleh ditugaskan sebelum pendahulunya selesai.</p>
+    <p>ΣTi adalah jumlah waktu seluruh task. Perlu diingat: penugasan task ke stasiun harus menghormati <strong>precedence constraint</strong> (urutan pengerjaan) — task tidak boleh ditugaskan sebelum seluruh pendahulunya (predecessors) sudah selesai ditugaskan.</p>
 
-    <h2>Contoh Soal Line Balancing dan Pembahasan</h2>
+    <!-- ============================================================ -->
+    <!--  4. PRECEDENCE DIAGRAM                                       -->
+    <!-- ============================================================ -->
+    <h2>Precedence Diagram: Cara Membaca dan Menggambar</h2>
+    <p>Precedence diagram adalah representasi visual dari hubungan urutan antar task dalam proses perakitan. Diagram ini menjadi fondasi sebelum melakukan penugasan task ke workstation, karena kita harus tahu task mana yang bisa dikerjakan bersamaan dan mana yang harus menunggu task lain selesai.</p>
+
+    <h3>Komponen Precedence Diagram</h3>
+    <ul>
+      <li><strong>Node (lingkaran/kotak)</strong> — Merepresentasikan setiap task. Di dalam node biasanya ditulis nama task (misal T1, A, B) dan waktu pengerjaannya.</li>
+      <li><strong>Panah berarah (directed arc)</strong> — Menunjukkan hubungan ketergantungan. Panah dari T1 ke T3 berarti T1 harus selesai sebelum T3 bisa dimulai. T1 disebut <em>immediate predecessor</em> dari T3.</li>
+      <li><strong>Task tanpa panah masuk (source)</strong> — Task yang bisa dimulai langsung tanpa menunggu task lain. Ini adalah titik awal lintasan.</li>
+      <li><strong>Task tanpa panah keluar (sink)</strong> — Task terakhir dalam lintasan yang tidak memiliki penerus.</li>
+    </ul>
+
+    <h3>Immediate Predecessor vs All Predecessors</h3>
+    <p>Penting untuk membedakan dua konsep ini:</p>
+    <ul>
+      <li><strong>Immediate predecessor</strong> — Task yang langsung mendahului suatu task (terhubung langsung dengan panah). Contoh: jika T1 → T3 → T5, maka immediate predecessor T5 adalah T3.</li>
+      <li><strong>All predecessors</strong> — Seluruh task yang harus selesai (langsung maupun tidak langsung) sebelum suatu task bisa dimulai. Dalam contoh di atas, all predecessors T5 adalah T1 dan T3.</li>
+    </ul>
+    <p>Saat melakukan penugasan, kita harus memastikan seluruh <em>all predecessors</em> suatu task sudah ditugaskan ke stasiun yang sama atau stasiun sebelumnya. Jika tidak, penugasan tersebut melanggar precedence constraint dan solusinya tidak valid.</p>
+
+    <h3>Contoh Notasi Precedence</h3>
+    <p>Precedence diagram sering disajikan dalam bentuk tabel seperti berikut, yang kemudian digambar menjadi grafik:</p>
+    <table class="data-table">
+      <thead><tr><th>Task</th><th>Waktu (detik)</th><th>Immediate Predecessor</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>10</td><td>—</td></tr>
+        <tr><td>B</td><td>14</td><td>A</td></tr>
+        <tr><td>C</td><td>8</td><td>A</td></tr>
+        <tr><td>D</td><td>6</td><td>B, C</td></tr>
+        <tr><td>E</td><td>12</td><td>D</td></tr>
+      </tbody>
+    </table>
+    <p>Dari tabel di atas: A adalah source (tanpa predecessor). B dan C keduanya bergantung pada A (bisa paralel satu sama lain). D membutuhkan B dan C selesai. E bergantung pada D. Grafik yang dihasilkan berbentuk diamond: A bercabang ke B dan C, lalu keduanya menyatu kembali di D, diikuti E.</p>
+
+    <!-- ============================================================ -->
+    <!--  5. METODE PENUGASAN TASK — DETAIL HEURISTIK                 -->
+    <!-- ============================================================ -->
+    <h2>Metode Penugasan Task (Heuristik Line Balancing)</h2>
+    <p>Masalah ALBP bersifat NP-hard — tidak ada algoritma yang efisien untuk menemukan solusi optimal pada semua kasus. Oleh karena itu, dalam praktik digunakan <strong>heuristik</strong> (metode pendekatan) yang memberikan solusi cukup baik dalam waktu singkat. Berikut tiga metode yang paling umum diajarkan di Teknik Industri:</p>
+
+    <h3>1. Largest Candidate Rule (LCR) / Longest Task Time</h3>
+    <p>Ini adalah heuristik paling sederhana dan intuitif. Langkah-langkahnya:</p>
+    <ol>
+      <li><strong>Urutkan</strong> semua task berdasarkan waktu pengerjaan dari yang terbesar ke terkecil.</li>
+      <li><strong>Buka stasiun baru</strong> (mulai dari Stasiun 1).</li>
+      <li>Dari daftar task yang tersedia (seluruh predecessornya sudah ditugaskan), pilih task dengan <strong>waktu terbesar</strong> yang masih muat di sisa kapasitas stasiun (waktu stasiun + waktu task ≤ CT).</li>
+      <li>Tugaskan task tersebut ke stasiun saat ini. Kurangi sisa kapasitas.</li>
+      <li>Ulangi langkah 3-4 sampai tidak ada task yang bisa ditugaskan ke stasiun ini.</li>
+      <li>Jika masih ada task tersisa, buka stasiun baru dan ulangi dari langkah 3.</li>
+      <li>Selesai ketika semua task sudah ditugaskan.</li>
+    </ol>
+    <p><strong>Kelebihan:</strong> Mudah dipahami dan dikerjakan manual. <strong>Kelemahan:</strong> Tidak mempertimbangkan struktur precedence diagram secara global — bisa menghasilkan solusi yang jauh dari optimal jika task besar "terjebak" menunggu predecessor.</p>
+
+    <h3>2. Ranked Positional Weight (RPW) — Metode Helgeson-Birnie</h3>
+    <p>Metode RPW dikembangkan oleh Helgeson dan Birnie pada tahun 1961 dan masih menjadi salah satu heuristik paling populer. Metode ini mempertimbangkan "kepentingan" setiap task berdasarkan posisinya dalam precedence diagram.</p>
+    <ol>
+      <li><strong>Hitung Positional Weight (PW)</strong> setiap task: PW(i) = waktu task i + jumlah waktu seluruh task yang mengikutinya (followers, baik langsung maupun tidak langsung).</li>
+      <li><strong>Urutkan</strong> semua task berdasarkan PW dari terbesar ke terkecil.</li>
+      <li><strong>Tugaskan task</strong> satu per satu sesuai urutan PW, ke stasiun yang masih memiliki sisa kapasitas dan seluruh predecessornya sudah ditugaskan.</li>
+      <li>Jika task tidak muat di stasiun saat ini, buka stasiun baru.</li>
+      <li>Ulangi sampai semua task tertugaskan.</li>
+    </ol>
+    <p><strong>Kelebihan:</strong> Mempertimbangkan posisi task dalam jaringan sehingga cenderung menghasilkan solusi lebih baik daripada LCR. <strong>Kelemahan:</strong> Tetap tidak menjamin solusi optimal.</p>
+
+    <h3>3. Metode Kilbridge-Wester (Column Method)</h3>
+    <p>Metode ini mengelompokkan task berdasarkan "kolom" dalam precedence diagram:</p>
+    <ol>
+      <li><strong>Gambar precedence diagram</strong> dan susun task dalam kolom berdasarkan level ketergantungan. Task tanpa predecessor di kolom I, task yang hanya bergantung pada kolom I di kolom II, dan seterusnya.</li>
+      <li><strong>Dalam setiap kolom</strong>, urutkan task dari waktu terbesar ke terkecil.</li>
+      <li><strong>Tugaskan task</strong> mulai dari kolom I, pilih task dengan waktu terbesar yang muat di stasiun saat ini.</li>
+      <li>Setelah semua task di kolom I habis, lanjutkan ke kolom II, dan seterusnya.</li>
+      <li>Jika stasiun penuh, buka stasiun baru.</li>
+    </ol>
+    <p><strong>Kelebihan:</strong> Secara alami menghormati precedence karena penugasan mengikuti urutan kolom. <strong>Kelemahan:</strong> Bisa menghasilkan stasiun terakhir yang sangat ringan jika distribusi waktu task tidak merata.</p>
+
+    <!-- ============================================================ -->
+    <!--  6. CONTOH SOAL PERTAMA (dipertahankan)                      -->
+    <!-- ============================================================ -->
+    <h2>Contoh Soal 1: Line Balancing Sederhana (8 Task Berurutan)</h2>
     <p><strong>Soal:</strong> Sebuah lini perakitan memiliki 8 task berurutan dengan waktu (detik): 40, 55, 35, 50, 45, 30, 20, 15. Cycle time yang ditetapkan 60 detik/unit. (a) Hitung jumlah workstation minimum. (b) Jika lini dijalankan dengan 5 workstation, hitung efisiensi dan balance delay.</p>
     <p><strong>Langkah 1 — Total waktu task:</strong> ΣTi = 40+55+35+50+45+30+20+15 = 290 detik.</p>
     <p><strong>Langkah 2 — Workstation minimum:</strong></p>
@@ -142,38 +329,268 @@
     <div class="formula-block">E = 290 / (5 × 60) × 100% = 96,7% &nbsp;→&nbsp; BD = 3,3%</div>
     <p>Jika hanya tercapai 7 stasiun: E = 290/(7×60) = 69,0% dan BD = 31,0% — terlihat betapa besar dampak kualitas penugasan terhadap efisiensi.</p>
 
-    <h2>Heuristik Penugasan yang Umum Diajarkan</h2>
-    <ul>
-      <li><strong>Largest Candidate Rule / Longest Task Time</strong> — prioritaskan task dengan waktu terbesar yang memenuhi syarat.</li>
-      <li><strong>Most Following Tasks</strong> — prioritaskan task dengan jumlah pengikut terbanyak di diagram precedence.</li>
-      <li><strong>Ranked Positional Weight (RPW/Helgeson-Birnie)</strong> — prioritaskan task dengan bobot posisi (waktu task + seluruh penerusnya) terbesar.</li>
-    </ul>
-    <p>Heuristik tidak menjamin solusi optimal, tetapi cepat dan biasanya cukup dekat — itulah mengapa ketiganya menjadi standar di buku teks dan praktikum.</p>
+    <!-- ============================================================ -->
+    <!--  7. CONTOH SOAL 2 — RPW DENGAN 11 TASK                      -->
+    <!-- ============================================================ -->
+    <h2>Contoh Soal 2: Metode RPW dengan 11 Task dan Precedence Constraints</h2>
+    <p><strong>Soal:</strong> Sebuah lini perakitan motor listrik memiliki 11 task dengan data sebagai berikut. Cycle time = 15 menit/unit. Gunakan metode Ranked Positional Weight (RPW) untuk menugaskan task ke workstation.</p>
 
+    <h3>Data Task dan Precedence</h3>
+    <table class="data-table">
+      <thead><tr><th>Task</th><th>Waktu (menit)</th><th>Immediate Predecessor</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>5</td><td>—</td></tr>
+        <tr><td>B</td><td>3</td><td>A</td></tr>
+        <tr><td>C</td><td>4</td><td>A</td></tr>
+        <tr><td>D</td><td>3</td><td>A</td></tr>
+        <tr><td>E</td><td>7</td><td>B</td></tr>
+        <tr><td>F</td><td>6</td><td>C, D</td></tr>
+        <tr><td>G</td><td>2</td><td>E</td></tr>
+        <tr><td>H</td><td>5</td><td>E, F</td></tr>
+        <tr><td>I</td><td>4</td><td>G, H</td></tr>
+        <tr><td>J</td><td>6</td><td>H</td></tr>
+        <tr><td>K</td><td>3</td><td>I, J</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Langkah 1 — Hitung Total Waktu dan Workstation Minimum</h3>
+    <p>ΣTi = 5+3+4+3+7+6+2+5+4+6+3 = <strong>48 menit</strong></p>
+    <div class="formula-block">N* = ⌈48 / 15⌉ = ⌈3,20⌉ = 4 workstation (minimum teoretis)</div>
+
+    <h3>Langkah 2 — Identifikasi Followers Setiap Task</h3>
+    <p>Untuk menghitung PW, kita perlu tahu seluruh task yang mengikuti (followers) setiap task, baik langsung maupun tidak langsung:</p>
+    <table class="data-table">
+      <thead><tr><th>Task</th><th>Waktu</th><th>Followers</th><th>Total Waktu Followers</th><th>PW = Waktu + Followers</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>5</td><td>B, C, D, E, F, G, H, I, J, K</td><td>43</td><td><strong>48</strong></td></tr>
+        <tr><td>B</td><td>3</td><td>E, G, H, I, J, K</td><td>27</td><td><strong>30</strong></td></tr>
+        <tr><td>C</td><td>4</td><td>F, H, I, J, K</td><td>24</td><td><strong>28</strong></td></tr>
+        <tr><td>D</td><td>3</td><td>F, H, I, J, K</td><td>24</td><td><strong>27</strong></td></tr>
+        <tr><td>E</td><td>7</td><td>G, H, I, J, K</td><td>20</td><td><strong>27</strong></td></tr>
+        <tr><td>F</td><td>6</td><td>H, I, J, K</td><td>18</td><td><strong>24</strong></td></tr>
+        <tr><td>G</td><td>2</td><td>I, K</td><td>7</td><td><strong>9</strong></td></tr>
+        <tr><td>H</td><td>5</td><td>I, J, K</td><td>13</td><td><strong>18</strong></td></tr>
+        <tr><td>I</td><td>4</td><td>K</td><td>3</td><td><strong>7</strong></td></tr>
+        <tr><td>J</td><td>6</td><td>K</td><td>3</td><td><strong>9</strong></td></tr>
+        <tr><td>K</td><td>3</td><td>—</td><td>0</td><td><strong>3</strong></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Langkah 3 — Urutkan Task Berdasarkan PW (Terbesar ke Terkecil)</h3>
+    <p>Urutan penugasan: A (48) → B (30) → C (28) → D (27) = E (27) → F (24) → H (18) → G (9) = J (9) → I (7) → K (3).</p>
+    <p>Catatan: Jika dua task memiliki PW sama (misalnya D dan E), kita bisa memilih salah satu terlebih dahulu — biasanya dipilih yang waktu pengerjaannya lebih besar, atau berdasarkan urutan abjad.</p>
+
+    <h3>Langkah 4 — Penugasan Task ke Workstation (CT = 15 menit)</h3>
+    <table class="data-table">
+      <thead><tr><th>Stasiun</th><th>Task Ditugaskan</th><th>Waktu Kumulatif</th><th>Sisa Kapasitas</th><th>Keterangan</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3">WS-1</td><td>A (5 mnt)</td><td>5</td><td>10</td><td>PW tertinggi, no predecessor</td></tr>
+        <tr><td>B (3 mnt)</td><td>8</td><td>7</td><td>Predecessor A sudah di WS-1</td></tr>
+        <tr><td>E (7 mnt)</td><td>15</td><td>0</td><td>Predecessor B sudah di WS-1. C(4) muat tapi E punya PW lebih tinggi dan predecessornya terpenuhi</td></tr>
+        <tr><td rowspan="3">WS-2</td><td>C (4 mnt)</td><td>4</td><td>11</td><td>Predecessor A sudah di WS-1</td></tr>
+        <tr><td>D (3 mnt)</td><td>7</td><td>8</td><td>Predecessor A sudah di WS-1</td></tr>
+        <tr><td>F (6 mnt)</td><td>13</td><td>2</td><td>Predecessor C, D sudah ditugaskan. G(2) muat tapi PW F lebih tinggi</td></tr>
+        <tr><td rowspan="2">WS-3</td><td>H (5 mnt)</td><td>5</td><td>10</td><td>Predecessor E (WS-1), F (WS-2) terpenuhi</td></tr>
+        <tr><td>G (2 mnt) + J (6 mnt)</td><td>13</td><td>2</td><td>G: predecessor E terpenuhi. J: predecessor H terpenuhi</td></tr>
+        <tr><td rowspan="2">WS-4</td><td>I (4 mnt)</td><td>4</td><td>11</td><td>Predecessor G (WS-3), H (WS-3) terpenuhi</td></tr>
+        <tr><td>K (3 mnt)</td><td>7</td><td>8</td><td>Predecessor I, J terpenuhi</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Langkah 5 — Hitung Efisiensi dan Balance Delay</h3>
+    <div class="formula-block">E = ΣTi / (N × CT) × 100% = 48 / (4 × 15) × 100% = 48/60 × 100% = <strong>80,0%</strong></div>
+    <div class="formula-block">BD = 100% − 80% = <strong>20,0%</strong></div>
+    <div class="formula-block">Idle Time Total = (4 × 15) − 48 = 60 − 48 = <strong>12 menit</strong></div>
+    <p>Hasil: metode RPW berhasil mencapai jumlah workstation minimum teoretis (4 stasiun) dengan efisiensi 80%. Balance delay 20% terjadi karena waktu task total (48 menit) tidak habis dibagi rata ke 4 stasiun x 15 menit.</p>
+
+    <!-- ============================================================ -->
+    <!--  8. SMOOTHNESS INDEX                                         -->
+    <!-- ============================================================ -->
+    <h2>Smoothness Index (SI): Mengukur Kerataan Beban Kerja</h2>
+    <p>Efisiensi lini dan balance delay mengukur <em>seberapa banyak</em> kapasitas yang terpakai secara agregat, tetapi tidak menunjukkan <em>seberapa merata</em> beban kerja tersebar di seluruh stasiun. Di sinilah Smoothness Index (SI) berperan sebagai metrik pelengkap.</p>
+
+    <h3>Rumus Smoothness Index</h3>
+    <div class="formula-block">SI = √( Σ (ST<sub>max</sub> − ST<sub>i</sub>)² ) &nbsp;&nbsp;untuk i = 1, 2, ..., N</div>
+    <p>Dimana:</p>
+    <ul>
+      <li><strong>ST<sub>max</sub></strong> = waktu stasiun terbesar (stasiun dengan beban kerja tertinggi)</li>
+      <li><strong>ST<sub>i</sub></strong> = waktu stasiun ke-i</li>
+      <li><strong>N</strong> = jumlah stasiun</li>
+    </ul>
+
+    <h3>Interpretasi SI</h3>
+    <ul>
+      <li><strong>SI = 0</strong> — Kondisi ideal. Semua stasiun memiliki waktu kerja yang sama persis. Beban kerja terdistribusi sempurna.</li>
+      <li><strong>SI kecil (mendekati 0)</strong> — Beban kerja relatif merata. Perbedaan antar stasiun kecil.</li>
+      <li><strong>SI besar</strong> — Beban kerja sangat timpang. Ada stasiun yang sangat sibuk dan stasiun yang sangat ringan.</li>
+    </ul>
+
+    <h3>Contoh Perhitungan SI (dari Contoh Soal 2)</h3>
+    <p>Waktu masing-masing stasiun: WS-1 = 15, WS-2 = 13, WS-3 = 13, WS-4 = 7. ST<sub>max</sub> = 15.</p>
+    <div class="formula-block">SI = √((15−15)² + (15−13)² + (15−13)² + (15−7)²) = √(0 + 4 + 4 + 64) = √72 = <strong>8,49</strong></div>
+    <p>Nilai SI = 8,49 menunjukkan bahwa beban kerja belum merata sempurna — terutama WS-4 yang hanya berisi 7 menit dari kapasitas 15 menit. Jika kita bisa menemukan penugasan alternatif yang menyebarkan beban lebih merata, SI akan turun meskipun jumlah stasiun tetap sama.</p>
+    <p><strong>Kapan menggunakan SI?</strong> Ketika membandingkan dua solusi yang memiliki jumlah stasiun dan efisiensi yang sama. Solusi dengan SI lebih kecil lebih disukai karena beban kerja operator lebih seimbang, mengurangi risiko kelelahan di stasiun berat dan kebosanan di stasiun ringan.</p>
+
+    <!-- ============================================================ -->
+    <!--  9. MULTI-MODEL LINE BALANCING                               -->
+    <!-- ============================================================ -->
+    <h2>Multi-Model Line Balancing</h2>
+    <p>Dalam praktik industri modern — terutama di industri otomotif dan elektronik — jarang sekali sebuah lintasan hanya memproduksi satu jenis produk. Sebaliknya, satu lintasan digunakan untuk merakit beberapa model atau varian produk secara bergantian. Inilah yang disebut <strong>mixed-model line balancing</strong>.</p>
+
+    <h3>Perbedaan dengan Single-Model</h3>
+    <table class="data-table">
+      <thead><tr><th>Aspek</th><th>Single-Model</th><th>Mixed-Model</th></tr></thead>
+      <tbody>
+        <tr><td>Produk</td><td>Satu jenis produk</td><td>Beberapa varian di lini yang sama</td></tr>
+        <tr><td>Cycle time</td><td>Tetap untuk semua unit</td><td>Bervariasi tergantung model yang sedang dirakit</td></tr>
+        <tr><td>Precedence</td><td>Satu diagram precedence</td><td>Gabungan dari beberapa diagram precedence (combined precedence diagram)</td></tr>
+        <tr><td>Kompleksitas</td><td>Relatif sederhana</td><td>Jauh lebih kompleks — harus mempertimbangkan urutan model (sequencing)</td></tr>
+        <tr><td>Contoh industri</td><td>Lini produksi massal homogen</td><td>Lini perakitan mobil (sedan, SUV, MPV dalam satu lini)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Konsep Dasar Mixed-Model</h3>
+    <p>Pada mixed-model line balancing, waktu pengerjaan task bisa berbeda untuk setiap model. Misalnya, task "pasang pintu" membutuhkan 45 detik untuk sedan biasa tetapi 55 detik untuk SUV karena pintu SUV lebih besar dan berat. Pendekatan yang umum digunakan:</p>
+    <ul>
+      <li><strong>Waktu rata-rata tertimbang</strong> — Hitung waktu task sebagai rata-rata tertimbang berdasarkan proporsi produksi masing-masing model. Jika 60% produksi adalah sedan (45 dtk) dan 40% adalah SUV (55 dtk), maka waktu rata-rata = 0,6 × 45 + 0,4 × 55 = 49 detik.</li>
+      <li><strong>Combined precedence diagram</strong> — Gabungkan diagram precedence seluruh model menjadi satu diagram. Task yang hanya ada di model tertentu tetap dimasukkan.</li>
+      <li><strong>Sequencing</strong> — Tentukan urutan model yang masuk ke lini untuk menghindari penumpukan beban kerja berturut-turut di satu stasiun.</li>
+    </ul>
+    <p>Pembahasan mendalam tentang mixed-model ALBP merupakan topik lanjutan yang biasanya dipelajari di mata kuliah Perancangan Sistem Manufaktur atau pada level pascasarjana.</p>
+
+    <!-- ============================================================ -->
+    <!--  10. DAMPAK LINE BALANCING PADA PRODUKTIVITAS                -->
+    <!-- ============================================================ -->
+    <h2>Dampak Line Balancing pada Produktivitas</h2>
+    <p>Line balancing bukan sekadar latihan akademis — peningkatan efisiensi lini berdampak langsung pada biaya produksi, kebutuhan tenaga kerja, dan output. Berikut ilustrasi kuantitatifnya:</p>
+
+    <h3>Studi Kasus: Peningkatan Efisiensi dari 70% ke 90%</h3>
+    <p>Pertimbangkan lini perakitan dengan data berikut:</p>
+    <ul>
+      <li>Total waktu task (ΣTi) = 300 detik</li>
+      <li>Cycle time (CT) = 50 detik</li>
+      <li>Target output = 576 unit per shift (8 jam)</li>
+    </ul>
+    <p><strong>Kondisi awal (efisiensi 70%):</strong></p>
+    <div class="formula-block">N = ΣTi / (E × CT) = 300 / (0,70 × 50) = 300/35 ≈ 9 stasiun (dengan 9 operator)</div>
+    <p>Idle time total per siklus = 9 × 50 − 300 = 150 detik. Per shift (576 siklus): 150 × 576 = 86.400 detik = <strong>24 jam-orang terbuang</strong> setiap shift.</p>
+    <p><strong>Setelah perbaikan (efisiensi 90%):</strong></p>
+    <div class="formula-block">N = 300 / (0,90 × 50) = 300/45 ≈ 7 stasiun (dengan 7 operator)</div>
+    <p>Idle time total per siklus = 7 × 50 − 300 = 50 detik. Per shift: 50 × 576 = 28.800 detik = <strong>8 jam-orang terbuang</strong>.</p>
+    <p><strong>Penghematan:</strong></p>
+    <ul>
+      <li>Pengurangan 2 operator (dari 9 menjadi 7) — penghematan biaya tenaga kerja sekitar 22%.</li>
+      <li>Idle time berkurang dari 24 jam-orang menjadi 8 jam-orang per shift — penurunan 67%.</li>
+      <li>Jika upah operator Rp 4 juta/bulan, penghematan tahunan = 2 × Rp 4 juta × 12 = <strong>Rp 96 juta/tahun</strong> hanya dari pengurangan jumlah stasiun.</li>
+    </ul>
+    <p>Angka-angka di atas menunjukkan mengapa perusahaan manufaktur berinvestasi serius dalam optimasi line balancing. Peningkatan 20 poin persentase efisiensi bisa menghasilkan penghematan puluhan hingga ratusan juta rupiah per tahun, tergantung skala produksi.</p>
+
+    <!-- ============================================================ -->
+    <!--  11. KETERBATASAN DAN ASUMSI                                 -->
+    <!-- ============================================================ -->
+    <h2>Keterbatasan dan Asumsi Line Balancing</h2>
+    <p>Metode-metode line balancing yang diajarkan di perkuliahan memiliki sejumlah asumsi yang perlu dipahami agar hasil analisis diterapkan secara realistis:</p>
+    <ol>
+      <li><strong>Waktu task deterministik</strong> — Diasumsikan waktu setiap task tetap dan pasti. Dalam kenyataan, waktu task bervariasi antar operator, antar shift, dan dipengaruhi kelelahan, keterampilan, serta kondisi material. Varians ini bisa menyebabkan bottleneck berpindah-pindah (floating bottleneck).</li>
+      <li><strong>Precedence constraint tetap</strong> — Hubungan antar task dianggap tidak berubah. Padahal, dalam beberapa kasus, urutan pengerjaan bisa diubah melalui redesain produk atau proses.</li>
+      <li><strong>Tidak ada learning curve</strong> — Model ALBP standar mengasumsikan operator sudah terlatih penuh. Pada awal produksi baru, waktu task akan lebih lama karena kurva belajar (learning effect).</li>
+      <li><strong>Satu operator per stasiun</strong> — Asumsi dasar SALBP. Pada praktiknya, satu stasiun bisa memiliki beberapa operator (parallel workstations) atau satu operator mengerjakan beberapa stasiun (walking worker).</li>
+      <li><strong>Task tidak dapat dipecah</strong> — Setiap task dianggap sebagai unit kerja tak terbagi. Jika ada task yang waktunya melebihi cycle time, maka CT harus ditingkatkan atau task harus dipecah — sesuatu yang tidak selalu mungkin.</li>
+      <li><strong>Layout lintasan lurus</strong> — SALBP mengasumsikan layout serial (garis lurus). Lintasan U-shape, parallel lines, dan layout fleksibel memerlukan model yang berbeda.</li>
+      <li><strong>Mengabaikan waktu perpindahan</strong> — Waktu yang dibutuhkan produk untuk berpindah antar stasiun biasanya diabaikan atau dianggap konstan dan sudah termasuk dalam cycle time.</li>
+      <li><strong>Tidak ada variabilitas permintaan</strong> — Model mengasumsikan output target konstan. Fluktuasi permintaan yang besar memerlukan penyesuaian cycle time atau perubahan jumlah stasiun secara periodik.</li>
+    </ol>
+    <p>Memahami keterbatasan ini penting agar Anda tidak menerapkan hasil perhitungan secara buta. Dalam proyek nyata, analisis sensitivitas dan simulasi sering digunakan untuk melengkapi hasil analitis dari line balancing.</p>
+
+    <!-- ============================================================ -->
+    <!--  12. SOFTWARE DAN TOOLS                                      -->
+    <!-- ============================================================ -->
+    <h2>Software dan Tools untuk Line Balancing</h2>
+    <p>Untuk masalah skala kecil (kurang dari 15-20 task), perhitungan manual atau menggunakan spreadsheet sudah memadai. Namun untuk lini produksi industri yang kompleks dengan ratusan task, diperlukan bantuan komputasi:</p>
+
+    <h3>Pendekatan Manual dan Spreadsheet</h3>
+    <ul>
+      <li><strong>Perhitungan di kertas</strong> — Cocok untuk tugas kuliah dan ujian. Mahasiswa perlu memahami langkah-langkah manual sebelum menggunakan software.</li>
+      <li><strong>Microsoft Excel / Google Sheets</strong> — Cukup untuk menerapkan heuristik LCR dan RPW pada kasus menengah. Bisa membuat template yang reusable dengan formula dan conditional formatting.</li>
+      <li><strong>Kalkulator online</strong> — Termasuk kalkulator line balancing yang tersedia di situs ini, yang menghitung workstation minimum, efisiensi, dan balance delay secara otomatis.</li>
+    </ul>
+
+    <h3>Software Khusus dan Pendekatan Komputasi</h3>
+    <ul>
+      <li><strong>Software simulasi proses</strong> — Tools seperti ProModel, Arena, dan FlexSim memungkinkan simulasi lintasan produksi dengan variabilitas waktu task, sehingga lebih realistis daripada model deterministik.</li>
+      <li><strong>Solver optimasi</strong> — Untuk mencari solusi optimal (bukan hanya heuristik), bisa menggunakan solver integer programming yang tersedia di berbagai platform komputasi ilmiah.</li>
+      <li><strong>Algoritma metaheuristik</strong> — Genetic Algorithm (GA), Simulated Annealing (SA), dan Ant Colony Optimization (ACO) digunakan untuk masalah ALBP berskala besar di industri.</li>
+    </ul>
+    <p>Untuk keperluan akademis, penguasaan metode manual (LCR, RPW, Kilbridge-Wester) tetap menjadi fondasi yang wajib dikuasai sebelum beralih ke pendekatan komputasi.</p>
+
+    <!-- ============================================================ -->
+    <!--  13. FAQ — DIPERLUAS                                         -->
+    <!-- ============================================================ -->
     <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
     <div class="faq-item">
       <h3>Kenapa jumlah workstation minimum dibulatkan ke atas?</h3>
-      <p>Karena 4,83 stasiun tidak mungkin ada secara fisik — dan membulatkan ke bawah berarti total kapasitas waktu (N × CT) lebih kecil dari total pekerjaan ΣTi, yang mustahil.</p>
+      <p>Karena 4,83 stasiun tidak mungkin ada secara fisik — dan membulatkan ke bawah berarti total kapasitas waktu (N × CT) lebih kecil dari total pekerjaan ΣTi, yang mustahil. Oleh karena itu, digunakan fungsi ceiling (pembulatan ke atas) sehingga N* = ⌈ΣTi / CT⌉. Perlu dicatat bahwa N* adalah batas bawah teoretis — belum tentu bisa dicapai karena adanya precedence constraint.</p>
     </div>
     <div class="faq-item">
       <h3>Apa hubungan cycle time dengan takt time di line balancing?</h3>
-      <p>Dalam perancangan lini berbasis permintaan, CT biasanya diset sama dengan (atau sedikit di bawah) takt time agar output lini pas dengan permintaan pelanggan. Lihat <a href="panduan-takt-time.html">panduan takt time</a>.</p>
+      <p>Dalam perancangan lini berbasis permintaan (demand-driven), CT biasanya diset sama dengan atau sedikit di bawah takt time agar output lini pas dengan permintaan pelanggan. Takt time dihitung sebagai waktu tersedia per periode dibagi permintaan per periode. Jika takt time = 50 detik, maka CT biasanya diset ≤ 50 detik untuk memberi sedikit buffer. Lihat <a href="panduan-takt-time.html">panduan takt time</a> untuk penjelasan detail.</p>
     </div>
     <div class="faq-item">
       <h3>Apakah efisiensi 100% bisa dicapai?</h3>
-      <p>Hampir tidak pernah — waktu task jarang bisa dibagi rata sempurna ke stasiun, dan precedence constraint membatasi kombinasi. Efisiensi di atas 90% sudah tergolong sangat baik.</p>
+      <p>Secara teori mungkin, tetapi dalam praktik hampir tidak pernah terjadi. Efisiensi 100% mengharuskan ΣTi habis dibagi tepat oleh CT dan precedence constraint memungkinkan pembagian sempurna ke stasiun. Misalnya, jika ΣTi = 300 detik dan CT = 60 detik, N* = 5 stasiun, efisiensi 100% hanya tercapai jika setiap stasiun terisi tepat 60 detik — kondisi yang sangat jarang terjadi. Efisiensi di atas 90% sudah tergolong sangat baik di industri.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apa perbedaan antara metode LCR, RPW, dan Kilbridge-Wester?</h3>
+      <p>Ketiganya adalah heuristik yang berbeda dalam cara memprioritaskan task: LCR memprioritaskan task dengan waktu pengerjaan terbesar, RPW memprioritaskan berdasarkan bobot posisi (waktu task + waktu seluruh penerusnya), dan Kilbridge-Wester mengelompokkan task berdasarkan level/kolom dalam precedence diagram. RPW umumnya menghasilkan solusi yang sedikit lebih baik karena mempertimbangkan posisi task dalam jaringan secara global, tetapi tidak ada yang menjamin solusi optimal.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Bagaimana jika ada task yang waktunya melebihi cycle time?</h3>
+      <p>Jika waktu suatu task lebih besar dari CT, maka task tersebut tidak mungkin ditugaskan ke satu stasiun manapun. Solusinya: (1) pecah task tersebut menjadi sub-task yang lebih kecil, (2) tingkatkan CT (berarti kurangi target output), (3) gunakan parallel workstation (dua operator mengerjakan task yang sama secara paralel pada unit yang berbeda), atau (4) redesain proses/produk untuk mengurangi waktu task.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apa itu smoothness index dan kapan harus digunakan?</h3>
+      <p>Smoothness Index (SI) mengukur seberapa merata beban kerja antar stasiun. SI = 0 berarti sempurna merata. Gunakan SI ketika membandingkan dua atau lebih solusi penugasan yang memiliki jumlah stasiun dan efisiensi sama — solusi dengan SI lebih kecil lebih baik karena beban operator lebih seimbang. SI juga berguna untuk mengidentifikasi stasiun yang perlu diperhatikan dari segi ergonomi dan kelelahan operator.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apakah line balancing hanya berlaku untuk lini perakitan (assembly line)?</h3>
+      <p>Konsep dasar line balancing paling sering diterapkan pada lini perakitan, tetapi prinsipnya dapat diaplikasikan pada setiap proses produksi yang bersifat serial dan repetitif. Contohnya termasuk lini pengemasan, lini pengujian kualitas, dan bahkan proses layanan yang bersifat sekuensial seperti layanan drive-through. Kuncinya adalah adanya serangkaian task yang harus dikerjakan dalam urutan tertentu dengan target output tetap.</p>
     </div>
 
+    <!-- ============================================================ -->
+    <!--  14. RANGKUMAN                                               -->
+    <!-- ============================================================ -->
+    <h2>Rangkuman</h2>
+    <p>Berikut ringkasan poin-poin utama yang telah dibahas dalam panduan line balancing ini:</p>
+    <ol>
+      <li><strong>Line balancing</strong> adalah teknik membagi elemen kerja ke workstation agar beban kerja merata dan tidak melebihi cycle time. Konsep ini berakar dari assembly line Henry Ford dan menjadi materi fundamental Teknik Industri.</li>
+      <li><strong>Terminologi kunci</strong> yang harus dikuasai: task, workstation, precedence diagram, cycle time, idle time, balance delay, efisiensi lini, smoothness index, dan positional weight.</li>
+      <li><strong>Precedence diagram</strong> menunjukkan hubungan ketergantungan antar task dan menjadi syarat mutlak sebelum melakukan penugasan. Bedakan immediate predecessor dan all predecessors.</li>
+      <li><strong>Rumus utama:</strong> N* = ⌈ΣTi/CT⌉ untuk workstation minimum, E = ΣTi/(N×CT)×100% untuk efisiensi, BD = 100%−E untuk balance delay, dan SI untuk kerataan beban.</li>
+      <li>Tiga <strong>metode heuristik</strong> utama: Largest Candidate Rule (prioritas waktu terbesar), RPW/Helgeson-Birnie (prioritas bobot posisi), dan Kilbridge-Wester (pengelompokan kolom). RPW umumnya memberikan hasil terbaik di antara ketiganya.</li>
+      <li><strong>Smoothness Index</strong> melengkapi efisiensi dengan mengukur kerataan — dua solusi bisa memiliki efisiensi sama tetapi SI berbeda.</li>
+      <li><strong>Multi-model line balancing</strong> merupakan pengembangan untuk lini yang memproduksi beberapa varian produk, menggunakan waktu rata-rata tertimbang dan combined precedence diagram.</li>
+      <li>Peningkatan efisiensi dari 70% ke 90% dapat mengurangi kebutuhan operator sebesar 22% dan menghemat puluhan juta rupiah per tahun.</li>
+      <li>Pahami <strong>keterbatasan</strong>: asumsi waktu deterministik, precedence tetap, tanpa learning curve, dan satu operator per stasiun tidak selalu berlaku di dunia nyata.</li>
+      <li>Untuk masalah kecil, metode manual dan spreadsheet sudah memadai. Untuk skala industri, gunakan software simulasi atau algoritma optimasi.</li>
+    </ol>
+
+    <!-- ============================================================ -->
+    <!--  15. REFERENSI — DIPERLUAS                                   -->
+    <!-- ============================================================ -->
     <h2>Referensi</h2>
     <ul>
-      <li>Helgeson, W. B., &amp; Birnie, D. P. (1961). "Assembly line balancing using the ranked positional weight technique." <em>Journal of Industrial Engineering</em>, 12(6), 394–398. — makalah asli metode RPW.</li>
-      <li>Heizer, J., Render, B., &amp; Munson, C. (2020). <em>Operations Management</em> (13th ed.), Bab 9 "Layout Strategies". Pearson.</li>
-      <li>Groover, M. P. (2007). <em>Work Systems and the Methods, Measurement, and Management of Work</em>. Pearson.</li>
-      <li>Scholl, A. (1999). <em>Balancing and Sequencing of Assembly Lines</em> (2nd ed.). Physica-Verlag.</li>
+      <li>Helgeson, W. B., &amp; Birnie, D. P. (1961). "Assembly line balancing using the ranked positional weight technique." <em>Journal of Industrial Engineering</em>, 12(6), 394–398. — Makalah asli metode RPW yang masih menjadi acuan hingga kini.</li>
+      <li>Kilbridge, M. D., &amp; Wester, L. (1961). "A heuristic method of assembly line balancing." <em>Journal of Industrial Engineering</em>, 12(4), 292–298. — Makalah asli metode Kilbridge-Wester.</li>
+      <li>Heizer, J., Render, B., &amp; Munson, C. (2020). <em>Operations Management</em> (13th ed.), Bab 9 "Layout Strategies". Pearson. — Buku teks standar yang membahas line balancing dalam konteks manajemen operasi.</li>
+      <li>Groover, M. P. (2007). <em>Work Systems and the Methods, Measurement, and Management of Work</em>. Pearson. — Pembahasan mendalam tentang work systems termasuk line balancing.</li>
+      <li>Scholl, A. (1999). <em>Balancing and Sequencing of Assembly Lines</em> (2nd ed.). Physica-Verlag. — Referensi komprehensif untuk berbagai varian ALBP.</li>
+      <li>Boysen, N., Fliedner, M., &amp; Scholl, A. (2007). "A classification of assembly line balancing problems." <em>European Journal of Operational Research</em>, 183(2), 674–693. — Klasifikasi tipe-tipe ALBP yang komprehensif.</li>
+      <li>Becker, C., &amp; Scholl, A. (2006). "A survey on problems and methods in generalized assembly line balancing." <em>European Journal of Operational Research</em>, 168(3), 694–715. — Survey metode-metode untuk GALBP.</li>
+      <li>Ford, H. (1922). <em>My Life and Work</em>. Garden City Publishing. — Otobiografi Henry Ford yang menjelaskan filosofi di balik assembly line pertama.</li>
     </ul>
 
     <hr class="divider">
-    <p>Kalkulator line balancing kami menghitung jumlah stasiun minimum, melakukan penugasan task otomatis, dan menampilkan efisiensi serta balance delay.</p>
+    <p>Kalkulator line balancing kami menghitung jumlah stasiun minimum, melakukan penugasan task otomatis, dan menampilkan efisiensi serta balance delay. Coba langsung dengan data soal Anda.</p>
     <p>
       <a href="index.html" class="btn">Buka Kalkulator Line Balancing</a>
       <a href="panduan.html" class="btn btn-secondary" style="margin-left:8px;">Panduan Lainnya</a>
@@ -194,6 +611,7 @@
     <a href="about.html">Tentang</a>
     <a href="contact.html">Kontak</a>
     <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Syarat &amp; Ketentuan</a>
   </div>
   <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
 </footer>

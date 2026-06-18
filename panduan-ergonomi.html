@@ -43,18 +43,38 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Apa itu NIOSH Lifting Equation?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Persamaan angkat NIOSH (Waters dkk., 1993) menghitung Recommended Weight Limit (RWL) — beban maksimum yang aman diangkat hampir semua pekerja sehat — dari konstanta beban 23 kg dikalikan enam faktor pengali kondisi pengangkatan. Rasio beban aktual terhadap RWL disebut Lifting Index (LI)." }
+      "name": "Kenapa konstanta beban NIOSH 23 kg?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Nilai 23 kg adalah beban maksimum pada kondisi pengangkatan ideal (beban dekat tubuh, setinggi pinggang, tanpa puntiran, frekuensi rendah, pegangan baik) yang masih aman bagi sekitar 90% pekerja sehat berdasarkan tiga kriteria: biomekanik (gaya tekan L5/S1 ≤ 3,4 kN), fisiologis, dan psikofisik (Waters dkk., 1993)." }
     },
     {
       "@type": "Question",
-      "name": "Apa arti Lifting Index (LI) lebih dari 1?",
-      "acceptedAnswer": { "@type": "Answer", "text": "LI > 1 berarti beban melebihi batas yang direkomendasikan dan risiko cedera punggung bawah meningkat; pekerjaan perlu didesain ulang. LI > 3 dianggap berisiko tinggi bagi sebagian besar pekerja." }
+      "name": "Kapan pakai RULA, kapan pakai REBA, dan kapan pakai NIOSH?",
+      "acceptedAnswer": { "@type": "Answer", "text": "NIOSH Lifting Equation khusus untuk tugas mengangkat/menurunkan beban dua tangan. RULA untuk postur kerja dominan anggota tubuh atas (komputer, perakitan). REBA untuk postur seluruh tubuh termasuk penanganan beban dinamis (logistik, perawat). Nordic Body Map digunakan lebih dulu untuk skrining keluhan, lalu RULA/REBA atau NIOSH untuk analisis detail." }
     },
     {
       "@type": "Question",
-      "name": "Apa beda RULA dan REBA?",
-      "acceptedAnswer": { "@type": "Answer", "text": "RULA (1993) fokus menilai risiko anggota tubuh bagian atas (lengan, pergelangan, leher) untuk pekerjaan duduk/berdiri statis, sedangkan REBA (2000) menilai seluruh tubuh termasuk kaki dan beban dinamis, cocok untuk pekerjaan manual handling." }
+      "name": "Apa dasar hukum ergonomi di Indonesia?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Permenaker No. 5 Tahun 2018 tentang K3 Lingkungan Kerja mengatur faktor ergonomi (termasuk penanganan beban manual dan postur kerja) sebagai syarat K3 wajib. Didukung UU No. 1/1970 tentang Keselamatan Kerja, PP No. 50/2012 tentang SMK3, dan Permenkes No. 48/2016 untuk perkantoran." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bagaimana jika Lifting Index melebihi 3,0?",
+      "acceptedAnswer": { "@type": "Answer", "text": "LI > 3,0 menunjukkan risiko tinggi yang tidak dapat diterima. Tindakan korektif harus segera dilakukan: prioritaskan pengendalian teknik (alat bantu angkat mekanis, redesain layout), kemudian pengendalian administratif (rotasi pekerja, batasi frekuensi), dan terakhir APD sebagai pelengkap." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah Nordic Body Map cocok untuk skripsi/tugas akhir?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Ya, Nordic Body Map (NMQ) sangat sering digunakan dalam skripsi teknik industri di Indonesia. NMQ cocok sebagai skrining awal karena mudah digunakan dan telah tervalidasi. Biasanya dikombinasikan dengan RULA, REBA, atau NIOSH Lifting Equation untuk analisis lebih mendalam." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa perbedaan antropometri statis dan dinamis?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Antropometri statis mengukur dimensi tubuh dalam posisi tetap (tinggi badan, panjang lengan). Antropometri dinamis mengukur dimensi saat bergerak (jangkauan tangan, rentang gerak sendi). Data dinamis lebih relevan untuk merancang area kerja dan penempatan kontrol." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah back belt (korset punggung) efektif mencegah cedera angkat?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Bukti ilmiah masih kontroversial. NIOSH tidak merekomendasikan back belt sebagai alat pencegahan primer. Back belt mungkin berfungsi sebagai pengingat postur, tetapi tidak terbukti mengurangi gaya biomekanik pada tulang belakang. Pengendalian teknik dan administratif tetap prioritas utama." }
     }
   ]
 }
@@ -95,98 +115,452 @@
     <div class="meta-info">Panduan Ergonomi &amp; K3 — bagian dari seri <a href="panduan.html">Panduan Teknik Industri</a> TI Toolkit.</div>
 
     <h1>Ergonomi Industri: NIOSH Lifting Equation &amp; Penilaian Postur</h1>
-    <p class="subtitle">Menghitung batas beban angkat yang aman (RWL &amp; Lifting Index), mengenal RULA/REBA dan Nordic Body Map, serta dasar antropometri untuk perancangan stasiun kerja.</p>
+    <p class="subtitle">Panduan lengkap menghitung batas beban angkat yang aman (RWL &amp; Lifting Index), memahami setiap faktor pengali NIOSH secara mendalam, mengenal metode penilaian postur RULA/REBA dan Nordic Body Map, serta dasar antropometri dan perancangan stasiun kerja ergonomis untuk mahasiswa dan praktisi teknik industri Indonesia.</p>
     <!-- AdSense In-Article -->
     <ins class="adsbygoogle" style="display:block;text-align:center" data-ad-client="ca-pub-8688855167346136" data-ad-slot="9074056144" data-ad-format="fluid" data-ad-layout="in-article"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
-
-
+    <!-- ============================================================ -->
+    <!--  1. APA ITU ERGONOMI? — Expanded                             -->
+    <!-- ============================================================ -->
     <h2>Apa itu Ergonomi?</h2>
-    <p><strong>Ergonomi</strong> (atau <em>human factors</em>) adalah ilmu yang menyesuaikan pekerjaan, alat, dan lingkungan dengan kemampuan serta keterbatasan manusia — bukan sebaliknya. Menurut International Ergonomics Association (IEA), ergonomi mencakup tiga domain: <strong>fisik</strong> (postur, beban angkat, gerakan repetitif), <strong>kognitif</strong> (beban mental, persepsi, pengambilan keputusan), dan <strong>organisasi</strong> (shift kerja, desain tim).</p>
-    <p>Di Indonesia, penerapan ergonomi di tempat kerja diwajibkan melalui <strong>Permenaker No. 5 Tahun 2018</strong> tentang Keselamatan dan Kesehatan Kerja Lingkungan Kerja, yang memuat standar faktor ergonomi termasuk penanganan beban manual.</p>
+    <p><strong>Ergonomi</strong> berasal dari bahasa Yunani: <em>ergon</em> (kerja) dan <em>nomos</em> (hukum/aturan). Secara harfiah, ergonomi adalah "ilmu tentang kerja." Istilah ini pertama kali diperkenalkan oleh ilmuwan Polandia <strong>Wojciech Jastrzebowski</strong> dalam esainya tahun 1857 berjudul <em>"An Outline of Ergonomics, or the Science of Work."</em> Jastrzebowski mendefinisikan ergonomi sebagai ilmu yang mempelajari penggunaan kemampuan manusia secara optimal dalam konteks pekerjaan.</p>
+    <p>Dalam perkembangannya, ergonomi modern berkembang pesat selama Perang Dunia II ketika insinyur dan psikolog diminta merancang kokpit pesawat tempur, panel kontrol, dan peralatan militer yang meminimalkan kesalahan operator. Setelah perang, prinsip-prinsip ini diterapkan ke industri manufaktur, perkantoran, dan produk konsumen. Saat ini ergonomi diakui sebagai disiplin ilmu multidisiplin yang menggabungkan fisiologi, psikologi, biomekanik, teknik industri, dan desain produk.</p>
+    <p>Menurut <strong>International Ergonomics Association (IEA)</strong>, ergonomi (atau <em>human factors</em>) adalah disiplin ilmu yang mempelajari interaksi antara manusia dengan elemen-elemen lain dalam suatu sistem, dengan tujuan mengoptimalkan kesejahteraan manusia dan kinerja sistem secara keseluruhan. IEA membagi ergonomi ke dalam tiga domain utama:</p>
+    <ul>
+      <li><strong>Ergonomi Fisik</strong> — berkaitan dengan respons tubuh manusia terhadap tuntutan fisik pekerjaan. Topik utamanya meliputi postur kerja, penanganan beban manual (<em>manual material handling</em>), gerakan repetitif, gangguan muskuloskeletal (MSDs), tata letak stasiun kerja, keselamatan dan kesehatan kerja. Domain ini paling sering ditemui dalam konteks teknik industri dan manufaktur.</li>
+      <li><strong>Ergonomi Kognitif</strong> — berkaitan dengan proses mental manusia seperti persepsi, memori, penalaran, dan pengambilan keputusan yang mempengaruhi interaksi dengan sistem. Topik utamanya meliputi beban kerja mental (<em>mental workload</em>), keandalan manusia (<em>human reliability</em>), stres kerja, desain antarmuka (<em>interface design</em>), dan pelatihan. Domain ini sangat relevan dalam industri penerbangan, pembangkit listrik tenaga nuklir, dan desain perangkat lunak.</li>
+      <li><strong>Ergonomi Organisasi</strong> — berkaitan dengan optimalisasi sistem sosio-teknis, termasuk struktur organisasi, kebijakan, dan proses kerja. Topik utamanya meliputi desain kerja, jadwal shift, kerja tim, budaya organisasi, manajemen mutu, dan telework. Domain ini menjadi semakin penting seiring dengan meningkatnya kompleksitas organisasi modern dan pola kerja jarak jauh.</li>
+    </ul>
+    <p>Di Indonesia, penerapan ergonomi di tempat kerja diwajibkan melalui <strong>Permenaker No. 5 Tahun 2018</strong> tentang Keselamatan dan Kesehatan Kerja Lingkungan Kerja. Peraturan ini memuat standar faktor ergonomi termasuk penanganan beban manual, postur kerja, dan faktor-faktor lingkungan kerja yang mempengaruhi kenyamanan dan keselamatan pekerja. Selain itu, <strong>UU No. 1 Tahun 1970</strong> tentang Keselamatan Kerja dan <strong>PP No. 50 Tahun 2012</strong> tentang Sistem Manajemen K3 juga memberikan kerangka hukum yang mendukung penerapan prinsip ergonomi di tempat kerja.</p>
 
-    <h2>NIOSH Lifting Equation: Batas Angkat yang Aman</h2>
-    <p>Alat kuantitatif paling banyak dipakai untuk menilai pekerjaan mengangkat adalah <strong>Revised NIOSH Lifting Equation</strong> (Waters, Putz-Anderson, Garg &amp; Fine, 1993). Persamaan ini menghitung <strong>RWL (Recommended Weight Limit)</strong> — beban yang masih aman diangkat oleh ±90% pekerja sehat:</p>
-    <div class="formula-block">RWL = LC × HM × VM × DM × AM × FM × CM</div>
+    <!-- ============================================================ -->
+    <!--  2. MENGAPA ERGONOMI PENTING DI INDUSTRI?                    -->
+    <!-- ============================================================ -->
+    <h2>Mengapa Ergonomi Penting di Industri?</h2>
+    <p>Ergonomi bukan sekadar teori akademis — penerapannya memiliki dampak nyata dan terukur pada kesehatan pekerja, produktivitas, dan biaya operasional perusahaan. Berikut adalah beberapa alasan mengapa ergonomi menjadi kritis di lingkungan industri:</p>
+
+    <h3>Gangguan Muskuloskeletal (MSDs) sebagai Masalah Utama</h3>
+    <p><strong>Musculoskeletal Disorders (MSDs)</strong> atau gangguan muskuloskeletal adalah cedera dan keluhan pada otot, tendon, ligamen, sendi, saraf, diskus tulang belakang, dan pembuluh darah yang disebabkan atau diperparah oleh kondisi kerja. MSDs merupakan penyebab utama disabilitas kerja di seluruh dunia. Menurut data Organisasi Kesehatan Dunia (WHO), MSDs terkait pekerjaan menyumbang sekitar 30% dari semua penyakit akibat kerja secara global. Jenis MSDs yang paling umum di lingkungan industri meliputi:</p>
+    <ul>
+      <li><strong>Low back pain</strong> (nyeri punggung bawah) — keluhan paling dominan pada pekerja yang melakukan pengangkatan manual</li>
+      <li><strong>Carpal tunnel syndrome</strong> — umum pada pekerja yang melakukan gerakan pergelangan tangan repetitif</li>
+      <li><strong>Tendinitis</strong> — peradangan tendon akibat gerakan berulang</li>
+      <li><strong>Rotator cuff syndrome</strong> — cedera bahu akibat postur lengan atas yang tidak ergonomis</li>
+      <li><strong>Epicondylitis</strong> (tennis elbow/golfer's elbow) — akibat gerakan lengan bawah berulang</li>
+    </ul>
+
+    <h3>Dampak Ekonomi Cedera Kerja</h3>
+    <p>Biaya yang ditimbulkan oleh cedera kerja akibat ergonomi yang buruk sangat signifikan. Biaya ini meliputi biaya langsung (pengobatan, kompensasi pekerja, penggantian tenaga kerja) dan biaya tidak langsung (penurunan produktivitas, pelatihan pekerja pengganti, gangguan produksi, biaya administratif). Menurut estimasi dari berbagai studi, biaya tidak langsung bisa mencapai 2-5 kali lipat dari biaya langsung. Di Indonesia, meskipun data spesifik masih terbatas, BPJS Ketenagakerjaan melaporkan ratusan ribu kasus kecelakaan kerja setiap tahunnya, dengan sebagian signifikan terkait faktor ergonomi.</p>
+
+    <h3>Dampak Produktivitas</h3>
+    <p>Ergonomi yang buruk tidak hanya menyebabkan cedera, tetapi juga menurunkan produktivitas secara bertahap. Pekerja yang mengalami ketidaknyamanan muskuloskeletal cenderung bekerja lebih lambat, lebih sering melakukan kesalahan, dan memiliki tingkat absensi yang lebih tinggi. Sebaliknya, penerapan intervensi ergonomis telah terbukti meningkatkan produktivitas sebesar 10-25% di berbagai studi kasus industri. Investasi dalam ergonomi umumnya memberikan <em>return on investment</em> (ROI) yang positif dalam 1-2 tahun setelah implementasi.</p>
+
+    <h3>Persyaratan Regulasi di Indonesia</h3>
+    <p>Perusahaan di Indonesia diwajibkan memenuhi persyaratan ergonomi berdasarkan beberapa regulasi, antara lain:</p>
+    <ul>
+      <li><strong>Permenaker No. 5 Tahun 2018</strong> — mengatur faktor ergonomi dalam lingkungan kerja termasuk batas beban angkat manual, postur kerja, dan pengukuran oleh ahli K3</li>
+      <li><strong>UU No. 1 Tahun 1970</strong> — kerangka umum keselamatan kerja yang mencakup kewajiban pemberi kerja untuk menyediakan lingkungan kerja yang aman</li>
+      <li><strong>PP No. 50 Tahun 2012</strong> — Sistem Manajemen K3 (SMK3) yang mewajibkan identifikasi bahaya termasuk bahaya ergonomi</li>
+      <li><strong>Permenkes No. 48 Tahun 2016</strong> — standar K3 perkantoran yang mencakup aspek ergonomi stasiun kerja</li>
+    </ul>
+
+    <!-- ============================================================ -->
+    <!--  3. NIOSH LIFTING EQUATION — Detail Lengkap                  -->
+    <!-- ============================================================ -->
+    <h2>NIOSH Lifting Equation: Detail Lengkap Setiap Faktor Pengali</h2>
+    <p>Alat kuantitatif paling banyak dipakai untuk menilai pekerjaan mengangkat adalah <strong>Revised NIOSH Lifting Equation</strong> yang dikembangkan oleh Waters, Putz-Anderson, Garg, dan Fine pada tahun 1993. Persamaan ini merupakan revisi dari versi asli tahun 1981, dengan penambahan faktor asimetri dan coupling. Persamaan ini menghitung <strong>Recommended Weight Limit (RWL)</strong> — berat beban maksimum yang masih aman diangkat oleh sekitar 90% pekerja sehat (pria dan wanita) dalam kondisi kerja tertentu, tanpa meningkatkan risiko cedera punggung bawah:</p>
+    <div class="formula-block">RWL = LC &times; HM &times; VM &times; DM &times; AM &times; FM &times; CM</div>
+    <p>Setiap faktor pengali (multiplier) bernilai antara 0 dan 1 (kecuali VM yang bisa mencapai 1,0 tepat). Semakin jauh kondisi kerja dari kondisi ideal, semakin kecil nilai pengali tersebut, sehingga RWL semakin rendah. Berikut penjelasan detail masing-masing faktor:</p>
+
+    <h3>LC — Load Constant (Konstanta Beban) = 23 kg</h3>
+    <p>LC adalah berat beban maksimum yang direkomendasikan pada kondisi pengangkatan ideal, yaitu beban tepat di depan tubuh (H = 25 cm), setinggi pinggang (V = 75 cm), tanpa perpindahan vertikal signifikan, tanpa puntiran, frekuensi rendah, dan pegangan baik. Nilai 23 kg ditetapkan berdasarkan tiga kriteria:</p>
+    <ul>
+      <li><strong>Kriteria biomekanik:</strong> gaya tekan pada diskus L5/S1 tidak melebihi 3,4 kN (batas yang aman bagi sebagian besar orang dewasa)</li>
+      <li><strong>Kriteria fisiologis:</strong> pengeluaran energi metabolik tidak melebihi kapasitas aerobik untuk pekerjaan berulang</li>
+      <li><strong>Kriteria psikofisik:</strong> beban yang dianggap dapat diterima oleh sekitar 75% wanita pekerja dan 99% pria pekerja</li>
+    </ul>
+
+    <h3>HM — Horizontal Multiplier</h3>
+    <div class="formula-block">HM = 25 / H</div>
+    <p>H adalah jarak horizontal antara titik tengah pegangan beban dengan titik tengah antara kedua pergelangan kaki pekerja, diukur dalam sentimeter. Nilai H yang valid berkisar antara 25 cm (minimum, tepat di depan tubuh) hingga 63 cm (maksimum jangkauan). Jika H &lt; 25 cm, gunakan HM = 1,0. Jika H &gt; 63 cm, maka HM = 0 dan pengangkatan dianggap tidak dapat diterima. Faktor ini mencerminkan fakta biomekanik bahwa semakin jauh beban dari tubuh, semakin besar momen gaya pada tulang belakang lumbar.</p>
+
+    <h3>VM — Vertical Multiplier</h3>
+    <div class="formula-block">VM = 1 &minus; 0,003 &times; |V &minus; 75|</div>
+    <p>V adalah tinggi tangan dari lantai pada awal pengangkatan, dalam sentimeter. Titik referensi optimal adalah 75 cm (kira-kira setinggi pinggang). Semakin jauh V dari 75 cm — baik lebih tinggi maupun lebih rendah — semakin kecil VM. Nilai V berkisar dari 0 cm (lantai) hingga 175 cm (jangkauan vertikal atas). Jika V &gt; 175 cm, VM = 0. Pengangkatan dari lantai (V = 0) atau di atas bahu (V &gt; 150 cm) secara signifikan mengurangi RWL.</p>
+
+    <h3>DM — Distance Multiplier</h3>
+    <div class="formula-block">DM = 0,82 + 4,5 / D</div>
+    <p>D adalah jarak perpindahan vertikal beban (selisih antara tinggi akhir dan tinggi awal), dalam sentimeter. Nilai D minimum adalah 25 cm; jika D &lt; 25 cm, gunakan D = 25 cm sehingga DM = 1,0. Nilai D maksimum tergantung pada kombinasi posisi awal dan akhir. Perpindahan vertikal yang besar (misalnya mengangkat dari lantai ke rak tinggi) menurunkan DM secara signifikan.</p>
+
+    <h3>AM — Asymmetric Multiplier</h3>
+    <div class="formula-block">AM = 1 &minus; 0,0032 &times; A</div>
+    <p>A adalah sudut asimetri (puntiran badan) dalam derajat, diukur antara bidang sagital tubuh pekerja dan bidang sagital beban. Jika pekerja harus memutar badan saat mengangkat (misalnya mengambil dari samping), maka A &gt; 0. Nilai A berkisar dari 0 derajat (tanpa puntiran, AM = 1,0) hingga maksimum 135 derajat. Jika A &gt; 135 derajat, AM = 0 dan pengangkatan dianggap tidak dapat diterima. Puntiran badan saat mengangkat beban merupakan salah satu faktor risiko utama cedera diskus tulang belakang.</p>
+
+    <h3>FM — Frequency Multiplier</h3>
+    <p>FM ditentukan dari tabel berdasarkan tiga variabel: <strong>frekuensi pengangkatan</strong> (angkatan per menit), <strong>durasi kerja</strong> (pendek: &le; 1 jam, sedang: 1-2 jam, panjang: 2-8 jam), dan <strong>tinggi awal beban</strong> (V &lt; 75 cm atau V &ge; 75 cm). Contoh nilai FM dari tabel NIOSH:</p>
     <table class="data-table">
-      <thead><tr><th>Faktor</th><th>Arti</th><th>Rumus / Sumber nilai</th></tr></thead>
+      <thead><tr><th>Frekuensi (angkatan/menit)</th><th>Durasi &le; 1 jam</th><th>Durasi 1-2 jam</th><th>Durasi 2-8 jam</th></tr></thead>
       <tbody>
-        <tr><td>LC</td><td>Load Constant</td><td>23 kg (konstanta)</td></tr>
-        <tr><td>HM</td><td>Horizontal Multiplier — jarak horizontal beban dari tubuh, H (cm)</td><td>25 / H</td></tr>
-        <tr><td>VM</td><td>Vertical Multiplier — tinggi awal beban, V (cm)</td><td>1 − 0,003 |V − 75|</td></tr>
-        <tr><td>DM</td><td>Distance Multiplier — jarak perpindahan vertikal, D (cm)</td><td>0,82 + 4,5 / D</td></tr>
-        <tr><td>AM</td><td>Asymmetric Multiplier — sudut puntiran badan, A (derajat)</td><td>1 − 0,0032 A</td></tr>
-        <tr><td>FM</td><td>Frequency Multiplier — frekuensi &amp; durasi angkat</td><td>Tabel NIOSH</td></tr>
-        <tr><td>CM</td><td>Coupling Multiplier — kualitas pegangan</td><td>Tabel NIOSH (good/fair/poor)</td></tr>
+        <tr><td>0,2</td><td>1,00</td><td>0,95</td><td>0,85</td></tr>
+        <tr><td>1</td><td>0,94</td><td>0,88</td><td>0,75</td></tr>
+        <tr><td>2</td><td>0,91</td><td>0,84</td><td>0,65</td></tr>
+        <tr><td>4</td><td>0,84</td><td>0,72</td><td>0,45</td></tr>
+        <tr><td>6</td><td>0,75</td><td>0,60</td><td>0,27</td></tr>
+        <tr><td>8</td><td>0,60</td><td>0,50</td><td>0,15</td></tr>
+        <tr><td>12</td><td>0,37</td><td>0,21</td><td>0,00</td></tr>
       </tbody>
     </table>
-    <p>Tingkat risiko dinilai dengan <strong>Lifting Index</strong>:</p>
-    <div class="formula-block">LI = Berat beban aktual / RWL</div>
-    <p>LI ≤ 1: risiko rendah · 1 &lt; LI ≤ 3: risiko meningkat, perlu perbaikan · LI &gt; 3: risiko tinggi, perbaikan segera (Waters dkk., 1993).</p>
+    <p><em>Catatan: Tabel di atas untuk V &lt; 75 cm. Lihat Waters dkk. (1994) untuk tabel lengkap.</em></p>
 
-    <h2>Contoh Perhitungan RWL dan Pembahasan</h2>
-    <p><strong>Soal:</strong> Operator gudang mengangkat kardus 20 kg dengan kondisi: jarak horizontal H = 30 cm, tinggi awal beban V = 60 cm, perpindahan vertikal D = 40 cm, puntiran badan A = 30°, frekuensi 2 angkatan/menit selama ≤ 1 jam (FM = 0,91 dari tabel NIOSH), pegangan fair pada V &lt; 75 cm (CM = 0,95). Hitung RWL dan LI.</p>
+    <h3>CM — Coupling Multiplier</h3>
+    <p>CM ditentukan berdasarkan kualitas pegangan (<em>coupling</em>) dan tinggi awal beban. Kualitas pegangan dibagi tiga kategori:</p>
+    <table class="data-table">
+      <thead><tr><th>Kualitas Pegangan</th><th>V &lt; 75 cm</th><th>V &ge; 75 cm</th><th>Deskripsi</th></tr></thead>
+      <tbody>
+        <tr><td>Good (Baik)</td><td>1,00</td><td>1,00</td><td>Pegangan/handle optimal, genggaman power grip, kontainer dengan handle yang nyaman</td></tr>
+        <tr><td>Fair (Cukup)</td><td>0,95</td><td>1,00</td><td>Pegangan tangan cukup memadai, kardus tanpa handle tapi bisa digenggam</td></tr>
+        <tr><td>Poor (Buruk)</td><td>0,90</td><td>0,90</td><td>Tidak ada pegangan yang memadai, objek licin, bentuk tidak beraturan, karung</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <!--  4. INTERPRETASI LIFTING INDEX                               -->
+    <!-- ============================================================ -->
+    <h2>Interpretasi Lifting Index (LI)</h2>
+    <p>Setelah RWL dihitung, tingkat risiko pekerjaan pengangkatan dinilai dengan <strong>Lifting Index</strong>:</p>
+    <div class="formula-block">LI = Berat beban aktual / RWL</div>
+    <p>Lifting Index memberikan estimasi relatif tentang tingkat risiko cedera punggung bawah yang terkait dengan tugas pengangkatan tertentu. Interpretasi nilai LI dibagi menjadi tiga zona risiko:</p>
+    <table class="data-table">
+      <thead><tr><th>Nilai LI</th><th>Kategori Risiko</th><th>Tindakan yang Diperlukan</th></tr></thead>
+      <tbody>
+        <tr><td><strong>LI &le; 1,0</strong></td><td>Risiko Rendah (Acceptable)</td><td>Tugas pengangkatan dianggap aman bagi sebagian besar pekerja sehat. Tidak diperlukan intervensi khusus, namun pemantauan berkala tetap dianjurkan untuk memastikan kondisi kerja tidak berubah.</td></tr>
+        <tr><td><strong>1,0 &lt; LI &le; 3,0</strong></td><td>Risiko Meningkat (Increased Risk)</td><td>Sebagian pekerja berisiko mengalami cedera punggung bawah. Pekerjaan perlu didesain ulang untuk mengurangi tuntutan fisik. Prioritaskan perbaikan pada faktor pengali yang paling rendah nilainya karena memberikan dampak terbesar pada peningkatan RWL.</td></tr>
+        <tr><td><strong>LI &gt; 3,0</strong></td><td>Risiko Tinggi (Unacceptable)</td><td>Risiko cedera tinggi bagi sebagian besar pekerja. Diperlukan intervensi segera: rekayasa teknik (alat bantu angkat, penyesuaian layout), pengurangan berat beban, atau penghapusan tugas pengangkatan manual. Pekerjaan tidak boleh dilanjutkan dalam kondisi ini tanpa perubahan signifikan.</td></tr>
+      </tbody>
+    </table>
+    <p>Penting untuk dipahami bahwa LI = 1,0 bukan berarti "risiko nol" — melainkan batas di mana risiko dianggap dapat diterima oleh standar NIOSH. Pekerja dengan kondisi kesehatan tertentu (misalnya riwayat cedera punggung) mungkin masih berisiko pada LI mendekati 1,0.</p>
+
+    <!-- ============================================================ -->
+    <!--  5. CONTOH PERHITUNGAN 1 — Operator Gudang                   -->
+    <!-- ============================================================ -->
+    <h2>Contoh Perhitungan 1: Operator Gudang Mengangkat Kardus</h2>
+    <p><strong>Soal:</strong> Operator gudang mengangkat kardus 20 kg dengan kondisi: jarak horizontal H = 30 cm, tinggi awal beban V = 60 cm, perpindahan vertikal D = 40 cm, puntiran badan A = 30 derajat, frekuensi 2 angkatan/menit selama &le; 1 jam (FM = 0,91 dari tabel NIOSH), pegangan fair pada V &lt; 75 cm (CM = 0,95). Hitung RWL dan LI.</p>
     <p><strong>Langkah 1 — Hitung tiap pengali:</strong></p>
     <ul>
-      <li>HM = 25/30 = 0,833</li>
-      <li>VM = 1 − 0,003 |60 − 75| = 1 − 0,045 = 0,955</li>
-      <li>DM = 0,82 + 4,5/40 = 0,933</li>
-      <li>AM = 1 − 0,0032 × 30 = 0,904</li>
-      <li>FM = 0,91 ; CM = 0,95 (dari tabel)</li>
+      <li><strong>HM</strong> = 25 / H = 25 / 30 = <strong>0,833</strong></li>
+      <li><strong>VM</strong> = 1 &minus; 0,003 &times; |V &minus; 75| = 1 &minus; 0,003 &times; |60 &minus; 75| = 1 &minus; 0,003 &times; 15 = 1 &minus; 0,045 = <strong>0,955</strong></li>
+      <li><strong>DM</strong> = 0,82 + 4,5 / D = 0,82 + 4,5 / 40 = 0,82 + 0,1125 = <strong>0,933</strong></li>
+      <li><strong>AM</strong> = 1 &minus; 0,0032 &times; A = 1 &minus; 0,0032 &times; 30 = 1 &minus; 0,096 = <strong>0,904</strong></li>
+      <li><strong>FM</strong> = <strong>0,91</strong> (dari tabel: 2 angkatan/menit, durasi &le; 1 jam)</li>
+      <li><strong>CM</strong> = <strong>0,95</strong> (pegangan fair, V &lt; 75 cm)</li>
     </ul>
-    <p><strong>Langkah 2 — RWL:</strong></p>
-    <div class="formula-block">RWL = 23 × 0,833 × 0,955 × 0,933 × 0,904 × 0,91 × 0,95 ≈ 13,3 kg</div>
-    <p><strong>Langkah 3 — Lifting Index:</strong></p>
-    <div class="formula-block">LI = 20 / 13,3 ≈ 1,5 → risiko meningkat, perlu perbaikan</div>
-    <p><strong>Rekomendasi perbaikan</strong> (urut dari dampak terbesar pada contoh ini): dekatkan beban ke tubuh (perbesar HM), hilangkan puntiran dengan menata ulang layout (AM = 1), atau turunkan berat kardus/gunakan alat bantu sehingga LI ≤ 1.</p>
-
-    <h2>Penilaian Postur Kerja: RULA, REBA, dan Nordic Body Map</h2>
+    <p><strong>Langkah 2 — Hitung RWL:</strong></p>
+    <div class="formula-block">RWL = 23 &times; 0,833 &times; 0,955 &times; 0,933 &times; 0,904 &times; 0,91 &times; 0,95 &asymp; 13,3 kg</div>
+    <p><strong>Langkah 3 — Hitung Lifting Index:</strong></p>
+    <div class="formula-block">LI = 20 / 13,3 &asymp; 1,50 &rarr; Risiko Meningkat, perlu perbaikan</div>
+    <p><strong>Analisis:</strong> Nilai LI = 1,50 berada pada zona risiko meningkat (1,0 &lt; LI &le; 3,0). Faktor pengali yang paling rendah dan menjadi prioritas perbaikan adalah HM (0,833) dan AM (0,904).</p>
+    <p><strong>Rekomendasi perbaikan</strong> (urut dari dampak terbesar):</p>
     <ul>
-      <li><strong>RULA</strong> (Rapid Upper Limb Assessment; McAtamney &amp; Corlett, 1993) — menilai postur lengan, pergelangan, leher, dan badan dengan skor 1–7; skor ≥ 5 berarti perlu investigasi dan perubahan segera. Cocok untuk kerja duduk/berdiri yang dominan anggota tubuh atas (perakitan, komputer).</li>
-      <li><strong>REBA</strong> (Rapid Entire Body Assessment; Hignett &amp; McAtamney, 2000) — versi seluruh tubuh dengan skor 1–15, mempertimbangkan beban, pegangan, dan aktivitas; cocok untuk manual handling dan perawat/logistik.</li>
-      <li><strong>Nordic Body Map / NMQ</strong> (Kuorinka dkk., 1987) — kuesioner standar keluhan muskuloskeletal pada 27–28 bagian tubuh; hampir selalu dipakai sebagai data awal di penelitian dan skripsi ergonomi Indonesia.</li>
+      <li>Dekatkan beban ke tubuh dengan mendesain ulang rak/meja kerja agar jarak horizontal berkurang (misalnya H = 25 cm, HM = 1,0)</li>
+      <li>Hilangkan puntiran badan dengan menata ulang layout sehingga pekerja tidak perlu memutar badan (A = 0, AM = 1,0)</li>
+      <li>Turunkan berat kardus per unit atau gunakan alat bantu angkat mekanis</li>
     </ul>
 
-    <h2>Antropometri: Merancang Sesuai Ukuran Pengguna</h2>
-    <p><strong>Antropometri</strong> adalah data dimensi tubuh manusia yang menjadi dasar perancangan stasiun kerja, kursi, dan alat. Prinsip pemakaian persentil:</p>
+    <!-- ============================================================ -->
+    <!--  6. CONTOH PERHITUNGAN 2 — Pekerja Warehouse                -->
+    <!-- ============================================================ -->
+    <h2>Contoh Perhitungan 2: Pekerja Warehouse Memindahkan Boks dari Konveyor ke Palet</h2>
+    <p><strong>Soal:</strong> Seorang pekerja di warehouse e-commerce memindahkan boks berisi produk elektronik seberat 15 kg dari ujung konveyor ke palet di lantai. Kondisi pengangkatan diukur sebagai berikut: jarak horizontal H = 40 cm (konveyor agak jauh dari tubuh), tinggi awal beban V = 90 cm (tinggi konveyor), tinggi akhir beban = 20 cm (palet di lantai), sehingga perpindahan vertikal D = |90 &minus; 20| = 70 cm. Pekerja harus memutar badan 45 derajat (A = 45) karena palet berada di samping. Frekuensi pengangkatan 4 kali per menit selama shift 2-8 jam (FM = 0,45 dari tabel NIOSH). Pegangan poor karena boks licin tanpa handle (CM = 0,90 untuk V &ge; 75 cm).</p>
+    <p><strong>Langkah 1 — Hitung tiap pengali:</strong></p>
+    <ul>
+      <li><strong>HM</strong> = 25 / H = 25 / 40 = <strong>0,625</strong></li>
+      <li><strong>VM</strong> = 1 &minus; 0,003 &times; |V &minus; 75| = 1 &minus; 0,003 &times; |90 &minus; 75| = 1 &minus; 0,003 &times; 15 = 1 &minus; 0,045 = <strong>0,955</strong></li>
+      <li><strong>DM</strong> = 0,82 + 4,5 / D = 0,82 + 4,5 / 70 = 0,82 + 0,064 = <strong>0,884</strong></li>
+      <li><strong>AM</strong> = 1 &minus; 0,0032 &times; A = 1 &minus; 0,0032 &times; 45 = 1 &minus; 0,144 = <strong>0,856</strong></li>
+      <li><strong>FM</strong> = <strong>0,45</strong> (dari tabel: 4 angkatan/menit, durasi 2-8 jam)</li>
+      <li><strong>CM</strong> = <strong>0,90</strong> (pegangan poor, V &ge; 75 cm)</li>
+    </ul>
+    <p><strong>Langkah 2 — Hitung RWL:</strong></p>
+    <div class="formula-block">RWL = 23 &times; 0,625 &times; 0,955 &times; 0,884 &times; 0,856 &times; 0,45 &times; 0,90</div>
+    <p>Perhitungan bertahap:</p>
+    <ul>
+      <li>23 &times; 0,625 = 14,375</li>
+      <li>14,375 &times; 0,955 = 13,728</li>
+      <li>13,728 &times; 0,884 = 12,135</li>
+      <li>12,135 &times; 0,856 = 10,388</li>
+      <li>10,388 &times; 0,45 = 4,675</li>
+      <li>4,675 &times; 0,90 = 4,207</li>
+    </ul>
+    <div class="formula-block">RWL &asymp; 4,2 kg</div>
+    <p><strong>Langkah 3 — Hitung Lifting Index:</strong></p>
+    <div class="formula-block">LI = 15 / 4,2 &asymp; 3,57 &rarr; Risiko Tinggi! Intervensi segera diperlukan</div>
+    <p><strong>Analisis:</strong> Nilai LI = 3,57 berada pada zona risiko tinggi (LI &gt; 3,0). Ini berarti pekerjaan ini berbahaya bagi sebagian besar pekerja dan harus segera diperbaiki. Faktor-faktor yang paling menurunkan RWL adalah FM (0,45 — frekuensi tinggi dengan durasi panjang), HM (0,625 — beban jauh dari tubuh), dan AM (0,856 — puntiran badan signifikan).</p>
+    <p><strong>Rekomendasi perbaikan prioritas:</strong></p>
+    <ul>
+      <li><strong>Kurangi frekuensi:</strong> Terapkan rotasi pekerja sehingga setiap pekerja hanya melakukan tugas ini selama &le; 1 jam (FM naik dari 0,45 ke 0,84)</li>
+      <li><strong>Gunakan alat bantu:</strong> Pasang vacuum lifter atau hoist di ujung konveyor untuk menghilangkan pengangkatan manual</li>
+      <li><strong>Pindahkan posisi palet:</strong> Letakkan palet di depan konveyor (bukan di samping) untuk menghilangkan puntiran (AM = 1,0), dan gunakan palet dengan spring-loaded platform agar pekerja tidak perlu membungkuk ke lantai</li>
+      <li><strong>Dekatkan konveyor:</strong> Sesuaikan posisi konveyor agar H berkurang ke 25 cm (HM = 1,0)</li>
+      <li><strong>Tambahkan handle:</strong> Gunakan kontainer dengan pegangan ergonomis (CM naik dari 0,90 ke 1,00)</li>
+    </ul>
+
+    <!-- ============================================================ -->
+    <!--  7. SOLUSI ERGONOMIS UNTUK LIFTING                           -->
+    <!-- ============================================================ -->
+    <h2>Solusi Ergonomis untuk Pekerjaan Pengangkatan</h2>
+    <p>Ketika analisis NIOSH menunjukkan LI &gt; 1,0, diperlukan intervensi untuk mengurangi risiko cedera. Hierarki pengendalian ergonomis mengikuti prinsip yang sama dengan hierarki pengendalian K3 pada umumnya: prioritaskan pengendalian teknik, kemudian administratif, dan terakhir alat pelindung diri (APD).</p>
+
+    <h3>Pengendalian Teknik (Engineering Controls)</h3>
+    <p>Pengendalian teknik adalah solusi yang paling efektif karena menghilangkan atau mengurangi bahaya pada sumbernya, tanpa bergantung pada perilaku pekerja:</p>
+    <ul>
+      <li><strong>Lift table / scissor lift:</strong> Meja angkat berdaya hidrolik atau pneumatik yang menjaga beban pada ketinggian pinggang (V = 75 cm), menghilangkan kebutuhan membungkuk atau menjangkau ke atas</li>
+      <li><strong>Penyesuaian tinggi konveyor:</strong> Konveyor dengan ketinggian yang dapat disesuaikan untuk meminimalkan perpindahan vertikal (D) dan menjaga posisi beban pada zona angkat optimal</li>
+      <li><strong>Vacuum lifter / hoist:</strong> Alat bantu angkat mekanis yang menghilangkan pengangkatan manual sepenuhnya, sangat efektif untuk beban berat atau berulang</li>
+      <li><strong>Tilting devices:</strong> Perangkat yang memiringkan kontainer sehingga pekerja tidak perlu menjangkau ke dalam kontainer yang dalam</li>
+      <li><strong>Turntable:</strong> Meja putar yang menghilangkan kebutuhan memutar badan (mengurangi A menjadi 0)</li>
+      <li><strong>Gravity chute / roller conveyor:</strong> Memanfaatkan gravitasi untuk memindahkan material tanpa tenaga manusia</li>
+    </ul>
+
+    <h3>Pengendalian Administratif (Administrative Controls)</h3>
+    <p>Pengendalian administratif mengubah cara pekerjaan dilakukan, bukan mengubah peralatan:</p>
+    <ul>
+      <li><strong>Rotasi pekerjaan (<em>job rotation</em>):</strong> Merotasi pekerja antar tugas yang berbeda secara berkala untuk mengurangi paparan kumulatif pada satu jenis tuntutan fisik. Ini efektif menurunkan FM karena mengurangi durasi efektif pengangkatan per pekerja</li>
+      <li><strong>Istirahat terjadwal (<em>rest breaks</em>):</strong> Memberikan istirahat pendek yang teratur (misalnya 5 menit setiap 30-45 menit kerja pengangkatan) untuk pemulihan otot dan mencegah kelelahan kumulatif</li>
+      <li><strong>Pengangkatan tim (<em>team lifting</em>):</strong> Menggunakan dua pekerja untuk beban yang terlalu berat bagi satu orang, meskipun kapasitas angkat tim bukan 2x kapasitas individu (umumnya hanya 1,5-1,7x)</li>
+      <li><strong>Pelatihan teknik angkat:</strong> Melatih pekerja tentang teknik pengangkatan yang benar (jaga beban dekat tubuh, angkat dengan kaki bukan punggung, hindari puntiran), meskipun pelatihan saja tidak cukup tanpa pengendalian teknik</li>
+      <li><strong>Prosedur kerja standar (SOP):</strong> Menetapkan batas berat beban per kontainer, aturan wajib menggunakan alat bantu untuk beban di atas ambang tertentu</li>
+    </ul>
+
+    <h3>Alat Pelindung Diri (APD)</h3>
+    <p>APD untuk pekerjaan pengangkatan memiliki efektivitas yang terbatas dan harus menjadi pilihan terakhir:</p>
+    <ul>
+      <li><strong>Back belt / korset punggung:</strong> Bukti ilmiah mengenai efektivitas back belt dalam mencegah cedera punggung masih kontroversial. NIOSH tidak merekomendasikan penggunaan back belt sebagai pengganti pengendalian teknik dan administratif. Back belt mungkin memberikan proprioceptive reminder (mengingatkan pekerja untuk menjaga postur), tetapi tidak terbukti mengurangi gaya pada tulang belakang</li>
+      <li><strong>Sarung tangan anti-slip:</strong> Meningkatkan kualitas pegangan (CM) dan mencegah beban terlepas, terutama untuk objek licin atau berminyak</li>
+      <li><strong>Sepatu safety dengan sol anti-slip:</strong> Mencegah terpeleset saat mengangkat beban, yang dapat menyebabkan cedera serius</li>
+    </ul>
+
+    <!-- ============================================================ -->
+    <!--  8. RULA — Rapid Upper Limb Assessment                       -->
+    <!-- ============================================================ -->
+    <h2>RULA (Rapid Upper Limb Assessment)</h2>
+    <p><strong>RULA</strong> dikembangkan oleh McAtamney dan Corlett pada tahun 1993 sebagai metode survei untuk investigasi gangguan kerja terkait anggota tubuh bagian atas (<em>work-related upper limb disorders</em>). Metode ini dirancang untuk dapat digunakan dengan cepat di lapangan tanpa memerlukan peralatan khusus — cukup observasi visual dan lembar penilaian.</p>
+
+    <h3>Prosedur Penilaian RULA</h3>
+    <p>RULA menilai postur kerja melalui dua grup bagian tubuh:</p>
+    <p><strong>Grup A — Lengan dan Pergelangan Tangan:</strong></p>
+    <ul>
+      <li><strong>Lengan atas (<em>upper arm</em>):</strong> Skor 1-6 berdasarkan sudut fleksi/ekstensi (1 = 20 derajat fleksi hingga 20 derajat ekstensi; 6 = fleksi &gt; 90 derajat). Skor ditambah jika bahu terangkat atau lengan diabduksi, dikurangi jika ada penyangga</li>
+      <li><strong>Lengan bawah (<em>lower arm</em>):</strong> Skor 1-3 berdasarkan sudut fleksi (1 = 60-100 derajat; 3 = &lt; 60 derajat atau &gt; 100 derajat). Skor ditambah jika lengan bawah bekerja melintas garis tengah tubuh</li>
+      <li><strong>Pergelangan tangan (<em>wrist</em>):</strong> Skor 1-4 berdasarkan sudut fleksi/ekstensi (1 = netral; 4 = fleksi/ekstensi &gt; 15 derajat). Skor ditambah jika ada deviasi ulnar/radial. Skor puntiran pergelangan ditambahkan terpisah (1 = tengah, 2 = mendekati ujung rentang)</li>
+    </ul>
+    <p><strong>Grup B — Leher, Badan, dan Kaki:</strong></p>
+    <ul>
+      <li><strong>Leher (<em>neck</em>):</strong> Skor 1-6 (1 = 0-10 derajat fleksi; 6 = ekstensi)</li>
+      <li><strong>Badan (<em>trunk</em>):</strong> Skor 1-6 (1 = duduk, ditopang dengan baik; 6 = fleksi &gt; 60 derajat)</li>
+      <li><strong>Kaki (<em>legs</em>):</strong> Skor 1-2 (1 = kaki dan berat badan tertopang rata; 2 = tidak)</li>
+    </ul>
+
+    <h3>Interpretasi Grand Score RULA</h3>
     <table class="data-table">
-      <thead><tr><th>Prinsip</th><th>Persentil</th><th>Contoh</th></tr></thead>
+      <thead><tr><th>Grand Score</th><th>Tingkat Tindakan</th><th>Interpretasi</th></tr></thead>
       <tbody>
-        <tr><td>Desain untuk jangkauan</td><td>P5 (kecil)</td><td>Letak tombol/kontrol agar terjangkau orang bertubuh kecil</td></tr>
-        <tr><td>Desain untuk ruang</td><td>P95 (besar)</td><td>Tinggi pintu, lebar kursi, clearance kaki</td></tr>
-        <tr><td>Desain adjustable</td><td>P5–P95</td><td>Kursi kerja dan meja yang dapat diatur</td></tr>
+        <tr><td><strong>1-2</strong></td><td>Tingkat 1</td><td>Postur kerja <strong>dapat diterima</strong> jika tidak dipertahankan atau diulang dalam waktu lama</td></tr>
+        <tr><td><strong>3-4</strong></td><td>Tingkat 2</td><td>Diperlukan <strong>investigasi lebih lanjut</strong> dan mungkin perlu perubahan</td></tr>
+        <tr><td><strong>5-6</strong></td><td>Tingkat 3</td><td>Diperlukan <strong>investigasi dan perubahan segera</strong> (<em>investigate and change soon</em>)</td></tr>
+        <tr><td><strong>7</strong></td><td>Tingkat 4</td><td>Diperlukan <strong>investigasi dan perubahan saat ini juga</strong> (<em>investigate and change immediately</em>)</td></tr>
       </tbody>
     </table>
-    <p>Untuk pengguna Indonesia, gunakan data antropometri orang Indonesia — misalnya bank data nasional <em>antropometriindonesia.org</em> yang dikelola perhimpunan ergonomi/laboratorium ergonomi perguruan tinggi Indonesia — karena dimensi tubuh populasi Indonesia berbeda dari data Barat yang ada di banyak buku teks.</p>
+    <p>RULA paling cocok untuk menilai pekerjaan dengan postur statis atau repetitif yang dominan melibatkan anggota tubuh bagian atas, seperti pekerjaan perakitan, penggunaan komputer, pemeriksaan kualitas, dan pekerjaan laboratorium.</p>
 
+    <!-- ============================================================ -->
+    <!--  9. REBA — Rapid Entire Body Assessment                      -->
+    <!-- ============================================================ -->
+    <h2>REBA (Rapid Entire Body Assessment)</h2>
+    <p><strong>REBA</strong> dikembangkan oleh Hignett dan McAtamney pada tahun 2000 sebagai alat penilaian postur seluruh tubuh, dirancang khusus untuk menilai postur kerja yang tidak dapat diprediksi (<em>unpredictable working postures</em>) yang umum ditemui dalam industri perawatan kesehatan dan industri jasa. REBA merupakan perluasan dari RULA dengan cakupan tubuh yang lebih lengkap.</p>
+
+    <h3>Komponen Penilaian REBA</h3>
+    <p>Seperti RULA, REBA membagi penilaian ke dalam dua grup, tetapi dengan distribusi yang berbeda:</p>
+    <ul>
+      <li><strong>Grup A:</strong> Leher (skor 1-3), badan/trunk (skor 1-5), dan kaki (skor 1-4, termasuk penyesuaian untuk fleksi lutut). Skor Grup A kemudian disesuaikan dengan skor beban/gaya (0-3, tergantung berat beban dan apakah ada gerakan mendadak)</li>
+      <li><strong>Grup B:</strong> Lengan atas (skor 1-6), lengan bawah (skor 1-2), dan pergelangan tangan (skor 1-3). Skor Grup B disesuaikan dengan skor kualitas pegangan/coupling (0-3: good, fair, poor, unacceptable)</li>
+    </ul>
+    <p>Skor akhir REBA diperoleh dengan menggabungkan Skor A dan Skor B melalui tabel C, kemudian ditambahkan skor aktivitas (+1 jika postur statis &gt; 1 menit, +1 jika gerakan repetitif, +1 jika perubahan postur cepat/tidak stabil).</p>
+
+    <h3>Interpretasi Skor REBA</h3>
+    <table class="data-table">
+      <thead><tr><th>Skor REBA</th><th>Tingkat Risiko</th><th>Tindakan</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1</strong></td><td>Dapat diabaikan (<em>negligible</em>)</td><td>Tidak perlu tindakan</td></tr>
+        <tr><td><strong>2-3</strong></td><td>Rendah</td><td>Mungkin perlu perubahan</td></tr>
+        <tr><td><strong>4-7</strong></td><td>Sedang</td><td>Perlu investigasi dan perubahan</td></tr>
+        <tr><td><strong>8-10</strong></td><td>Tinggi</td><td>Investigasi dan perubahan segera</td></tr>
+        <tr><td><strong>11-15</strong></td><td>Sangat tinggi</td><td>Perubahan harus dilakukan saat ini juga</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Kapan Menggunakan RULA vs REBA?</h3>
+    <p>Pemilihan antara RULA dan REBA tergantung pada jenis pekerjaan yang dinilai:</p>
+    <ul>
+      <li><strong>Gunakan RULA</strong> ketika pekerjaan dominan melibatkan anggota tubuh bagian atas dalam posisi duduk atau berdiri relatif statis, seperti pekerjaan di komputer, perakitan komponen kecil, atau pemeriksaan kualitas visual</li>
+      <li><strong>Gunakan REBA</strong> ketika pekerjaan melibatkan seluruh tubuh dan/atau penanganan beban, seperti pekerjaan perawat mengangkat pasien, pekerja logistik memindahkan barang, pekerja konstruksi, atau pekerjaan yang melibatkan postur tubuh bawah yang signifikan (membungkuk, jongkok, menekuk lutut)</li>
+      <li><strong>Gunakan keduanya</strong> secara komplementer untuk mendapatkan gambaran risiko yang lebih lengkap. Dalam penelitian dan skripsi, penggunaan kedua metode secara bersamaan dapat memperkuat validitas temuan</li>
+    </ul>
+
+    <!-- ============================================================ -->
+    <!--  10. NORDIC BODY MAP                                         -->
+    <!-- ============================================================ -->
+    <h2>Nordic Body Map (Nordic Musculoskeletal Questionnaire)</h2>
+    <p><strong>Nordic Body Map</strong> atau <strong>Nordic Musculoskeletal Questionnaire (NMQ)</strong> dikembangkan oleh Kuorinka dan rekan-rekannya pada tahun 1987 sebagai alat skrining standar untuk mengidentifikasi keluhan muskuloskeletal pada pekerja. Kuesioner ini sangat populer dalam penelitian ergonomi di Indonesia karena mudah digunakan, tidak memerlukan peralatan khusus, dan telah divalidasi secara luas di berbagai budaya dan konteks pekerjaan.</p>
+
+    <h3>Struktur Kuesioner</h3>
+    <p>NMQ terdiri dari diagram tubuh manusia yang membagi tubuh menjadi 9 area (versi umum) atau 27-28 area (versi diperluas yang banyak digunakan di Indonesia). Pekerja diminta menandai area tubuh yang mengalami nyeri, pegal, atau ketidaknyamanan. Dua pertanyaan utama untuk setiap area:</p>
+    <ul>
+      <li>Apakah Anda mengalami nyeri/ketidaknyamanan di area ini selama <strong>12 bulan terakhir</strong>?</li>
+      <li>Apakah Anda mengalami nyeri/ketidaknyamanan di area ini selama <strong>7 hari terakhir</strong>?</li>
+    </ul>
+    <p>Versi diperluas juga menanyakan apakah keluhan tersebut menyebabkan ketidakmampuan bekerja atau memerlukan pengobatan.</p>
+
+    <h3>Cara Administrasi dan Interpretasi</h3>
+    <p>Langkah-langkah penggunaan Nordic Body Map:</p>
+    <ul>
+      <li><strong>Distribusi kuesioner:</strong> Berikan kepada seluruh pekerja di area/departemen yang akan diteliti. Pastikan anonimitas untuk mendorong jawaban yang jujur</li>
+      <li><strong>Pengumpulan data:</strong> Hitung persentase pekerja yang melaporkan keluhan di setiap area tubuh</li>
+      <li><strong>Analisis:</strong> Identifikasi area tubuh dengan prevalensi keluhan tertinggi. Area dengan keluhan &ge; 30-50% pekerja umumnya memerlukan investigasi ergonomis lebih lanjut</li>
+      <li><strong>Tindak lanjut:</strong> Gunakan hasil NMQ untuk menentukan prioritas analisis ergonomis menggunakan metode kuantitatif seperti RULA, REBA, atau NIOSH Lifting Equation</li>
+    </ul>
+    <p>Nordic Body Map sering menjadi langkah pertama dalam penelitian ergonomi (termasuk skripsi dan tugas akhir) karena memberikan gambaran awal tentang area tubuh yang paling bermasalah sebelum dilakukan analisis postur kerja yang lebih detail.</p>
+
+    <!-- ============================================================ -->
+    <!--  11. ANTROPOMETRI                                            -->
+    <!-- ============================================================ -->
+    <h2>Antropometri: Merancang Sesuai Ukuran Pengguna</h2>
+    <p><strong>Antropometri</strong> berasal dari bahasa Yunani <em>anthropos</em> (manusia) dan <em>metron</em> (ukuran), secara harfiah berarti "pengukuran manusia." Dalam ergonomi, antropometri adalah cabang ilmu yang mempelajari dimensi tubuh manusia — termasuk ukuran struktural (statis) seperti tinggi badan, panjang lengan, lebar bahu, dan ukuran fungsional (dinamis) seperti jangkauan tangan dan rentang gerak sendi. Data antropometri menjadi dasar utama dalam perancangan stasiun kerja, peralatan, produk konsumen, dan lingkungan kerja yang sesuai dengan ukuran tubuh pengguna.</p>
+
+    <h3>Konsep Persentil dalam Desain</h3>
+    <p>Karena dimensi tubuh manusia bervariasi antar individu, desain ergonomis menggunakan <strong>persentil</strong> sebagai acuan. Persentil ke-N berarti N% populasi memiliki ukuran yang sama atau lebih kecil dari nilai tersebut. Tiga persentil yang paling sering digunakan dalam desain:</p>
+    <table class="data-table">
+      <thead><tr><th>Prinsip Desain</th><th>Persentil</th><th>Contoh Aplikasi</th><th>Alasan</th></tr></thead>
+      <tbody>
+        <tr><td>Desain untuk jangkauan (<em>reach</em>)</td><td>P5 (ukuran kecil)</td><td>Letak tombol/kontrol, kedalaman rak, jarak monitor</td><td>Agar orang bertubuh kecil pun bisa menjangkau — otomatis orang bertubuh besar juga bisa</td></tr>
+        <tr><td>Desain untuk ruang (<em>clearance</em>)</td><td>P95 (ukuran besar)</td><td>Tinggi pintu, lebar kursi, clearance kaki bawah meja, lebar lorong</td><td>Agar orang bertubuh besar pun muat — otomatis orang bertubuh kecil juga muat</td></tr>
+        <tr><td>Desain adjustable</td><td>P5 hingga P95</td><td>Kursi kerja (tinggi dudukan, sandaran), meja kerja adjustable, sabuk pengaman mobil</td><td>Mengakomodasi 90% populasi melalui pengaturan yang fleksibel</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Catatan penting:</strong> Tidak disarankan mendesain untuk "rata-rata" (P50) saja karena desain rata-rata tidak benar-benar pas untuk siapa pun. Sebuah studi klasik oleh Daniels (1952) di angkatan udara AS menunjukkan bahwa tidak ada satu pun pilot yang "rata-rata" di semua dimensi tubuh — masing-masing individu selalu menyimpang dari rata-rata di beberapa dimensi.</p>
+
+    <h3>Data Antropometri Indonesia</h3>
+    <p>Untuk perancangan produk dan stasiun kerja yang digunakan oleh pekerja Indonesia, penggunaan data antropometri populasi Indonesia sangat penting karena dimensi tubuh orang Indonesia berbeda signifikan dari data Barat yang umum ditemui di buku teks internasional. Sumber data antropometri Indonesia meliputi:</p>
+    <ul>
+      <li><strong>Bank data <em>antropometriindonesia.org</em></strong> — dikelola oleh perhimpunan ergonomi dan laboratorium ergonomi perguruan tinggi Indonesia, menyediakan data dimensi tubuh berdasarkan usia, jenis kelamin, dan suku/etnis</li>
+      <li><strong>Penelitian laboratorium ergonomi universitas</strong> — banyak program studi teknik industri di Indonesia memiliki laboratorium ergonomi yang mengumpulkan dan mempublikasikan data antropometri lokal</li>
+      <li><strong>Data Badan Standardisasi Nasional (BSN)</strong> — beberapa SNI (Standar Nasional Indonesia) memuat data antropometri untuk keperluan standardisasi produk</li>
+    </ul>
+
+    <!-- ============================================================ -->
+    <!--  12. ERGONOMI STASIUN KERJA                                  -->
+    <!-- ============================================================ -->
+    <h2>Ergonomi Stasiun Kerja</h2>
+    <p>Perancangan stasiun kerja yang ergonomis bertujuan mengurangi risiko MSDs, meningkatkan kenyamanan, dan mengoptimalkan produktivitas. Prinsip-prinsip berikut berlaku baik untuk stasiun kerja perkantoran maupun stasiun kerja manufaktur:</p>
+
+    <h3>Posisi Monitor/Layar</h3>
+    <ul>
+      <li>Tepi atas layar monitor sejajar atau sedikit di bawah ketinggian mata (sekitar 15-20 derajat di bawah garis pandang horizontal)</li>
+      <li>Jarak pandang ke monitor: 50-70 cm (sekitar satu lengan)</li>
+      <li>Layar tegak lurus terhadap garis pandang, sedikit miring ke belakang (10-20 derajat) untuk mengurangi silau</li>
+      <li>Hindari menempatkan monitor di samping yang memaksa rotasi leher terus-menerus</li>
+    </ul>
+
+    <h3>Posisi Keyboard dan Mouse</h3>
+    <ul>
+      <li>Keyboard ditempatkan pada ketinggian yang memungkinkan siku membentuk sudut 90-110 derajat dengan lengan bawah sejajar lantai atau sedikit menurun</li>
+      <li>Pergelangan tangan dalam posisi netral (tidak fleksi, ekstensi, atau deviasi) saat mengetik</li>
+      <li>Mouse ditempatkan pada ketinggian dan jarak yang sama dengan keyboard, dalam jangkauan nyaman tanpa perlu meregangkan bahu</li>
+      <li>Pertimbangkan penggunaan wrist rest untuk dukungan saat istirahat mengetik (bukan saat sedang mengetik)</li>
+    </ul>
+
+    <h3>Penyesuaian Kursi Kerja</h3>
+    <ul>
+      <li><strong>Tinggi dudukan:</strong> Disesuaikan sehingga telapak kaki rata di lantai dan paha sejajar lantai (sudut lutut sekitar 90-110 derajat). Gunakan footrest jika kaki tidak mencapai lantai</li>
+      <li><strong>Kedalaman dudukan:</strong> Cukup ruang (sekitar 2-3 jari) antara tepi depan kursi dan belakang lutut untuk mencegah tekanan pada pembuluh darah di belakang lutut</li>
+      <li><strong>Sandaran punggung:</strong> Mendukung lengkung alami tulang belakang lumbar (lordosis). Bantalan lumbar harus berada pada lengkung punggung bawah</li>
+      <li><strong>Sandaran tangan (armrest):</strong> Menopang lengan dengan nyaman saat tidak mengetik, mengurangi beban pada bahu. Ketinggian armrest disesuaikan agar bahu tetap rileks</li>
+    </ul>
+
+    <h3>Pertimbangan Standing Desk</h3>
+    <p>Meja berdiri (<em>standing desk</em>) atau meja duduk-berdiri (<em>sit-stand desk</em>) semakin populer sebagai alternatif untuk mengurangi duduk yang berkepanjangan. Beberapa pertimbangan penting:</p>
+    <ul>
+      <li>Berdiri terus-menerus selama 8 jam juga tidak disarankan — prinsip terbaik adalah bergantian antara duduk dan berdiri setiap 30-60 menit</li>
+      <li>Tinggi meja berdiri harus disesuaikan sehingga siku membentuk sudut 90-110 derajat saat mengetik</li>
+      <li>Gunakan matras anti-fatigue (<em>anti-fatigue mat</em>) untuk mengurangi kelelahan kaki saat berdiri</li>
+      <li>Pastikan monitor tetap pada ketinggian mata yang tepat baik saat duduk maupun berdiri — monitor arm adjustable sangat membantu</li>
+    </ul>
+
+    <!-- ============================================================ -->
+    <!--  13. FAQ — Expanded to 7 questions                           -->
+    <!-- ============================================================ -->
     <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
     <div class="faq-item">
       <h3>Kenapa konstanta beban NIOSH 23 kg?</h3>
-      <p>23 kg adalah beban maksimum pada kondisi pengangkatan ideal (beban dekat tubuh, setinggi 75 cm, tanpa puntiran, frekuensi rendah, pegangan baik) yang masih aman bagi ±90% pekerja sehat berdasarkan kriteria biomekanik (gaya tekan L5/S1 ≤ 3,4 kN), fisiologis, dan psikofisik (Waters dkk., 1993).</p>
+      <p>Nilai 23 kg adalah beban maksimum pada kondisi pengangkatan ideal (beban dekat tubuh pada H = 25 cm, setinggi pinggang V = 75 cm, tanpa perpindahan vertikal signifikan, tanpa puntiran, frekuensi rendah, pegangan baik) yang masih aman bagi sekitar 90% pekerja sehat. Angka ini ditetapkan berdasarkan tiga kriteria ilmiah: biomekanik (gaya tekan pada diskus L5/S1 tidak melebihi 3,4 kN), fisiologis (pengeluaran energi metabolik dalam batas aman), dan psikofisik (beban yang dianggap dapat diterima oleh mayoritas pekerja dalam studi eksperimental). Lihat Waters dkk. (1993) untuk penjelasan lengkap.</p>
     </div>
     <div class="faq-item">
-      <h3>Kapan pakai RULA dan kapan pakai NIOSH?</h3>
-      <p>NIOSH khusus untuk tugas <em>mengangkat/menurunkan</em> beban dua tangan. RULA/REBA untuk menilai <em>postur</em> kerja secara umum. Di banyak penelitian keduanya dipakai bersama: Nordic Body Map untuk skrining keluhan → RULA/REBA atau NIOSH untuk analisis → usulan perbaikan stasiun kerja.</p>
+      <h3>Kapan pakai RULA, kapan pakai REBA, dan kapan pakai NIOSH?</h3>
+      <p>Ketiga metode ini memiliki tujuan yang berbeda dan saling melengkapi. <strong>NIOSH Lifting Equation</strong> digunakan khusus untuk tugas <em>mengangkat/menurunkan</em> beban dua tangan — hasilnya berupa angka RWL dan LI yang kuantitatif. <strong>RULA</strong> digunakan untuk menilai <em>postur</em> kerja yang dominan melibatkan anggota tubuh atas (duduk di komputer, perakitan). <strong>REBA</strong> digunakan untuk menilai postur seluruh tubuh termasuk kaki dan penanganan beban dinamis (perawat, logistik). Dalam banyak penelitian, Nordic Body Map digunakan lebih dulu untuk skrining keluhan, lalu RULA/REBA atau NIOSH untuk analisis detail, diikuti usulan perbaikan stasiun kerja.</p>
     </div>
     <div class="faq-item">
       <h3>Apa dasar hukum ergonomi di Indonesia?</h3>
-      <p>Permenaker No. 5 Tahun 2018 tentang K3 Lingkungan Kerja mengatur faktor ergonomi (termasuk penanganan beban manual dan postur kerja) sebagai bagian dari syarat K3 yang wajib dipenuhi pengusaha, dengan pengukuran oleh ahli/lembaga K3.</p>
+      <p>Dasar hukum utama penerapan ergonomi di Indonesia adalah <strong>Permenaker No. 5 Tahun 2018</strong> tentang K3 Lingkungan Kerja, yang mengatur faktor ergonomi (termasuk penanganan beban manual dan postur kerja) sebagai bagian dari syarat K3 yang wajib dipenuhi pengusaha, dengan pengukuran oleh ahli/lembaga K3 yang berkompeten. Selain itu, <strong>UU No. 1 Tahun 1970</strong> tentang Keselamatan Kerja dan <strong>PP No. 50 Tahun 2012</strong> tentang SMK3 memberikan kerangka hukum pendukung. Untuk perkantoran, <strong>Permenkes No. 48 Tahun 2016</strong> juga mencakup aspek ergonomi.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Bagaimana jika Lifting Index melebihi 3,0?</h3>
+      <p>Lifting Index di atas 3,0 menunjukkan risiko tinggi yang tidak dapat diterima bagi sebagian besar pekerja. Tindakan korektif harus dilakukan <strong>segera</strong>. Prioritas pertama adalah pengendalian teknik: gunakan alat bantu angkat mekanis (vacuum lifter, hoist), sesuaikan tata letak agar beban lebih dekat tubuh (meningkatkan HM) dan eliminasi puntiran (AM = 1), atau kurangi berat beban per unit. Jika pengendalian teknik belum memungkinkan dalam jangka pendek, terapkan pengendalian administratif sementara: rotasi pekerja untuk mengurangi durasi paparan, batasi frekuensi angkat, dan pastikan pekerja terlatih tentang teknik angkat yang benar.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apakah Nordic Body Map cocok untuk skripsi/tugas akhir?</h3>
+      <p>Ya, Nordic Body Map (NMQ) adalah salah satu instrumen yang paling sering digunakan dalam skripsi dan tugas akhir mahasiswa teknik industri di Indonesia untuk topik ergonomi. NMQ cocok sebagai langkah awal skrining karena mudah digunakan, tidak memerlukan peralatan khusus, dan telah tervalidasi. Biasanya NMQ dikombinasikan dengan metode analisis postur seperti RULA atau REBA untuk analisis yang lebih mendalam. Pastikan menggunakan versi kuesioner yang telah divalidasi dan laporkan tingkat respons serta kondisi administrasi kuesioner dalam metodologi penelitian Anda.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apa perbedaan antropometri statis dan dinamis?</h3>
+      <p><strong>Antropometri statis</strong> (struktural) mengukur dimensi tubuh dalam posisi standar yang tetap, misalnya tinggi badan berdiri tegak, panjang lengan, lebar bahu, tinggi duduk. Data ini digunakan untuk merancang clearance dan dimensi dasar produk/stasiun kerja. <strong>Antropometri dinamis</strong> (fungsional) mengukur dimensi tubuh saat melakukan gerakan, misalnya jangkauan tangan ke depan, jangkauan tangan ke samping, atau rentang gerak sendi. Data dinamis lebih relevan untuk merancang area kerja dan penempatan kontrol/peralatan karena mencerminkan kemampuan gerak aktual pengguna.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apakah back belt (korset punggung) efektif mencegah cedera angkat?</h3>
+      <p>Bukti ilmiah mengenai efektivitas back belt masih kontroversial dan tidak konsisten. <strong>NIOSH tidak merekomendasikan</strong> penggunaan back belt sebagai alat pencegahan primer cedera punggung. Beberapa studi menunjukkan bahwa back belt mungkin memberikan efek pengingat proprioseptif (mengingatkan pekerja untuk menjaga postur), tetapi tidak terbukti secara signifikan mengurangi gaya biomekanik pada tulang belakang. Risiko tambahan adalah pekerja yang merasa "terlindungi" oleh back belt mungkin mengangkat beban lebih berat dari yang seharusnya. Pengendalian teknik (alat bantu angkat, redesain stasiun kerja) dan pengendalian administratif (rotasi kerja, pelatihan) tetap menjadi prioritas utama dibandingkan back belt.</p>
     </div>
 
+    <!-- ============================================================ -->
+    <!--  14. RANGKUMAN                                               -->
+    <!-- ============================================================ -->
+    <h2>Rangkuman</h2>
+    <p>Ergonomi adalah ilmu multidisiplin yang bertujuan menyesuaikan pekerjaan dengan kemampuan dan keterbatasan manusia. Dalam konteks teknik industri, ergonomi mencakup tiga domain utama: fisik, kognitif, dan organisasi. Penerapan ergonomi yang baik terbukti mengurangi gangguan muskuloskeletal (MSDs), menurunkan biaya cedera kerja, dan meningkatkan produktivitas.</p>
+    <p>Untuk pekerjaan pengangkatan manual, <strong>NIOSH Lifting Equation</strong> menyediakan metode kuantitatif yang terstruktur: menghitung RWL dari enam faktor pengali (HM, VM, DM, AM, FM, CM) dikalikan konstanta 23 kg, kemudian membandingkan beban aktual dengan RWL untuk mendapatkan Lifting Index. LI &le; 1,0 menunjukkan risiko yang dapat diterima; LI &gt; 1,0 memerlukan perbaikan; LI &gt; 3,0 memerlukan intervensi segera.</p>
+    <p>Untuk penilaian postur kerja, <strong>RULA</strong> cocok untuk pekerjaan yang dominan melibatkan anggota tubuh atas, sementara <strong>REBA</strong> lebih sesuai untuk pekerjaan yang melibatkan seluruh tubuh dan penanganan beban dinamis. <strong>Nordic Body Map</strong> berfungsi sebagai alat skrining awal yang mudah digunakan untuk mengidentifikasi area tubuh dengan prevalensi keluhan tertinggi.</p>
+    <p>Perancangan stasiun kerja yang ergonomis harus didasarkan pada <strong>data antropometri</strong> yang relevan dengan populasi pengguna, menggunakan konsep persentil (P5 untuk jangkauan, P95 untuk ruang, P5-P95 untuk desain adjustable). Khusus untuk pekerja Indonesia, gunakan data antropometri populasi Indonesia yang tersedia dari berbagai sumber lokal.</p>
+    <p>Solusi ergonomis mengikuti hierarki pengendalian: prioritaskan <strong>pengendalian teknik</strong> (alat bantu angkat, penyesuaian layout), kemudian <strong>pengendalian administratif</strong> (rotasi kerja, istirahat terjadwal, pelatihan), dan terakhir <strong>APD</strong> sebagai pelengkap.</p>
+
+    <!-- ============================================================ -->
+    <!--  15. REFERENSI — Expanded                                    -->
+    <!-- ============================================================ -->
     <h2>Referensi</h2>
     <ul>
-      <li>Waters, T. R., Putz-Anderson, V., Garg, A., &amp; Fine, L. J. (1993). "Revised NIOSH equation for the design and evaluation of manual lifting tasks." <em>Ergonomics</em>, 36(7), 749–776. — makalah asli persamaan angkat NIOSH.</li>
-      <li>Waters, T. R., Putz-Anderson, V., &amp; Garg, A. (1994). <em>Applications Manual for the Revised NIOSH Lifting Equation</em>. DHHS (NIOSH) Publication No. 94-110. — sumber tabel FM dan CM.</li>
-      <li>McAtamney, L., &amp; Corlett, E. N. (1993). "RULA: a survey method for the investigation of work-related upper limb disorders." <em>Applied Ergonomics</em>, 24(2), 91–99.</li>
-      <li>Hignett, S., &amp; McAtamney, L. (2000). "Rapid Entire Body Assessment (REBA)." <em>Applied Ergonomics</em>, 31(2), 201–205.</li>
-      <li>Kuorinka, I., dkk. (1987). "Standardised Nordic questionnaires for the analysis of musculoskeletal symptoms." <em>Applied Ergonomics</em>, 18(3), 233–237.</li>
-      <li>Wickens, C. D., Lee, J. D., Liu, Y., &amp; Gordon-Becker, S. (2014). <em>An Introduction to Human Factors Engineering</em> (2nd ed.). Pearson.</li>
+      <li>Waters, T. R., Putz-Anderson, V., Garg, A., &amp; Fine, L. J. (1993). "Revised NIOSH equation for the design and evaluation of manual lifting tasks." <em>Ergonomics</em>, 36(7), 749-776. — makalah asli persamaan angkat NIOSH revisi.</li>
+      <li>Waters, T. R., Putz-Anderson, V., &amp; Garg, A. (1994). <em>Applications Manual for the Revised NIOSH Lifting Equation</em>. DHHS (NIOSH) Publication No. 94-110. — sumber tabel FM dan CM serta panduan aplikasi praktis.</li>
+      <li>McAtamney, L., &amp; Corlett, E. N. (1993). "RULA: a survey method for the investigation of work-related upper limb disorders." <em>Applied Ergonomics</em>, 24(2), 91-99. — makalah asli metode RULA.</li>
+      <li>Hignett, S., &amp; McAtamney, L. (2000). "Rapid Entire Body Assessment (REBA)." <em>Applied Ergonomics</em>, 31(2), 201-205. — makalah asli metode REBA.</li>
+      <li>Kuorinka, I., Jonsson, B., Kilbom, A., Vinterberg, H., Biering-Sorensen, F., Andersson, G., &amp; Jorgensen, K. (1987). "Standardised Nordic questionnaires for the analysis of musculoskeletal symptoms." <em>Applied Ergonomics</em>, 18(3), 233-237. — makalah asli Nordic Musculoskeletal Questionnaire.</li>
+      <li>Jastrzebowski, W. (1857). "An outline of ergonomics, or the science of work based upon the truths drawn from the Science of Nature." <em>Nature and Industry</em>. — esai pertama yang memperkenalkan istilah ergonomi.</li>
+      <li>Daniels, G. S. (1952). <em>The "Average Man"?</em> WCRD-TN-53-7. Wright Air Development Center. — studi klasik yang menunjukkan tidak ada orang yang "rata-rata" di semua dimensi tubuh.</li>
+      <li>Wickens, C. D., Lee, J. D., Liu, Y., &amp; Gordon-Becker, S. (2014). <em>An Introduction to Human Factors Engineering</em> (2nd ed.). Pearson. — buku teks komprehensif tentang human factors.</li>
+      <li>Kroemer, K. H. E., Kroemer, H. B., &amp; Kroemer-Elbert, K. E. (2001). <em>Ergonomics: How to Design for Ease and Efficiency</em> (2nd ed.). Prentice Hall. — referensi desain ergonomis termasuk data antropometri.</li>
+      <li>Bridger, R. S. (2018). <em>Introduction to Human Factors and Ergonomics</em> (4th ed.). CRC Press. — buku teks modern yang mencakup ketiga domain ergonomi.</li>
       <li>Peraturan Menteri Ketenagakerjaan RI No. 5 Tahun 2018 tentang Keselamatan dan Kesehatan Kerja Lingkungan Kerja.</li>
+      <li>Undang-Undang RI No. 1 Tahun 1970 tentang Keselamatan Kerja.</li>
+      <li>Peraturan Pemerintah RI No. 50 Tahun 2012 tentang Penerapan Sistem Manajemen Keselamatan dan Kesehatan Kerja.</li>
     </ul>
 
     <hr class="divider">
-    <p>Sudah paham konsepnya? Kalkulator NIOSH kami menghitung keenam pengali, RWL, dan Lifting Index lengkap dengan kategori risikonya.</p>
+    <p>Sudah paham konsepnya? Kalkulator NIOSH kami menghitung keenam pengali, RWL, dan Lifting Index lengkap dengan kategori risikonya. Coba langsung dengan data pengangkatan Anda sendiri.</p>
     <p>
       <a href="index.html?c=niosh" class="btn">Buka Kalkulator NIOSH</a>
       <a href="panduan.html" class="btn btn-secondary" style="margin-left:8px;">Panduan Lainnya</a>
@@ -207,6 +581,7 @@
     <a href="about.html">Tentang</a>
     <a href="contact.html">Kontak</a>
     <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Syarat &amp; Ketentuan</a>
   </div>
   <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
 </footer>

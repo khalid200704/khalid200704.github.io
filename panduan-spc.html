@@ -55,6 +55,26 @@
       "@type": "Question",
       "name": "Apa bedanya batas kontrol dan batas spesifikasi?",
       "acceptedAnswer": { "@type": "Answer", "text": "Batas kontrol (UCL/LCL) dihitung dari data proses dan menggambarkan suara proses, sedangkan batas spesifikasi (USL/LSL) ditetapkan oleh pelanggan/desain dan menggambarkan suara pelanggan. Keduanya tidak boleh dicampuradukkan." }
+    },
+    {
+      "@type": "Question",
+      "name": "Kenapa dipakai 3 sigma, bukan 2 sigma?",
+      "acceptedAnswer": { "@type": "Answer", "text": "3-sigma adalah kompromi Shewhart antara risiko alarm palsu (batas terlalu sempit) dan risiko masalah lolos (batas terlalu lebar). Pada 3σ, peluang alarm palsu hanya sekitar 0,27% per titik." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bagaimana jika data tidak berdistribusi normal?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Control chart Shewhart cukup robust terhadap penyimpangan dari normalitas, terutama X-bar chart, karena Central Limit Theorem membuat distribusi rata-rata subgroup mendekati normal. Untuk data sangat miring, gunakan transformasi Box-Cox atau chart non-parametrik." }
+    },
+    {
+      "@type": "Question",
+      "name": "Kapan batas kontrol harus dihitung ulang?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Batas kontrol direvisi ketika terjadi perubahan fundamental permanen pada proses, seperti penggantian mesin atau redesain proses. Jangan menghitung ulang hanya karena ada titik out-of-control — investigasi dulu penyebabnya." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah SPC hanya untuk manufaktur?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Tidak. Prinsip SPC berlaku untuk setiap proses berulang. SPC berhasil diterapkan di rumah sakit, perbankan, call center, logistik, dan pengembangan perangkat lunak." }
     }
   ]
 }
@@ -95,83 +115,448 @@
     <div class="meta-info">Panduan Pengendalian Kualitas — bagian dari seri <a href="panduan.html">Panduan Teknik Industri</a> TI Toolkit.</div>
 
     <h1>Control Chart &amp; SPC: Cara Menghitung UCL/LCL</h1>
-    <p class="subtitle">Memahami variasi proses, menghitung batas kontrol 3-sigma, dan membaca sinyal out-of-control pada peta kendali.</p>
+    <p class="subtitle">Memahami variasi proses, menghitung batas kontrol 3-sigma, membaca sinyal out-of-control pada peta kendali, mengenal jenis-jenis control chart, serta mengukur kapabilitas proses dengan Cp dan Cpk.</p>
     <!-- AdSense In-Article -->
     <ins class="adsbygoogle" style="display:block;text-align:center" data-ad-client="ca-pub-8688855167346136" data-ad-slot="9074056144" data-ad-format="fluid" data-ad-layout="in-article"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
-
-
+    <!-- ============================================================ -->
+    <!--  1. APA ITU SPC                                              -->
+    <!-- ============================================================ -->
     <h2>Apa itu SPC?</h2>
-    <p><strong>Statistical Process Control (SPC)</strong> adalah pendekatan pengendalian kualitas yang dipelopori Walter Shewhart (Bell Labs, 1920-an): alih-alih memeriksa produk satu per satu setelah jadi, SPC <strong>memantau proses</strong> secara statistik agar masalah terdeteksi sebelum menghasilkan banyak produk cacat.</p>
-    <p>Ide kuncinya adalah membedakan dua jenis variasi:</p>
+    <p><strong>Statistical Process Control (SPC)</strong> adalah pendekatan pengendalian kualitas yang menggunakan teknik-teknik statistik untuk memantau dan mengendalikan proses produksi. Alih-alih memeriksa produk satu per satu setelah jadi (inspeksi akhir), SPC <strong>memantau proses itu sendiri</strong> secara real-time sehingga masalah terdeteksi dan diperbaiki <em>sebelum</em> menghasilkan banyak produk cacat.</p>
+    <p>Konsep sentral SPC adalah membedakan dua jenis variasi yang muncul dalam setiap proses:</p>
     <ul>
-      <li><strong>Common cause</strong> — variasi alami yang selalu ada di setiap proses (getaran mesin, fluktuasi material dalam toleransi). Proses dengan hanya common cause disebut <em>terkendali secara statistik</em>.</li>
-      <li><strong>Special cause</strong> — variasi tidak normal akibat sebab khusus (pahat aus, operator baru, batch material rusak). Inilah yang harus dicari dan dihilangkan.</li>
+      <li><strong>Common cause (penyebab umum)</strong> — variasi alami yang selalu ada, misalnya getaran mesin, fluktuasi suhu lingkungan, atau variasi bahan baku dalam toleransi. Proses yang hanya mengandung common cause disebut <em>terkendali secara statistik</em> (in statistical control).</li>
+      <li><strong>Special cause (penyebab khusus)</strong> — variasi tidak normal akibat faktor yang dapat diidentifikasi, misalnya pahat aus, kesalahan operator baru, batch material rusak, atau perubahan settingan mesin. Variasi ini harus dicari dan dihilangkan.</li>
     </ul>
-    <p>Alat utamanya adalah <strong>control chart (peta kendali)</strong>: grafik data proses dari waktu ke waktu dengan garis tengah (CL) dan batas kontrol atas/bawah (UCL/LCL).</p>
+    <p>Alat utama SPC adalah <strong>control chart (peta kendali)</strong>: grafik yang memplot data proses dari waktu ke waktu dengan garis tengah (CL = Center Line) dan batas kontrol atas/bawah (UCL = Upper Control Limit / LCL = Lower Control Limit). Titik-titik yang jatuh di luar batas atau membentuk pola tertentu menandakan adanya special cause yang perlu investigasi.</p>
 
+    <!-- ============================================================ -->
+    <!--  2. SEJARAH SPC                                              -->
+    <!-- ============================================================ -->
+    <h2>Sejarah SPC: Dari Shewhart hingga Deming</h2>
+    <p>Memahami sejarah SPC membantu menghargai mengapa metode ini menjadi tulang punggung pengendalian kualitas modern.</p>
+
+    <h3>Walter Shewhart dan Bell Labs (1920-an)</h3>
+    <p>Pada tahun 1924, <strong>Walter A. Shewhart</strong>, seorang insinyur di Bell Telephone Laboratories, membuat <em>control chart</em> pertama di dunia. Shewhart mengamati bahwa variasi dalam produk telepon tidak bisa dihilangkan sepenuhnya, tetapi bisa <em>dikelola</em> secara statistik. Ia membedakan antara variasi "terkendali" (chance cause, kini disebut common cause) dan "tidak terkendali" (assignable cause, kini disebut special cause).</p>
+    <p>Pada tahun 1931, Shewhart menerbitkan bukunya yang berpengaruh, <em>Economic Control of Quality of Manufactured Product</em>, yang meletakkan fondasi teoretis dan praktis bagi SPC. Konsep "batas kontrol 3-sigma" yang kita gunakan hingga hari ini berasal dari karya Shewhart.</p>
+
+    <h3>W. Edwards Deming dan Revolusi Kualitas Jepang</h3>
+    <p>Setelah Perang Dunia II, <strong>W. Edwards Deming</strong> — yang merupakan murid dan kolega Shewhart — diundang ke Jepang oleh JUSE (Japanese Union of Scientists and Engineers) pada tahun 1950. Deming mengajarkan metode statistik, termasuk SPC, kepada para eksekutif dan insinyur Jepang. Hasilnya luar biasa: industri Jepang yang hancur akibat perang berhasil bangkit menjadi pemimpin kualitas dunia dalam dua dekade.</p>
+    <p>Kontribusi Deming melampaui SPC teknis. Ia menekankan pentingnya <strong>sistem manajemen</strong> yang mendukung pengendalian kualitas — filosofi yang kemudian dikenal sebagai <em>Total Quality Management (TQM)</em>. Penghargaan kualitas tertinggi di Jepang, <em>Deming Prize</em>, dinamai untuk menghormati jasanya.</p>
+
+    <h3>SPC di Era Modern</h3>
+    <p>Pada tahun 1980-an, industri Barat menyadari keunggulan kompetitif Jepang dan mulai mengadopsi SPC secara masif. Saat ini, SPC merupakan komponen wajib dalam standar kualitas seperti <strong>ISO 9001</strong>, sistem manajemen kualitas otomotif <strong>IATF 16949</strong>, dan program <strong>Six Sigma</strong>. Dengan perangkat lunak modern dan sensor real-time, SPC bahkan dapat dijalankan secara otomatis pada lini produksi (automated SPC).</p>
+
+    <!-- ============================================================ -->
+    <!--  3. VARIASI DALAM PROSES (EXPANDED)                          -->
+    <!-- ============================================================ -->
+    <h2>Variasi dalam Proses: Common Cause vs Special Cause</h2>
+    <p>Setiap proses produksi — secanggih apa pun — selalu menghasilkan output yang bervariasi. Dua buah baut yang diproduksi oleh mesin yang sama, dengan bahan yang sama, oleh operator yang sama, tetap akan memiliki perbedaan ukuran, meskipun sangat kecil. Pertanyaan kuncinya bukan "apakah ada variasi?" melainkan <strong>"jenis variasi apa yang terjadi?"</strong></p>
+
+    <h3>Common Cause (Variasi Alami / Inherent Variation)</h3>
+    <p>Common cause adalah variasi acak yang melekat pada proses dan sulit dihilangkan tanpa mengubah proses secara fundamental. Karakteristiknya:</p>
+    <ul>
+      <li>Bersifat <strong>acak dan tidak dapat diprediksi</strong> kapan munculnya pada titik individual, tetapi secara keseluruhan membentuk pola distribusi yang stabil (biasanya normal).</li>
+      <li><strong>Selalu ada</strong> dalam setiap proses — tidak peduli seberapa baik proses dikelola.</li>
+      <li>Untuk menguranginya, diperlukan <strong>perubahan fundamental</strong> pada proses (investasi mesin baru, redesain produk, perubahan material).</li>
+    </ul>
+    <p><strong>Contoh di pabrik:</strong> Mesin CNC memproduksi poros dengan diameter target 50,00 mm. Meskipun settingan mesin sama, hasil pengukuran berfluktuasi antara 49,95 dan 50,05 mm karena getaran spindle, variasi kekerasan material, dan perubahan suhu ruangan. Selama fluktuasi ini konsisten dan terprediksi secara statistik, proses dianggap <em>in control</em>.</p>
+
+    <h3>Special Cause (Variasi Khusus / Assignable Cause)</h3>
+    <p>Special cause adalah variasi yang muncul karena faktor spesifik yang dapat diidentifikasi dan dihilangkan. Karakteristiknya:</p>
+    <ul>
+      <li>Bersifat <strong>sporadis atau tiba-tiba</strong> — muncul, lalu bisa hilang atau menetap.</li>
+      <li><strong>Dapat dilacak</strong> penyebabnya melalui investigasi (root cause analysis).</li>
+      <li>Untuk menghilangkannya, <strong>cukup tindakan lokal</strong> — tidak perlu mengubah seluruh proses.</li>
+    </ul>
+    <p><strong>Contoh di pabrik:</strong> Tiba-tiba diameter poros bergeser ke 50,15 mm pada shift malam. Investigasi menemukan operator baru salah memasukkan offset tool. Setelah dikoreksi, proses kembali normal. Ini adalah special cause — faktor spesifik, dapat diidentifikasi, dan bisa dihilangkan.</p>
+    <p><strong>Prinsip penting:</strong> Kesalahan fatal dalam pengelolaan kualitas adalah mencampuradukkan kedua jenis variasi ini. Menyalahkan operator atas variasi alami (common cause) hanya menimbulkan frustrasi tanpa perbaikan. Sebaliknya, mengabaikan special cause sebagai "hal biasa" akan membiarkan masalah terus menghasilkan cacat.</p>
+
+    <!-- ============================================================ -->
+    <!--  4. RUMUS BATAS KONTROL 3-SIGMA                              -->
+    <!-- ============================================================ -->
     <h2>Rumus Batas Kontrol 3-Sigma</h2>
+    <p>Batas kontrol pada control chart dihitung berdasarkan data proses itu sendiri, bukan dari spesifikasi produk. Rumus umum untuk peta kendali 3-sigma adalah:</p>
     <div class="formula-block">UCL = x̄ + 3σ &nbsp;&nbsp;|&nbsp;&nbsp; CL = x̄ &nbsp;&nbsp;|&nbsp;&nbsp; LCL = x̄ − 3σ</div>
-    <p>dengan x̄ = rata-rata data dan σ = standar deviasi. Berdasarkan distribusi normal, 99,73% titik dari proses yang terkendali akan jatuh di antara UCL dan LCL — sehingga titik di luar batas hampir pasti menandakan special cause, bukan kebetulan.</p>
-    <p>Statistik dasar yang dibutuhkan:</p>
+    <p>dengan x̄ = rata-rata (grand mean) data proses dan σ = standar deviasi proses. Berdasarkan sifat distribusi normal, 99,73% titik data dari proses yang terkendali secara statistik akan jatuh di antara UCL dan LCL. Dengan demikian, titik yang jatuh di luar batas kontrol hampir pasti (probabilitas hanya 0,27% jika proses benar-benar terkendali) menandakan adanya special cause, bukan kebetulan semata.</p>
+    <p>Mengapa dipilih 3-sigma? Shewhart sendiri menjelaskan bahwa angka 3 adalah <strong>kompromi ekonomis</strong> antara dua jenis kesalahan:</p>
+    <ul>
+      <li><strong>Risiko Tipe I (false alarm):</strong> Menyimpulkan ada special cause padahal proses sebenarnya terkendali. Batas terlalu sempit (misalnya 1σ) akan menghasilkan terlalu banyak alarm palsu.</li>
+      <li><strong>Risiko Tipe II (missed signal):</strong> Gagal mendeteksi special cause yang benar-benar ada. Batas terlalu lebar (misalnya 5σ) akan membuat masalah nyata lolos tanpa terdeteksi.</li>
+    </ul>
+    <p>Statistik dasar yang dibutuhkan untuk perhitungan:</p>
     <div class="formula-block">x̄ = Σx / n &nbsp;&nbsp;|&nbsp;&nbsp; s = √[ Σ(x − x̄)² / (n − 1) ]</div>
+    <p>Di mana n adalah jumlah observasi dan s adalah standar deviasi sampel (menggunakan pembagi n−1 sesuai koreksi Bessel).</p>
 
-    <h2>Contoh Soal SPC dan Pembahasan</h2>
-    <p><strong>Soal:</strong> Pengukuran diameter poros (mm) dari 10 sampel: 50,2 ; 49,8 ; 50,5 ; 49,9 ; 50,1 ; 50,3 ; 49,7 ; 50,0 ; 50,4 ; 49,6. Hitung batas kontrol 3-sigma dan tentukan apakah proses terkendali.</p>
-    <p><strong>Langkah 1 — Rata-rata:</strong> Σx = 500,5 → x̄ = 500,5 / 10 = 50,05 mm.</p>
-    <p><strong>Langkah 2 — Standar deviasi (sampel):</strong> Σ(x − x̄)² = 0,825 → s = √(0,825/9) = √0,0917 ≈ 0,303 mm.</p>
-    <p><strong>Langkah 3 — Batas kontrol:</strong></p>
-    <div class="formula-block">UCL = 50,05 + 3(0,303) = 50,96 mm<br>LCL = 50,05 − 3(0,303) = 49,14 mm</div>
-    <p><strong>Langkah 4 — Evaluasi:</strong> seluruh data berada antara 49,6 dan 50,5 — semuanya di dalam batas kontrol, tanpa pola tidak normal. Kesimpulan: <strong>proses terkendali secara statistik</strong>.</p>
-
-    <h2>Sinyal Out-of-Control: Bukan Hanya Titik di Luar Batas</h2>
-    <p>Proses bisa bermasalah meskipun semua titik di dalam batas. Aturan deteksi tambahan yang umum dipakai (Western Electric rules):</p>
-    <ol>
-      <li>Satu titik di luar UCL atau LCL.</li>
-      <li>Tujuh (atau delapan) titik berturut-turut di satu sisi garis tengah — indikasi pergeseran rata-rata proses.</li>
-      <li>Tren naik/turun terus-menerus 7 titik — indikasi keausan alat atau drift.</li>
-      <li>Pola siklus atau terlalu banyak titik mendekati batas kontrol.</li>
-    </ol>
-
+    <!-- ============================================================ -->
+    <!--  5. JENIS-JENIS CONTROL CHART (EXPANDED)                     -->
+    <!-- ============================================================ -->
     <h2>Jenis-Jenis Control Chart</h2>
+    <p>Pemilihan jenis control chart bergantung pada <strong>jenis data</strong> (variabel atau atribut) dan <strong>ukuran subgroup</strong>. Berikut adalah tujuh jenis control chart yang paling umum digunakan:</p>
+
     <table class="data-table">
-      <thead><tr><th>Peta</th><th>Data</th><th>Memantau</th></tr></thead>
+      <thead>
+        <tr><th>Peta Kendali</th><th>Jenis Data</th><th>Yang Dipantau</th><th>Kapan Digunakan</th></tr>
+      </thead>
       <tbody>
-        <tr><td>x̄–R chart</td><td>Variabel (pengukuran), subgroup kecil</td><td>Rata-rata dan rentang antar subgroup</td></tr>
-        <tr><td>I–MR chart</td><td>Variabel, observasi individual</td><td>Nilai individu dan moving range</td></tr>
-        <tr><td>p chart</td><td>Atribut</td><td>Proporsi unit cacat</td></tr>
-        <tr><td>c chart</td><td>Atribut</td><td>Jumlah cacat per unit inspeksi</td></tr>
+        <tr>
+          <td><strong>X̄–R Chart</strong></td>
+          <td>Variabel (pengukuran)</td>
+          <td>Rata-rata subgroup (X̄) dan rentang subgroup (R)</td>
+          <td>Subgroup kecil (n = 2–10). Paling umum di industri manufaktur.</td>
+        </tr>
+        <tr>
+          <td><strong>X̄–S Chart</strong></td>
+          <td>Variabel (pengukuran)</td>
+          <td>Rata-rata subgroup (X̄) dan standar deviasi subgroup (S)</td>
+          <td>Subgroup besar (n &gt; 10). Lebih akurat daripada R chart untuk n besar karena standar deviasi menggunakan semua data, bukan hanya nilai terbesar dan terkecil.</td>
+        </tr>
+        <tr>
+          <td><strong>I–MR Chart</strong> (Individual – Moving Range)</td>
+          <td>Variabel, observasi individual</td>
+          <td>Nilai individu (I) dan moving range antar observasi berturutan (MR)</td>
+          <td>Ketika hanya tersedia satu pengukuran per periode (n = 1), misalnya pengukuran proses kimia batch atau data harian.</td>
+        </tr>
+        <tr>
+          <td><strong>p Chart</strong></td>
+          <td>Atribut (proporsi)</td>
+          <td>Proporsi (fraksi) unit cacat dalam sampel</td>
+          <td>Ukuran sampel boleh bervariasi. Setiap unit diklasifikasikan cacat/tidak cacat (binomial).</td>
+        </tr>
+        <tr>
+          <td><strong>np Chart</strong></td>
+          <td>Atribut (jumlah)</td>
+          <td>Jumlah unit cacat dalam sampel berukuran tetap</td>
+          <td>Sama seperti p chart, tetapi ukuran sampel harus konstan. Lebih mudah diinterpretasikan karena sumbu Y menampilkan jumlah, bukan proporsi.</td>
+        </tr>
+        <tr>
+          <td><strong>c Chart</strong></td>
+          <td>Atribut (hitungan)</td>
+          <td>Jumlah cacat (defects) per unit inspeksi</td>
+          <td>Area inspeksi konstan. Satu unit bisa memiliki lebih dari satu cacat (Poisson). Contoh: jumlah goresan per lembar kaca.</td>
+        </tr>
+        <tr>
+          <td><strong>u Chart</strong></td>
+          <td>Atribut (hitungan per unit)</td>
+          <td>Rata-rata jumlah cacat per unit inspeksi</td>
+          <td>Area inspeksi boleh bervariasi. Contoh: jumlah cacat solder per meter persegi PCB, di mana ukuran PCB berbeda-beda.</td>
+        </tr>
       </tbody>
     </table>
-    <p>Untuk x̄–R chart, batas kontrol dihitung menggunakan konstanta tabel (A₂, D₃, D₄) sesuai ukuran subgroup — materi standar di buku Montgomery, <em>Statistical Quality Control</em>.</p>
+    <p><strong>Tips pemilihan:</strong> Jika data berupa pengukuran kontinu (panjang, berat, suhu), gunakan chart variabel (X̄–R, X̄–S, atau I–MR). Jika data berupa hitungan atau klasifikasi (lulus/gagal, jumlah cacat), gunakan chart atribut (p, np, c, atau u).</p>
 
+    <!-- ============================================================ -->
+    <!--  6. KONSTRUKSI X-BAR DAN R CHART                             -->
+    <!-- ============================================================ -->
+    <h2>Konstruksi X̄ dan R Chart: Langkah demi Langkah</h2>
+    <p>X̄–R chart adalah jenis control chart yang paling banyak digunakan di industri manufaktur. Berikut langkah-langkah konstruksinya:</p>
+
+    <h3>Langkah 1: Kumpulkan Data dalam Subgroup</h3>
+    <p>Ambil k subgroup (minimal 20–25 subgroup untuk batas kontrol yang stabil), masing-masing berisi n observasi yang diambil dalam kondisi proses serupa (misalnya 4–5 sampel setiap jam).</p>
+
+    <h3>Langkah 2: Hitung Rata-rata dan Range Setiap Subgroup</h3>
+    <div class="formula-block">X̄ᵢ = (x₁ + x₂ + ... + xₙ) / n &nbsp;&nbsp;|&nbsp;&nbsp; Rᵢ = x_max − x_min</div>
+    <p>di mana X̄ᵢ adalah rata-rata subgroup ke-i dan Rᵢ adalah range (selisih nilai terbesar dan terkecil) subgroup ke-i.</p>
+
+    <h3>Langkah 3: Hitung Grand Mean (X̿) dan Average Range (R̄)</h3>
+    <div class="formula-block">X̿ = (X̄₁ + X̄₂ + ... + X̄ₖ) / k &nbsp;&nbsp;|&nbsp;&nbsp; R̄ = (R₁ + R₂ + ... + Rₖ) / k</div>
+
+    <h3>Langkah 4: Hitung Batas Kontrol Menggunakan Konstanta Tabel</h3>
+    <p>Batas kontrol untuk <strong>X̄ chart</strong>:</p>
+    <div class="formula-block">UCL_X̄ = X̿ + A₂ × R̄ &nbsp;&nbsp;|&nbsp;&nbsp; CL_X̄ = X̿ &nbsp;&nbsp;|&nbsp;&nbsp; LCL_X̄ = X̿ − A₂ × R̄</div>
+    <p>Batas kontrol untuk <strong>R chart</strong>:</p>
+    <div class="formula-block">UCL_R = D₄ × R̄ &nbsp;&nbsp;|&nbsp;&nbsp; CL_R = R̄ &nbsp;&nbsp;|&nbsp;&nbsp; LCL_R = D₃ × R̄</div>
+
+    <h3>Tabel Konstanta A₂, D₃, D₄</h3>
+    <p>Nilai konstanta bergantung pada ukuran subgroup (n). Berikut tabel untuk nilai n yang umum digunakan:</p>
+    <table class="data-table">
+      <thead>
+        <tr><th>n (ukuran subgroup)</th><th>A₂</th><th>D₃</th><th>D₄</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>2</td><td>1,880</td><td>0</td><td>3,267</td></tr>
+        <tr><td>3</td><td>1,023</td><td>0</td><td>2,575</td></tr>
+        <tr><td>4</td><td>0,729</td><td>0</td><td>2,282</td></tr>
+        <tr><td>5</td><td>0,577</td><td>0</td><td>2,115</td></tr>
+        <tr><td>6</td><td>0,483</td><td>0</td><td>2,004</td></tr>
+        <tr><td>7</td><td>0,419</td><td>0,076</td><td>1,924</td></tr>
+        <tr><td>8</td><td>0,373</td><td>0,136</td><td>1,864</td></tr>
+        <tr><td>9</td><td>0,337</td><td>0,184</td><td>1,816</td></tr>
+        <tr><td>10</td><td>0,308</td><td>0,223</td><td>1,777</td></tr>
+      </tbody>
+    </table>
+    <p><em>Catatan:</em> Untuk n ≤ 6, D₃ = 0, sehingga LCL_R = 0 (range tidak bisa negatif). Tabel lengkap tersedia di Montgomery (2019), Appendix VI.</p>
+
+    <!-- ============================================================ -->
+    <!--  7. CONTOH SOAL 1 — DATA INDIVIDU                           -->
+    <!-- ============================================================ -->
+    <h2>Contoh Soal 1: Batas Kontrol Data Individu</h2>
+    <p><strong>Soal:</strong> Pengukuran diameter poros (mm) dari 10 sampel individual: 50,2 ; 49,8 ; 50,5 ; 49,9 ; 50,1 ; 50,3 ; 49,7 ; 50,0 ; 50,4 ; 49,6. Hitung batas kontrol 3-sigma dan tentukan apakah proses terkendali.</p>
+    <p><strong>Langkah 1 — Rata-rata:</strong> Σx = 500,5 sehingga x̄ = 500,5 / 10 = 50,05 mm.</p>
+    <p><strong>Langkah 2 — Standar deviasi (sampel):</strong> Σ(x − x̄)² = 0,825 sehingga s = √(0,825/9) = √0,0917 ≈ 0,303 mm.</p>
+    <p><strong>Langkah 3 — Batas kontrol:</strong></p>
+    <div class="formula-block">UCL = 50,05 + 3(0,303) = 50,96 mm<br>CL = 50,05 mm<br>LCL = 50,05 − 3(0,303) = 49,14 mm</div>
+    <p><strong>Langkah 4 — Evaluasi:</strong> Seluruh data berada antara 49,6 dan 50,5 — semuanya di dalam batas kontrol [49,14 ; 50,96]. Tidak ada pola tidak normal (tidak ada run, trend, atau siklus yang mencurigakan). Kesimpulan: <strong>proses terkendali secara statistik</strong>.</p>
+
+    <!-- ============================================================ -->
+    <!--  8. CONTOH SOAL 2 — X-BAR DAN R CHART                       -->
+    <!-- ============================================================ -->
+    <h2>Contoh Soal 2: Konstruksi X̄ dan R Chart dari Data Mentah</h2>
+    <p><strong>Soal:</strong> Sebuah pabrik mengukur ketebalan pelat baja (mm) dari proses pengerolan. Diambil 5 subgroup, masing-masing berisi 4 observasi. Data sebagai berikut:</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Subgroup</th><th>x₁</th><th>x₂</th><th>x₃</th><th>x₄</th><th>X̄ᵢ</th><th>Rᵢ</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>5,02</td><td>4,98</td><td>5,01</td><td>4,99</td><td>5,000</td><td>0,04</td></tr>
+        <tr><td>2</td><td>5,03</td><td>5,00</td><td>4,97</td><td>5,01</td><td>5,003</td><td>0,06</td></tr>
+        <tr><td>3</td><td>4,96</td><td>5,02</td><td>5,00</td><td>4,98</td><td>4,990</td><td>0,06</td></tr>
+        <tr><td>4</td><td>5,01</td><td>4,99</td><td>5,03</td><td>5,00</td><td>5,008</td><td>0,04</td></tr>
+        <tr><td>5</td><td>4,99</td><td>5,01</td><td>4,98</td><td>5,02</td><td>5,000</td><td>0,04</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>Langkah 1 — Grand Mean dan Average Range:</strong></p>
+    <div class="formula-block">X̿ = (5,000 + 5,003 + 4,990 + 5,008 + 5,000) / 5 = 25,001 / 5 = 5,000 mm<br>R̄ = (0,04 + 0,06 + 0,06 + 0,04 + 0,04) / 5 = 0,24 / 5 = 0,048 mm</div>
+
+    <p><strong>Langkah 2 — Batas Kontrol X̄ Chart</strong> (n = 4, maka A₂ = 0,729):</p>
+    <div class="formula-block">UCL_X̄ = 5,000 + 0,729 × 0,048 = 5,000 + 0,035 = 5,035 mm<br>CL_X̄ = 5,000 mm<br>LCL_X̄ = 5,000 − 0,729 × 0,048 = 5,000 − 0,035 = 4,965 mm</div>
+
+    <p><strong>Langkah 3 — Batas Kontrol R Chart</strong> (n = 4, maka D₃ = 0 dan D₄ = 2,282):</p>
+    <div class="formula-block">UCL_R = 2,282 × 0,048 = 0,110 mm<br>CL_R = 0,048 mm<br>LCL_R = 0 × 0,048 = 0 mm</div>
+
+    <p><strong>Langkah 4 — Interpretasi:</strong></p>
+    <ul>
+      <li><strong>X̄ chart:</strong> Semua rata-rata subgroup (4,990 hingga 5,008) berada di dalam batas kontrol [4,965 ; 5,035]. Tidak ada pola run atau trend.</li>
+      <li><strong>R chart:</strong> Semua range subgroup (0,04 hingga 0,06) berada di dalam batas kontrol [0 ; 0,110]. Variabilitas proses konsisten.</li>
+      <li><strong>Kesimpulan:</strong> Proses pengerolan pelat baja <strong>terkendali secara statistik</strong>, baik dari sisi lokasi (rata-rata) maupun dispersi (variabilitas).</li>
+    </ul>
+    <p><em>Catatan praktis:</em> Dalam aplikasi nyata, minimal 20–25 subgroup direkomendasikan untuk menetapkan batas kontrol yang stabil. Contoh di atas menggunakan 5 subgroup untuk ilustrasi perhitungan.</p>
+
+    <!-- ============================================================ -->
+    <!--  9. ATURAN DETEKSI OUT-OF-CONTROL (EXPANDED)                 -->
+    <!-- ============================================================ -->
+    <h2>Aturan Deteksi Out-of-Control: Western Electric Rules &amp; Nelson Rules</h2>
+    <p>Proses bisa bermasalah meskipun semua titik berada di dalam batas kontrol UCL dan LCL. Para ahli statistik mengembangkan serangkaian aturan tambahan untuk mendeteksi pola-pola non-acak. Aturan yang paling banyak dipakai berasal dari <strong>Western Electric Company (1956)</strong> dan diperluas oleh <strong>Lloyd Nelson (1984)</strong>. Berikut tujuh aturan utamanya:</p>
+
+    <h3>Aturan 1: Titik di Luar Batas 3σ</h3>
+    <p><strong>Deskripsi:</strong> Satu atau lebih titik jatuh di luar UCL atau LCL (melampaui zona 3-sigma). Ini adalah sinyal paling jelas bahwa proses mengalami special cause. Bayangkan pada control chart, sebuah titik tiba-tiba "melompat" jauh di atas garis UCL. Probabilitas kejadian ini secara kebetulan hanya 0,135% per sisi.</p>
+    <p><strong>Tindakan:</strong> Hentikan proses, investigasi penyebab segera (mesin rusak, material defektif, dll.).</p>
+
+    <h3>Aturan 2: Dua dari Tiga Titik Berturutan di Luar 2σ</h3>
+    <p><strong>Deskripsi:</strong> Dalam tiga titik berturutan, dua atau lebih berada di luar zona 2-sigma (tetapi masih di dalam 3-sigma) pada sisi yang sama dari garis tengah. Pola ini menunjukkan kemungkinan pergeseran rata-rata proses yang signifikan.</p>
+    <p><strong>Ilustrasi:</strong> Pada chart, zona antara 2σ dan 3σ seharusnya hanya berisi sekitar 4,3% titik. Dua dari tiga titik di zona ini sangat tidak mungkin terjadi secara kebetulan.</p>
+
+    <h3>Aturan 3: Empat dari Lima Titik Berturutan di Luar 1σ</h3>
+    <p><strong>Deskripsi:</strong> Dalam lima titik berturutan, empat atau lebih berada di luar zona 1-sigma pada sisi yang sama. Ini mengindikasikan proses mulai bergeser meskipun belum terlihat dramatis.</p>
+
+    <h3>Aturan 4: Delapan Titik Berturutan di Satu Sisi Garis Tengah</h3>
+    <p><strong>Deskripsi:</strong> Delapan titik berturut-turut semuanya berada di atas atau di bawah garis tengah (CL). Ini disebut <em>run</em> dan mengindikasikan pergeseran rata-rata proses. Bayangkan pada chart, semua titik berderet di atas garis tengah tanpa satupun menyentuh bawah — secara acak, peluangnya hanya (0,5)⁸ = 0,39%.</p>
+    <p><strong>Contoh penyebab:</strong> Perubahan gradual pada settingan mesin, perbedaan batch material, atau pergantian operator.</p>
+
+    <h3>Aturan 5: Enam Titik Berturutan Naik atau Turun (Trend)</h3>
+    <p><strong>Deskripsi:</strong> Enam titik berturut-turut terus meningkat atau terus menurun tanpa berbalik arah. Ini menunjukkan adanya <em>drift</em> — proses bergeser secara bertahap ke satu arah.</p>
+    <p><strong>Contoh penyebab:</strong> Keausan pahat potong (trend naik pada ukuran), penipisan lapisan pelumas, atau pemanasan mesin secara gradual.</p>
+
+    <h3>Aturan 6: Empat Belas Titik Bergantian Naik-Turun (Oscillation)</h3>
+    <p><strong>Deskripsi:</strong> Empat belas titik berturut-turut bergantian naik dan turun (zigzag) — titik 1 naik, titik 2 turun, titik 3 naik, dan seterusnya. Pola ini menunjukkan dua sumber variasi yang saling bergantian memengaruhi proses.</p>
+    <p><strong>Contoh penyebab:</strong> Dua mesin atau dua operator yang bergantian beroperasi dengan settingan sedikit berbeda, atau over-adjustment (over-correction) oleh operator.</p>
+
+    <h3>Aturan 7: Lima Belas Titik Berturutan dalam Zona 1σ (Stratification)</h3>
+    <p><strong>Deskripsi:</strong> Lima belas titik berturut-turut semuanya berada dalam jarak 1-sigma dari garis tengah. Meskipun terlihat "bagus" karena semua titik dekat garis tengah, pola ini sebenarnya menunjukkan bahwa <strong>variasi berkurang secara artifisial</strong>.</p>
+    <p><strong>Contoh penyebab:</strong> Data dari dua populasi berbeda dicampur dan dirata-ratakan, atau batas kontrol dihitung salah (terlalu lebar), atau data dipalsukan/dibulatkan.</p>
+
+    <p><strong>Ringkasan cepat:</strong> Pembagian zona pada control chart dibagi menjadi zona A (2σ–3σ), zona B (1σ–2σ), dan zona C (0–1σ). Aturan-aturan di atas memanfaatkan pembagian zona ini untuk mendeteksi pola statistik yang tidak mungkin terjadi secara kebetulan dalam proses yang benar-benar terkendali.</p>
+
+    <!-- ============================================================ -->
+    <!--  10. PROCESS CAPABILITY: Cp DAN Cpk                          -->
+    <!-- ============================================================ -->
+    <h2>Process Capability: Cp dan Cpk</h2>
+    <p>Control chart menjawab pertanyaan "apakah proses terkendali?" tetapi <strong>tidak</strong> menjawab "apakah proses mampu memenuhi spesifikasi pelanggan?" Untuk menjawab pertanyaan kedua, kita membutuhkan indeks <strong>kapabilitas proses</strong>, yaitu Cp dan Cpk.</p>
+
+    <h3>Cp — Kapabilitas Potensial</h3>
+    <p>Cp mengukur potensi proses jika rata-rata tepat berada di tengah spesifikasi:</p>
+    <div class="formula-block">Cp = (USL − LSL) / (6σ)</div>
+    <p>di mana USL = Upper Specification Limit (batas spesifikasi atas), LSL = Lower Specification Limit (batas spesifikasi bawah), dan σ = standar deviasi proses.</p>
+
+    <h3>Cpk — Kapabilitas Aktual</h3>
+    <p>Cpk memperhitungkan posisi rata-rata proses terhadap pusat spesifikasi (centering). Rumusnya:</p>
+    <div class="formula-block">Cpk = min[(USL − x̄) / 3σ , (x̄ − LSL) / 3σ]</div>
+    <p>Cpk selalu ≤ Cp. Jika Cpk = Cp, berarti proses tepat di tengah spesifikasi. Jika Cpk &lt; Cp, berarti proses bergeser dari pusat spesifikasi.</p>
+
+    <h3>Interpretasi Nilai Cp dan Cpk</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>Nilai</th><th>Interpretasi</th><th>Keterangan</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Cp/Cpk &lt; 1,00</td><td>Tidak kapabel</td><td>Sebaran proses lebih lebar dari rentang spesifikasi. Banyak produk di luar spesifikasi.</td></tr>
+        <tr><td>1,00 ≤ Cp/Cpk &lt; 1,33</td><td>Marginal</td><td>Proses nyaris memenuhi spesifikasi. Perlu perbaikan untuk margin keamanan.</td></tr>
+        <tr><td>Cp/Cpk ≥ 1,33</td><td>Kapabel</td><td>Standar minimum industri. Banyak perusahaan mewajibkan Cpk ≥ 1,33 untuk produksi reguler.</td></tr>
+        <tr><td>Cp/Cpk ≥ 1,67</td><td>Sangat kapabel</td><td>Proses memiliki margin keamanan tinggi terhadap spesifikasi.</td></tr>
+        <tr><td>Cp/Cpk ≥ 2,00</td><td>Six-Sigma level</td><td>Target program Six Sigma. Hanya 3,4 cacat per juta kesempatan.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Contoh Perhitungan Cp dan Cpk</h3>
+    <p><strong>Soal:</strong> Proses pengerolan pelat baja memiliki x̄ = 5,000 mm dan σ = 0,020 mm. Spesifikasi pelanggan: 5,000 ± 0,050 mm (USL = 5,050 mm, LSL = 4,950 mm). Hitung Cp dan Cpk.</p>
+    <div class="formula-block">Cp = (5,050 − 4,950) / (6 × 0,020) = 0,100 / 0,120 = 0,833</div>
+    <div class="formula-block">Cpk = min[(5,050 − 5,000) / (3 × 0,020) , (5,000 − 4,950) / (3 × 0,020)]<br>Cpk = min[0,050 / 0,060 , 0,050 / 0,060] = min[0,833 , 0,833] = 0,833</div>
+    <p><strong>Interpretasi:</strong> Cp = Cpk = 0,833 (&lt; 1,00). Proses <strong>tidak kapabel</strong> — sebaran proses (6σ = 0,120 mm) lebih lebar dari rentang spesifikasi (0,100 mm). Meskipun proses terkendali secara statistik, ia tetap menghasilkan produk di luar spesifikasi. Perlu tindakan: mengurangi variasi proses (misalnya perbaikan mesin) atau memperlebar toleransi spesifikasi jika memungkinkan.</p>
+
+    <!-- ============================================================ -->
+    <!--  11. BATAS KONTROL ≠ BATAS SPESIFIKASI                       -->
+    <!-- ============================================================ -->
     <h2>Batas Kontrol ≠ Batas Spesifikasi</h2>
-    <p>Kesalahan konsep paling sering di ujian: <strong>UCL/LCL dihitung dari data proses</strong> ("suara proses"), sedangkan <strong>USL/LSL ditetapkan pelanggan atau desain</strong> ("suara pelanggan"). Proses bisa terkendali tetapi tetap menghasilkan produk di luar spesifikasi — itu masalah <em>capability</em> (diukur dengan Cp/Cpk), bukan <em>control</em>.</p>
+    <p>Kesalahan konsep paling sering di ujian dan praktik industri: mencampurkan batas kontrol (UCL/LCL) dengan batas spesifikasi (USL/LSL). Keduanya adalah konsep yang <strong>berbeda secara fundamental</strong>:</p>
+    <ul>
+      <li><strong>UCL/LCL</strong> dihitung dari <strong>data proses</strong> — mewakili "suara proses" (<em>voice of the process</em>). Batas ini menunjukkan apa yang proses <em>mampu</em> hasilkan secara alami.</li>
+      <li><strong>USL/LSL</strong> ditetapkan oleh <strong>pelanggan atau desain produk</strong> — mewakili "suara pelanggan" (<em>voice of the customer</em>). Batas ini menunjukkan apa yang pelanggan <em>butuhkan</em>.</li>
+    </ul>
+    <p>Proses bisa terkendali (semua titik di dalam UCL/LCL) tetapi tetap menghasilkan produk di luar spesifikasi — itu masalah <em>capability</em> (diukur dengan Cp/Cpk), bukan <em>control</em>. Sebaliknya, proses yang tidak terkendali (ada special cause) mungkin saja kebetulan menghasilkan produk yang memenuhi spesifikasi pada saat itu, tetapi tidak bisa dijamin konsistensinya ke depan.</p>
 
+    <!-- ============================================================ -->
+    <!--  12. SPC VS INSPEKSI TRADISIONAL                             -->
+    <!-- ============================================================ -->
+    <h2>SPC vs Inspeksi Tradisional</h2>
+    <p>Sebelum SPC, pendekatan kualitas yang dominan adalah <strong>inspeksi akhir (final inspection)</strong>: memeriksa setiap produk (atau sampel) setelah proses selesai, lalu memisahkan yang cacat. Pendekatan ini memiliki banyak kelemahan dibandingkan SPC:</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Aspek</th><th>Inspeksi Tradisional</th><th>SPC</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Pendekatan</strong></td>
+          <td>Reaktif — mendeteksi cacat setelah terjadi</td>
+          <td>Proaktif — mencegah cacat sebelum terjadi</td>
+        </tr>
+        <tr>
+          <td><strong>Fokus</strong></td>
+          <td>Produk akhir</td>
+          <td>Proses produksi</td>
+        </tr>
+        <tr>
+          <td><strong>Biaya</strong></td>
+          <td>Tinggi — bahan baku sudah terpakai, tenaga kerja sudah dikeluarkan, dan produk cacat harus dirework atau dibuang</td>
+          <td>Rendah — masalah dideteksi lebih awal sehingga bahan baku dan waktu produksi tidak terbuang sia-sia</td>
+        </tr>
+        <tr>
+          <td><strong>Efektivitas</strong></td>
+          <td>Tidak memperbaiki proses — hanya menyortir output</td>
+          <td>Memperbaiki proses sehingga produk cacat berkurang secara permanen</td>
+        </tr>
+        <tr>
+          <td><strong>Umpan balik</strong></td>
+          <td>Lambat — informasi kualitas baru tersedia di akhir</td>
+          <td>Cepat — informasi tersedia secara real-time selama proses berjalan</td>
+        </tr>
+        <tr>
+          <td><strong>Skalabilitas</strong></td>
+          <td>Biaya inspeksi meningkat seiring volume</td>
+          <td>Sampling statistik memungkinkan pemantauan efisien pada volume tinggi</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Deming sering mengatakan: <em>"You cannot inspect quality into a product."</em> (Anda tidak bisa memeriksa kualitas ke dalam produk.) Kualitas harus <strong>dibangun ke dalam proses</strong>, dan SPC adalah alat utamanya.</p>
+
+    <!-- ============================================================ -->
+    <!--  13. IMPLEMENTASI SPC DI INDUSTRI                            -->
+    <!-- ============================================================ -->
+    <h2>Implementasi SPC di Industri: Langkah Praktis</h2>
+    <p>Menerapkan SPC di pabrik bukan sekadar membuat control chart — dibutuhkan pendekatan sistematis agar hasilnya efektif dan berkelanjutan. Berikut langkah-langkah implementasi yang direkomendasikan:</p>
+
+    <h3>1. Identifikasi Karakteristik Kritis (CTQ)</h3>
+    <p>Tidak semua parameter produk perlu dipantau dengan SPC. Fokuskan pada <strong>Critical-to-Quality (CTQ)</strong> characteristics — parameter yang paling berdampak pada kepuasan pelanggan dan biaya kualitas. Contoh: diameter lubang pada komponen presisi, ketebalan lapisan cat, atau kadar kemurnian bahan kimia.</p>
+
+    <h3>2. Pilih Jenis Control Chart yang Tepat</h3>
+    <p>Berdasarkan jenis data (variabel atau atribut) dan metode pengambilan sampel (subgroup atau individual), pilih chart yang sesuai dari tabel jenis-jenis control chart di atas.</p>
+
+    <h3>3. Tentukan Rencana Sampling</h3>
+    <p>Tetapkan ukuran subgroup (n), frekuensi pengambilan sampel, dan metode pengambilan (acak, sistematis, atau stratified). Frekuensi harus cukup tinggi untuk menangkap perubahan proses, tetapi tidak terlalu sering sehingga membebani biaya.</p>
+
+    <h3>4. Kumpulkan Data Awal dan Tetapkan Batas Kontrol</h3>
+    <p>Kumpulkan data dari 20–25 subgroup dalam kondisi proses normal (tanpa gangguan yang diketahui). Hitung batas kontrol dari data ini. Jika ada titik out-of-control pada data awal, investigasi dan hilangkan penyebabnya, lalu hitung ulang batas kontrol tanpa data tersebut.</p>
+
+    <h3>5. Monitor Proses Secara Berkelanjutan</h3>
+    <p>Setelah batas kontrol ditetapkan, gunakan untuk memantau proses secara real-time. Setiap kali ada sinyal out-of-control (berdasarkan aturan Western Electric/Nelson), lakukan investigasi dan tindakan korektif segera.</p>
+
+    <h3>6. Latih Operator dan Bangun Budaya Kualitas</h3>
+    <p>SPC hanya efektif jika operator memahami cara membaca control chart dan merespons sinyal. Pelatihan reguler dan dukungan manajemen sangat penting. Jangan hanya memasang chart di dinding — pastikan ada aksi nyata setiap kali sinyal terdeteksi.</p>
+
+    <h3>7. Review dan Perbaikan Berkala</h3>
+    <p>Secara berkala (misalnya setiap kuartal), review batas kontrol dan evaluasi apakah proses telah membaik. Jika variasi proses sudah berkurang secara permanen (misalnya setelah perbaikan mesin), batas kontrol harus dihitung ulang agar tetap sensitif terhadap pergeseran baru.</p>
+
+    <!-- ============================================================ -->
+    <!--  14. FAQ (EXPANDED)                                          -->
+    <!-- ============================================================ -->
     <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
     <div class="faq-item">
       <h3>Kenapa dipakai 3 sigma, bukan 2 sigma?</h3>
-      <p>3-sigma adalah kompromi Shewhart antara dua risiko: batas terlalu sempit memicu banyak alarm palsu (false alarm), batas terlalu lebar membuat masalah nyata lolos. Pada 3σ, peluang alarm palsu hanya ±0,27%.</p>
+      <p>3-sigma adalah kompromi Shewhart antara dua risiko: batas terlalu sempit (misalnya 2σ) memicu terlalu banyak alarm palsu (false alarm / risiko Tipe I), sedangkan batas terlalu lebar (misalnya 4σ) membuat masalah nyata lolos tanpa terdeteksi (risiko Tipe II). Pada 3σ, peluang alarm palsu hanya sekitar 0,27% per titik, yang dianggap optimal secara ekonomis.</p>
     </div>
     <div class="faq-item">
       <h3>Pakai standar deviasi populasi atau sampel?</h3>
-      <p>Untuk data sampel (hampir semua kasus praktikum), gunakan rumus sampel dengan pembagi (n−1). Perbedaannya mengecil saat n besar.</p>
+      <p>Untuk data sampel (hampir semua kasus di praktikum maupun industri), gunakan rumus standar deviasi sampel dengan pembagi (n−1), bukan n. Ini disebut <em>koreksi Bessel</em> yang mengkompensasi bias estimasi. Perbedaan antara keduanya mengecil saat ukuran sampel n besar (di atas 30), tetapi untuk ukuran subgroup kecil (n = 4–5 yang umum di SPC), koreksi ini cukup signifikan.</p>
     </div>
     <div class="faq-item">
       <h3>Berapa minimal data untuk membuat control chart?</h3>
-      <p>Konvensi umum: 20–25 subgroup (atau ±100 observasi individual) untuk menetapkan batas kontrol awal yang stabil. Untuk latihan soal, data lebih sedikit tetap bisa dihitung dengan rumus yang sama.</p>
+      <p>Konvensi umum yang direkomendasikan oleh Montgomery dan standar industri: <strong>20–25 subgroup</strong> (atau sekitar 100 observasi individual) untuk menetapkan batas kontrol awal yang stabil dan reliabel. Untuk latihan soal di kampus, data lebih sedikit tetap bisa dihitung dengan rumus yang sama, tetapi hasilnya kurang representatif untuk penggunaan nyata.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apa bedanya batas kontrol dan batas spesifikasi?</h3>
+      <p>Batas kontrol (UCL/LCL) dihitung dari <strong>data proses</strong> dan menggambarkan variasi alami proses ("suara proses"). Batas spesifikasi (USL/LSL) ditetapkan oleh <strong>pelanggan atau desain</strong> dan menggambarkan kebutuhan pelanggan ("suara pelanggan"). Keduanya tidak boleh dicampuradukkan. Proses bisa terkendali tetapi tidak memenuhi spesifikasi (masalah kapabilitas), atau tidak terkendali tetapi kebetulan masih dalam spesifikasi (tidak berkelanjutan).</p>
+    </div>
+    <div class="faq-item">
+      <h3>Bagaimana jika data tidak berdistribusi normal?</h3>
+      <p>Control chart Shewhart cukup <em>robust</em> terhadap penyimpangan dari normalitas, terutama untuk X̄ chart, karena <strong>Central Limit Theorem</strong> membuat distribusi rata-rata subgroup mendekati normal meskipun data individu tidak normal. Namun, untuk data yang sangat miring (skewed), alternatifnya adalah menggunakan transformasi data (misalnya transformasi Box-Cox) atau control chart non-parametrik.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Kapan batas kontrol harus dihitung ulang?</h3>
+      <p>Batas kontrol perlu direvisi ketika terjadi perubahan fundamental pada proses yang <strong>bersifat permanen</strong>, misalnya: penggantian mesin baru, perubahan bahan baku, redesain proses, atau setelah tindakan perbaikan yang terbukti mengurangi variasi. Jangan menghitung ulang batas hanya karena ada titik out-of-control — investigasi dan hilangkan penyebabnya dulu.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apakah SPC hanya untuk manufaktur?</h3>
+      <p>Tidak. Meskipun SPC berasal dari lingkungan manufaktur, prinsipnya berlaku untuk <strong>setiap proses yang berulang</strong>. SPC telah berhasil diterapkan di rumah sakit (memantau waktu tunggu pasien), perbankan (waktu pemrosesan pinjaman), call center (durasi panggilan), logistik (waktu pengiriman), dan bahkan pengembangan perangkat lunak (jumlah bug per rilis).</p>
     </div>
 
+    <!-- ============================================================ -->
+    <!--  15. RANGKUMAN                                               -->
+    <!-- ============================================================ -->
+    <h2>Rangkuman</h2>
+    <p>Berikut adalah poin-poin kunci yang telah dibahas dalam panduan ini:</p>
+    <ul>
+      <li><strong>SPC</strong> adalah pendekatan proaktif untuk mengendalikan kualitas dengan memantau proses secara statistik, bukan memeriksa produk setelah jadi.</li>
+      <li><strong>Sejarah SPC</strong> dimulai dari karya Shewhart di Bell Labs (1924), dikembangkan oleh Deming di Jepang (1950-an), dan kini menjadi standar wajib di industri global.</li>
+      <li><strong>Variasi proses</strong> terdiri dari common cause (alami, selalu ada) dan special cause (khusus, harus dihilangkan). Control chart membantu membedakan keduanya.</li>
+      <li><strong>Batas kontrol 3-sigma</strong> (UCL = x̄ + 3σ, LCL = x̄ − 3σ) memberikan keseimbangan optimal antara alarm palsu dan deteksi masalah nyata.</li>
+      <li><strong>Jenis control chart</strong> dipilih berdasarkan jenis data (variabel vs atribut) dan metode sampling (subgroup vs individual).</li>
+      <li><strong>X̄–R chart</strong> adalah yang paling umum. Batas kontrol dihitung menggunakan konstanta tabel A₂, D₃, D₄ sesuai ukuran subgroup.</li>
+      <li><strong>Western Electric/Nelson rules</strong> mendeteksi pola non-acak (run, trend, oscillation, stratification) yang menandakan special cause meskipun semua titik masih di dalam batas.</li>
+      <li><strong>Cp dan Cpk</strong> mengukur apakah proses mampu memenuhi spesifikasi pelanggan. Target minimum industri: Cpk ≥ 1,33.</li>
+      <li><strong>Batas kontrol ≠ batas spesifikasi</strong> — keduanya konsep berbeda yang menjawab pertanyaan berbeda.</li>
+      <li><strong>Implementasi SPC</strong> memerlukan identifikasi CTQ, pemilihan chart yang tepat, rencana sampling, pelatihan operator, dan komitmen manajemen.</li>
+    </ul>
+
+    <!-- ============================================================ -->
+    <!--  16. REFERENSI (EXPANDED)                                    -->
+    <!-- ============================================================ -->
     <h2>Referensi</h2>
     <ul>
-      <li>Shewhart, W. A. (1931). <em>Economic Control of Quality of Manufactured Product</em>. Van Nostrand. — karya pendiri control chart.</li>
-      <li>Montgomery, D. C. (2019). <em>Introduction to Statistical Quality Control</em> (8th ed.). Wiley. — referensi utama SPC, termasuk tabel konstanta A₂, D₃, D₄.</li>
-      <li>Western Electric Company. (1956). <em>Statistical Quality Control Handbook</em>. — asal aturan deteksi Western Electric rules.</li>
+      <li>Shewhart, W. A. (1931). <em>Economic Control of Quality of Manufactured Product</em>. Van Nostrand. — Karya perintis yang memperkenalkan control chart dan konsep variasi terkendali vs tidak terkendali.</li>
+      <li>Shewhart, W. A. (1939). <em>Statistical Method from the Viewpoint of Quality Control</em>. Graduate School, Department of Agriculture. — Karya lanjutan Shewhart yang memperdalam landasan filosofis SPC.</li>
+      <li>Deming, W. E. (1986). <em>Out of the Crisis</em>. MIT Press. — Buku klasik Deming tentang transformasi manajemen, termasuk penggunaan SPC sebagai bagian dari sistem kualitas.</li>
+      <li>Montgomery, D. C. (2019). <em>Introduction to Statistical Quality Control</em> (8th ed.). Wiley. — Referensi utama SPC modern, termasuk tabel konstanta A₂, D₃, D₄, rumus Cp/Cpk, dan Nelson rules.</li>
+      <li>Western Electric Company. (1956). <em>Statistical Quality Control Handbook</em>. — Sumber asli Western Electric rules untuk deteksi out-of-control.</li>
+      <li>Nelson, L. S. (1984). "The Shewhart Control Chart — Tests for Special Causes." <em>Journal of Quality Technology</em>, 16(4), 237–239. — Artikel yang memperluas Western Electric rules menjadi delapan aturan Nelson.</li>
+      <li>Wheeler, D. J. &amp; Chambers, D. S. (1992). <em>Understanding Statistical Process Control</em> (2nd ed.). SPC Press. — Panduan praktis yang sangat baik untuk implementasi SPC di lapangan.</li>
     </ul>
 
     <hr class="divider">
-    <p>Kalkulator statistik &amp; SPC kami menghitung mean, median, standar deviasi, UCL/LCL, dan menggambar control chart-nya secara otomatis.</p>
+    <p>Kalkulator statistik &amp; SPC kami menghitung mean, median, standar deviasi, UCL/LCL, dan menggambar control chart-nya secara otomatis. Coba langsung untuk memverifikasi perhitungan manual Anda.</p>
     <p>
       <a href="index.html" class="btn">Buka Kalkulator SPC</a>
       <a href="panduan.html" class="btn btn-secondary" style="margin-left:8px;">Panduan Lainnya</a>
@@ -192,6 +577,7 @@
     <a href="about.html">Tentang</a>
     <a href="contact.html">Kontak</a>
     <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Syarat &amp; Ketentuan</a>
   </div>
   <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
 </footer>

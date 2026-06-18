@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <title>Cara Menghitung OEE (Overall Equipment Effectiveness) + Contoh</title>
-<meta name="description" content="Panduan OEE lengkap: rumus Availability, Performance, Quality, contoh perhitungan OEE langkah demi langkah, standar world class 85%, dan kaitannya dengan Six Big Losses TPM." />
+<meta name="description" content="Panduan OEE lengkap: sejarah OEE, rumus Availability/Performance/Quality, Six Big Losses detail, 2 contoh perhitungan, benchmark world class 85%, strategi peningkatan OEE, TEEP vs OEE, OEE di Industri 4.0, dan kesalahan umum." />
 <meta name="author" content="TI Toolkit" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://khalid200704.github.io/panduan-oee.html" />
@@ -13,7 +13,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://khalid200704.github.io/panduan-oee.html" />
 <meta property="og:title" content="Cara Menghitung OEE (Overall Equipment Effectiveness) + Contoh" />
-<meta property="og:description" content="Rumus Availability, Performance, Quality, contoh perhitungan OEE, standar world class, dan Six Big Losses." />
+<meta property="og:description" content="Panduan OEE lengkap: sejarah, rumus detail A/P/Q, Six Big Losses, 2 contoh soal, benchmark, strategi peningkatan, TEEP, OEE di Industri 4.0." />
 <meta property="og:image" content="https://khalid200704.github.io/og-image.svg" />
 <meta property="og:locale" content="id_ID" />
 <meta property="og:site_name" content="TI Toolkit" />
@@ -29,7 +29,7 @@
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "Cara Menghitung OEE (Overall Equipment Effectiveness) + Contoh",
-  "description": "Rumus Availability, Performance, Quality, contoh perhitungan OEE langkah demi langkah, standar world class 85%, dan Six Big Losses TPM.",
+  "description": "Panduan OEE lengkap: sejarah, rumus detail Availability/Performance/Quality, Six Big Losses, 2 contoh perhitungan, benchmark world class, strategi peningkatan, TEEP vs OEE, dan OEE di Industri 4.0.",
   "inLanguage": "id-ID",
   "author": { "@type": "Organization", "name": "TI Toolkit" },
   "publisher": { "@type": "Organization", "name": "TI Toolkit", "url": "https://khalid200704.github.io/" },
@@ -43,18 +43,38 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Apa itu OEE?",
-      "acceptedAnswer": { "@type": "Answer", "text": "OEE (Overall Equipment Effectiveness) adalah metrik Total Productive Maintenance yang mengukur seberapa efektif mesin dimanfaatkan, dihitung dari perkalian Availability × Performance × Quality." }
+      "name": "Apa bedanya OEE dan utilisasi?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Utilisasi hanya mengukur berapa lama mesin menyala dibanding waktu tersedia. OEE jauh lebih ketat karena ikut menghitung kecepatan aktual dan kualitas output. Mesin bisa memiliki utilisasi 95% tetapi OEE hanya 50% jika berjalan lambat dan banyak menghasilkan produk cacat." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah rework dihitung sebagai unit baik dalam OEE?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Tidak. Dalam konvensi OEE, unit baik adalah yang lolos pertama kali (first pass yield). Unit yang harus di-rework dihitung sebagai kerugian kualitas meskipun akhirnya terjual, karena waktu mesin untuk memproduksi unit cacat tersebut sudah terbuang." }
     },
     {
       "@type": "Question",
       "name": "Berapa nilai OEE yang baik?",
-      "acceptedAnswer": { "@type": "Answer", "text": "OEE 85% dianggap world class untuk manufaktur diskrit (A 90%, P 95%, Q 99%). Rata-rata pabrik umumnya berada di kisaran 60%, sedangkan di bawah 40% menunjukkan banyak ruang perbaikan." }
+      "acceptedAnswer": { "@type": "Answer", "text": "OEE 85% dianggap world class untuk manufaktur diskrit (A 90%, P 95%, Q 99,9%). Rata-rata pabrik umumnya berada di kisaran 60%, sedangkan di bawah 40% menunjukkan banyak ruang perbaikan." }
     },
     {
       "@type": "Question",
       "name": "Apa itu Six Big Losses?",
       "acceptedAnswer": { "@type": "Answer", "text": "Enam kerugian besar yang menggerogoti OEE: breakdown dan setup/adjustment (menurunkan Availability), idling/minor stops dan reduced speed (menurunkan Performance), serta defect/rework dan startup losses (menurunkan Quality)." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah OEE bisa digunakan untuk membandingkan mesin yang berbeda?",
+      "acceptedAnswer": { "@type": "Answer", "text": "OEE sebaiknya digunakan untuk membandingkan kinerja mesin yang sama dari waktu ke waktu (temporal comparison), bukan untuk membandingkan mesin yang berbeda jenis. Mesin CNC dan mesin packaging memiliki karakteristik kerugian yang sangat berbeda." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah OEE 100% itu mungkin?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Secara praktis tidak mungkin dicapai secara berkelanjutan. Bahkan pabrik terbaik di dunia beroperasi di kisaran 85-90% OEE. Target realistis adalah peningkatan bertahap dan konsisten, bukan kesempurnaan." }
+    },
+    {
+      "@type": "Question",
+      "name": "Berapa frekuensi ideal pengukuran OEE?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Untuk pabrik yang sudah matang, OEE sebaiknya dihitung per shift dan ditampilkan di dashboard real-time. Untuk pabrik yang baru memulai, pengukuran harian sudah cukup. Yang terpenting adalah konsistensi metode dan definisi." }
     }
   ]
 }
@@ -95,7 +115,7 @@
     <div class="meta-info">Panduan Pengendalian Kualitas &amp; Perawatan — bagian dari seri <a href="panduan.html">Panduan Teknik Industri</a> TI Toolkit.</div>
 
     <h1>Cara Menghitung OEE (Overall Equipment Effectiveness)</h1>
-    <p class="subtitle">Metrik utama Total Productive Maintenance (TPM): Availability × Performance × Quality, lengkap dengan contoh perhitungan dan benchmark world class.</p>
+    <p class="subtitle">Metrik utama Total Productive Maintenance (TPM): Availability × Performance × Quality, lengkap dengan contoh perhitungan, Six Big Losses, benchmark world class, TEEP, dan strategi peningkatan OEE di era Industri 4.0.</p>
     <!-- AdSense In-Article -->
     <ins class="adsbygoogle" style="display:block;text-align:center" data-ad-client="ca-pub-8688855167346136" data-ad-slot="9074056144" data-ad-format="fluid" data-ad-layout="in-article"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -103,8 +123,16 @@
 
 
     <h2>Apa itu OEE?</h2>
-    <p><strong>OEE (Overall Equipment Effectiveness)</strong> mengukur persentase waktu produksi terencana yang benar-benar produktif. OEE 100% berarti mesin hanya memproduksi barang bagus (Quality), secepat mungkin (Performance), tanpa berhenti sama sekali (Availability). Metrik ini lahir dari konsep <em>Total Productive Maintenance</em> (TPM) yang dikembangkan Seiichi Nakajima dan kini menjadi KPI standar di hampir semua pabrik manufaktur.</p>
-    <p>Kekuatan OEE bukan pada angka tunggalnya, melainkan pada <strong>dekomposisinya</strong> — OEE memberi tahu di mana kerugian terjadi: mesin sering berhenti? berjalan lambat? atau banyak produk cacat?</p>
+    <p><strong>OEE (Overall Equipment Effectiveness)</strong> mengukur persentase waktu produksi terencana yang benar-benar produktif. OEE 100% berarti mesin hanya memproduksi barang bagus (Quality), secepat mungkin (Performance), tanpa berhenti sama sekali (Availability). Metrik ini lahir dari konsep <em>Total Productive Maintenance</em> (TPM) yang dikembangkan Seiichi Nakajima dan kini menjadi KPI standar di hampir semua pabrik manufaktur di dunia.</p>
+    <p>Kekuatan OEE bukan pada angka tunggalnya, melainkan pada <strong>dekomposisinya</strong> — OEE memberi tahu di mana kerugian terjadi: mesin sering berhenti? berjalan lambat? atau banyak produk cacat? Dengan memecah satu angka menjadi tiga komponen, tim pabrik dapat langsung mengidentifikasi akar masalah dan memfokuskan sumber daya perbaikan pada area yang paling berdampak.</p>
+    <p>OEE bukan sekadar angka di laporan bulanan. Dalam praktiknya, OEE menjadi bahasa universal antara bagian produksi, maintenance, dan manajemen. Ketika supervisor melaporkan "OEE turun dari 78% ke 71% minggu ini karena Availability drop," seluruh tim langsung memahami bahwa masalah utama ada pada downtime mesin — bukan kecepatan atau kualitas. Inilah mengapa OEE disebut sebagai <em>single metric that tells the whole story</em>.</p>
+
+    <h2>Sejarah dan Asal Usul OEE</h2>
+    <p>Konsep OEE tidak muncul secara tiba-tiba. Ia merupakan bagian integral dari gerakan <strong>Total Productive Maintenance (TPM)</strong> yang dikembangkan di Jepang pada era pasca-Perang Dunia II.</p>
+    <p>Pada tahun 1950-an hingga 1960-an, industri Jepang mengadopsi preventive maintenance dari Amerika Serikat. Namun, pendekatan ini masih bersifat reaktif — mesin diperbaiki setelah rusak atau sesuai jadwal tetap. <strong>Seiichi Nakajima</strong>, seorang insinyur dari Japan Institute of Plant Maintenance (JIPM), melihat bahwa pendekatan ini belum cukup karena tidak memperhitungkan kerugian kecepatan dan kualitas.</p>
+    <p>Pada dekade 1970-an, Nakajima mulai mengembangkan kerangka TPM yang menekankan keterlibatan seluruh karyawan (dari operator hingga manajemen puncak) dalam menjaga dan meningkatkan efektivitas peralatan. Sebagai bagian dari kerangka ini, ia memperkenalkan konsep <strong>Six Big Losses</strong> — enam jenis kerugian utama yang menggerogoti produktivitas mesin — dan merumuskan OEE sebagai metrik tunggal yang menangkap ketiga dimensi kerugian tersebut.</p>
+    <p>Buku landmark Nakajima, <em>Introduction to TPM: Total Productive Maintenance</em>, diterbitkan dalam bahasa Jepang pada 1984 dan diterjemahkan ke bahasa Inggris pada 1988 oleh Productivity Press. Publikasi ini menjadi titik balik yang membawa OEE ke panggung global. Sejak saat itu, OEE diadopsi luas oleh perusahaan-perusahaan manufaktur dunia — mulai dari Toyota dan Unilever hingga pabrik-pabrik kecil menengah di seluruh benua.</p>
+    <p>Saat ini, OEE bukan hanya alat ukur TPM. Ia telah menjadi <strong>standar de facto</strong> untuk mengukur efektivitas peralatan di berbagai kerangka perbaikan berkelanjutan, termasuk Lean Manufacturing, Six Sigma, dan World Class Manufacturing (WCM). Organisasi seperti SEMI (Semiconductor Equipment and Materials International) bahkan telah menstandardisasi definisi OEE dalam standar SEMI E10 dan E79 untuk industri semikonduktor.</p>
 
     <h2>Rumus OEE</h2>
     <div class="formula-block">OEE = Availability × Performance × Quality</div>
@@ -117,8 +145,90 @@
       </tbody>
     </table>
 
-    <h2>Contoh Soal OEE dan Pembahasan</h2>
-    <p><strong>Soal:</strong> Sebuah mesin dijadwalkan beroperasi 480 menit dalam satu shift. Tercatat downtime 60 menit (breakdown + setup). Ideal cycle time mesin 1 menit/unit. Selama shift, mesin memproduksi 380 unit dan 370 di antaranya lolos inspeksi. Hitung OEE.</p>
+    <h2>Komponen OEE: Detail Perhitungan</h2>
+    <p>Untuk menghitung OEE secara akurat, pemahaman mendalam tentang setiap komponen dan sub-formulanya sangat penting. Kesalahan definisi pada satu komponen saja dapat menyesatkan seluruh analisis.</p>
+
+    <h3>Availability (Ketersediaan)</h3>
+    <p>Availability mengukur proporsi waktu produksi terencana di mana mesin benar-benar beroperasi. Komponen ini menangkap semua kejadian yang menyebabkan mesin berhenti dalam durasi signifikan (biasanya lebih dari beberapa menit).</p>
+    <div class="formula-block">Availability = Operating Time / Planned Production Time</div>
+    <p>Di mana:</p>
+    <ul>
+      <li><strong>Planned Production Time</strong> = Total waktu yang dijadwalkan untuk produksi. Istirahat terjadwal, rapat shift, dan waktu makan biasanya sudah dikeluarkan dari angka ini karena memang tidak direncanakan untuk produksi.</li>
+      <li><strong>Operating Time</strong> = Planned Production Time dikurangi seluruh downtime (baik terencana maupun tak terencana). <strong>Planned downtime</strong> meliputi changeover/setup terjadwal dan preventive maintenance. <strong>Unplanned downtime</strong> meliputi breakdown mesin, kekurangan material, dan gangguan tak terduga lainnya.</li>
+    </ul>
+    <p><strong>Contoh:</strong> Jika planned production time = 480 menit dan total downtime (breakdown 30 menit + setup 20 menit + menunggu material 10 menit) = 60 menit, maka Operating Time = 420 menit dan A = 420/480 = 87,5%.</p>
+
+    <h3>Performance (Kinerja)</h3>
+    <p>Performance mengukur apakah mesin berjalan pada kecepatan desainnya selama waktu operasi. Komponen ini menangkap kerugian yang terjadi ketika mesin menyala tetapi tidak berproduksi secepat seharusnya.</p>
+    <div class="formula-block">Performance = (Ideal Cycle Time × Total Pieces) / Operating Time</div>
+    <p>Atau secara ekuivalen:</p>
+    <div class="formula-block">Performance = (Total Pieces / Operating Time) / Ideal Run Rate</div>
+    <p>Di mana:</p>
+    <ul>
+      <li><strong>Ideal Cycle Time</strong> = Waktu tercepat secara teoretis untuk memproduksi satu unit, berdasarkan spesifikasi desain mesin (nameplate capacity). Ini bukan rata-rata historis, melainkan kapasitas maksimum mesin.</li>
+      <li><strong>Total Pieces</strong> = Seluruh unit yang diproduksi (baik bagus maupun cacat).</li>
+      <li><strong>Operating Time</strong> = Waktu mesin benar-benar beroperasi (sudah dikurangi downtime).</li>
+    </ul>
+    <p><strong>Penting:</strong> Performance tidak boleh melebihi 100%. Jika hasil perhitungan menunjukkan P &gt; 100%, ini menandakan bahwa ideal cycle time yang digunakan terlalu longgar dan perlu disesuaikan dengan kapasitas desain yang sebenarnya.</p>
+
+    <h3>Quality (Kualitas)</h3>
+    <p>Quality mengukur proporsi produk yang memenuhi standar kualitas dari total yang diproduksi. Komponen ini menggunakan konsep <strong>First Pass Yield (FPY)</strong> — hanya unit yang lolos inspeksi pertama kali yang dihitung sebagai "baik."</p>
+    <div class="formula-block">Quality = Good Pieces / Total Pieces</div>
+    <p>Di mana:</p>
+    <ul>
+      <li><strong>Good Pieces</strong> = Unit yang lolos inspeksi kualitas pada percobaan pertama, tanpa rework.</li>
+      <li><strong>Total Pieces</strong> = Seluruh unit yang diproduksi, termasuk yang cacat dan yang di-rework.</li>
+    </ul>
+    <p><strong>Catatan:</strong> Unit yang di-rework dan akhirnya lolos tetap dihitung sebagai kerugian kualitas dalam OEE. Ini karena waktu mesin yang digunakan untuk memproduksi unit cacat tersebut sudah terbuang — meskipun unit tersebut akhirnya bisa diselamatkan melalui proses tambahan.</p>
+
+    <h2>Six Big Losses: Sumber Kerugian Utama OEE</h2>
+    <p>Inti dari framework TPM-OEE adalah identifikasi <strong>Six Big Losses</strong> — enam kategori kerugian yang secara sistematis menggerogoti efektivitas peralatan. Setiap kerugian dipetakan ke salah satu dari tiga komponen OEE, sehingga tim pabrik dapat langsung mengetahui komponen mana yang terpengaruh dan merancang countermeasure yang tepat.</p>
+
+    <h3>1. Equipment Failure / Breakdown (Kerusakan Mesin)</h3>
+    <p><strong>Komponen:</strong> Availability</p>
+    <p>Kerusakan mesin tak terencana yang menyebabkan mesin berhenti total dan memerlukan perbaikan. Ini adalah kerugian paling dramatis karena produksi benar-benar terhenti. Contoh: motor terbakar, bearing pecah, sensor rusak, kebocoran hidrolik, PLC error yang membutuhkan reset manual.</p>
+    <p><strong>Countermeasure:</strong> Preventive maintenance terjadwal, condition-based monitoring (getaran, suhu, suara), pelatihan operator untuk deteksi dini gejala kerusakan, analisis akar masalah (Root Cause Analysis) setiap kejadian breakdown untuk mencegah rekurensi.</p>
+
+    <h3>2. Setup and Adjustment (Pergantian dan Penyetelan)</h3>
+    <p><strong>Komponen:</strong> Availability</p>
+    <p>Waktu yang hilang saat mesin berhenti untuk pergantian produk (changeover), penggantian cetakan/dies, kalibrasi ulang, pembersihan, atau penyesuaian parameter proses. Meskipun sering dianggap "tak terhindarkan," setup time sebenarnya bisa dikurangi secara drastis. Contoh: pergantian cetakan pada mesin injection molding, penggantian roll pada mesin rolling, perubahan format pada mesin pengemas.</p>
+    <p><strong>Countermeasure:</strong> Single Minute Exchange of Dies (SMED) — metodologi yang dikembangkan Shigeo Shingo untuk memisahkan aktivitas setup internal (harus saat mesin berhenti) dan eksternal (bisa dilakukan saat mesin masih berjalan), lalu mengkonversi sebanyak mungkin aktivitas internal menjadi eksternal.</p>
+
+    <h3>3. Idling and Minor Stops (Berhenti Sebentar)</h3>
+    <p><strong>Komponen:</strong> Performance</p>
+    <p>Pemberhentian singkat (biasanya kurang dari 5 menit) yang terlalu kecil untuk dicatat sebagai downtime formal tetapi secara kumulatif sangat signifikan. Operator biasanya langsung menangani tanpa memanggil teknisi. Contoh: material tersangkut (jam) pada conveyor, sensor salah baca, overload sesaat yang menyebabkan mesin trip, produk miring di feeding mechanism.</p>
+    <p><strong>Countermeasure:</strong> Autonomous maintenance oleh operator (membersihkan, melumasi, mengencangkan), perbaikan desain feeding mechanism, instalasi sensor yang lebih andal, standarisasi prosedur quick-reset.</p>
+
+    <h3>4. Reduced Speed (Kecepatan Berkurang)</h3>
+    <p><strong>Komponen:</strong> Performance</p>
+    <p>Mesin beroperasi tetapi di bawah kecepatan desain (nameplate speed). Sering kali sulit dideteksi karena mesin tetap berjalan dan menghasilkan produk — hanya saja lebih lambat dari seharusnya. Contoh: mesin sengaja dilambatkan karena menghasilkan produk cacat pada kecepatan penuh, keausan komponen yang mengurangi efisiensi, parameter proses yang belum optimal, mesin tua yang tidak pernah diuji ulang kecepatan maksimumnya.</p>
+    <p><strong>Countermeasure:</strong> Analisis gap antara kecepatan aktual dan kecepatan desain, uji coba peningkatan kecepatan bertahap, overhaul komponen yang aus, optimasi parameter proses, modernisasi mesin.</p>
+
+    <h3>5. Process Defects / Rework (Cacat Proses)</h3>
+    <p><strong>Komponen:</strong> Quality</p>
+    <p>Produk cacat yang dihasilkan selama produksi stabil (steady-state production). Ini berbeda dari startup losses karena terjadi saat mesin sudah dalam kondisi operasi normal. Contoh: dimensi di luar toleransi, cacat permukaan, kontaminasi, kesalahan assembly, produk yang harus di-rework atau di-scrap.</p>
+    <p><strong>Countermeasure:</strong> Statistical Process Control (SPC) untuk mendeteksi variasi proses sebelum menghasilkan cacat, poka-yoke (mistake-proofing), pengendalian parameter kritis proses, peningkatan kemampuan proses (Cp/Cpk).</p>
+
+    <h3>6. Reduced Yield / Startup Losses (Kerugian Startup)</h3>
+    <p><strong>Komponen:</strong> Quality</p>
+    <p>Produk cacat yang dihasilkan sejak mesin dinyalakan hingga mencapai kondisi produksi stabil. Terjadi setiap kali mesin di-start, setelah changeover, atau setelah perbaikan. Contoh: produk pertama dari mesin injection molding yang belum mencapai suhu stabil, kertas terbuang pada setup awal mesin cetak, produk awal dari proses ekstrusi yang belum homogen.</p>
+    <p><strong>Countermeasure:</strong> Standarisasi prosedur startup, optimasi parameter warm-up, pengurangan frekuensi changeover (melalui penjadwalan produksi yang lebih baik), penggunaan material awal yang konsisten.</p>
+
+    <h3>Tabel Pemetaan Six Big Losses ke Komponen OEE</h3>
+    <table class="data-table">
+      <thead><tr><th>No.</th><th>Kerugian</th><th>Komponen OEE</th><th>Contoh Khas</th><th>Metrik Terkait</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Equipment Failure</td><td>Availability</td><td>Motor terbakar, bearing pecah</td><td>MTBF, MTTR</td></tr>
+        <tr><td>2</td><td>Setup &amp; Adjustment</td><td>Availability</td><td>Changeover cetakan, kalibrasi</td><td>Setup time, SMED</td></tr>
+        <tr><td>3</td><td>Idling &amp; Minor Stops</td><td>Performance</td><td>Material tersangkut, sensor error</td><td>Frekuensi minor stop</td></tr>
+        <tr><td>4</td><td>Reduced Speed</td><td>Performance</td><td>Mesin dilambatkan, komponen aus</td><td>Speed ratio</td></tr>
+        <tr><td>5</td><td>Process Defects</td><td>Quality</td><td>Dimensi di luar toleransi, kontaminasi</td><td>FPY, defect rate</td></tr>
+        <tr><td>6</td><td>Startup Losses</td><td>Quality</td><td>Produk cacat saat warm-up awal</td><td>Startup reject rate</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Contoh Soal 1: Mesin Filling (Industri Makanan)</h2>
+    <p><strong>Soal:</strong> Sebuah mesin filling dijadwalkan beroperasi 480 menit dalam satu shift. Tercatat downtime 60 menit (breakdown 35 menit + setup 25 menit). Ideal cycle time mesin 1 menit/unit. Selama shift, mesin memproduksi 380 unit dan 370 di antaranya lolos inspeksi. Hitung OEE.</p>
     <p><strong>Langkah 1 — Availability:</strong> Operating time = 480 − 60 = 420 menit.</p>
     <div class="formula-block">A = 420 / 480 = 87,5%</div>
     <p><strong>Langkah 2 — Performance:</strong> dalam 420 menit, idealnya mesin menghasilkan 420 unit (1 menit/unit), tetapi aktualnya 380 unit.</p>
@@ -127,61 +237,201 @@
     <div class="formula-block">Q = 370 / 380 = 97,4%</div>
     <p><strong>Langkah 4 — OEE:</strong></p>
     <div class="formula-block">OEE = 0,875 × 0,905 × 0,974 ≈ 77,1%</div>
-    <p><strong>Interpretasi:</strong> dari seluruh waktu produksi terencana, hanya 77,1% yang menghasilkan barang bagus dengan kecepatan ideal. Kerugian terbesar ada di Availability (12,5% waktu hilang karena downtime) — prioritas perbaikan sebaiknya dimulai dari sana, misalnya dengan program SMED untuk mempercepat setup.</p>
+    <p><strong>Interpretasi:</strong> dari seluruh waktu produksi terencana, hanya 77,1% yang menghasilkan barang bagus dengan kecepatan ideal. Kerugian terbesar ada di Availability (12,5% waktu hilang karena downtime) — prioritas perbaikan sebaiknya dimulai dari sana, misalnya dengan program SMED untuk mempercepat setup dan preventive maintenance untuk mengurangi breakdown.</p>
+
+    <h2>Contoh Soal 2: Mesin CNC (Industri Komponen Otomotif)</h2>
+    <p><strong>Soal:</strong> Sebuah mesin CNC turning beroperasi 2 shift per hari, masing-masing 8 jam (total 960 menit). Istirahat terjadwal 2 × 30 menit = 60 menit sudah dikeluarkan, sehingga <strong>Planned Production Time = 900 menit</strong>. Data produksi hari itu:</p>
+    <ul>
+      <li>Breakdown: 45 menit (pompa coolant rusak)</li>
+      <li>Setup/changeover: 75 menit (3 kali pergantian tipe komponen)</li>
+      <li>Ideal cycle time: 2 menit/unit (nameplate capacity)</li>
+      <li>Total unit diproduksi: 330 unit</li>
+      <li>Unit reject: 12 unit (5 karena dimensi out-of-tolerance, 7 karena surface finish buruk)</li>
+    </ul>
+    <p><strong>Langkah 1 — Availability:</strong></p>
+    <div class="formula-block">Operating Time = 900 − (45 + 75) = 780 menit<br>A = 780 / 900 = 86,7%</div>
+    <p><strong>Langkah 2 — Performance:</strong> Dalam 780 menit dengan ideal cycle time 2 menit/unit, kapasitas ideal = 780/2 = 390 unit, tetapi aktual hanya 330 unit.</p>
+    <div class="formula-block">P = (2 × 330) / 780 = 660 / 780 = 84,6%</div>
+    <p><strong>Langkah 3 — Quality:</strong></p>
+    <div class="formula-block">Q = (330 − 12) / 330 = 318 / 330 = 96,4%</div>
+    <p><strong>Langkah 4 — OEE:</strong></p>
+    <div class="formula-block">OEE = 0,867 × 0,846 × 0,964 ≈ 70,7%</div>
+    <p><strong>Interpretasi dan Rekomendasi Perbaikan:</strong></p>
+    <p>OEE 70,7% masih di bawah world class (85%). Analisis komponen menunjukkan:</p>
+    <ul>
+      <li><strong>Performance (84,6%)</strong> — komponen terlemah. Mesin kehilangan 60 unit dari kapasitas idealnya (390 − 330 = 60 unit). Kemungkinan penyebab: minor stops karena chip tersangkut, mesin sengaja dilambatkan karena getaran berlebih, atau tool wear yang memperlambat feeding. <strong>Prioritas 1: investigasi speed loss.</strong></li>
+      <li><strong>Availability (86,7%)</strong> — setup 75 menit untuk 3 changeover cukup tinggi. Program SMED bisa menargetkan pengurangan setup time 50% (dari 25 ke 12,5 menit per changeover). <strong>Prioritas 2: implementasi SMED.</strong></li>
+      <li><strong>Quality (96,4%)</strong> — 12 unit reject masih bisa diterima tetapi belum mendekati world class 99,9%. Perlu analisis SPC pada dimensi kritis dan parameter surface finish.</li>
+    </ul>
+    <p>Jika Performance berhasil dinaikkan dari 84,6% ke 92% (misalnya dengan mengatasi minor stops), OEE akan naik menjadi 0,867 × 0,92 × 0,964 ≈ 76,9% — peningkatan signifikan tanpa investasi besar.</p>
 
     <h2>Benchmark: Berapa OEE yang Baik?</h2>
+    <p>Benchmark OEE memberikan gambaran di mana posisi pabrik Anda relatif terhadap standar industri. Angka world class 85% pertama kali dipopulerkan oleh Nakajima (1988) dan masih menjadi acuan yang digunakan secara luas hingga saat ini.</p>
     <table class="data-table">
       <thead><tr><th>OEE</th><th>Kategori</th><th>Catatan</th></tr></thead>
       <tbody>
-        <tr><td>≥ 85%</td><td>World class</td><td>A ≈ 90%, P ≈ 95%, Q ≈ 99%</td></tr>
-        <tr><td>60–84%</td><td>Tipikal</td><td>Rata-rata pabrik; masih banyak ruang perbaikan</td></tr>
-        <tr><td>40–59%</td><td>Rendah</td><td>Umum pada pabrik tanpa program perbaikan</td></tr>
-        <tr><td>&lt; 40%</td><td>Sangat rendah</td><td>Perlu perbaikan fundamental</td></tr>
+        <tr><td>≥ 85%</td><td>World class</td><td>A ≈ 90%, P ≈ 95%, Q ≈ 99,9%. Hanya sedikit pabrik yang konsisten di level ini</td></tr>
+        <tr><td>60–84%</td><td>Tipikal</td><td>Rata-rata pabrik manufaktur. Masih banyak ruang perbaikan, terutama di Availability dan Performance</td></tr>
+        <tr><td>40–59%</td><td>Rendah</td><td>Umum pada pabrik tanpa program TPM atau perbaikan berkelanjutan. Quick wins tersedia</td></tr>
+        <tr><td>&lt; 40%</td><td>Sangat rendah</td><td>Perlu perbaikan fundamental: audit kondisi mesin, pelatihan operator, pembentukan tim TPM</td></tr>
       </tbody>
     </table>
 
-    <h2>Six Big Losses</h2>
-    <p>TPM memetakan enam kerugian besar yang menggerogoti masing-masing komponen OEE:</p>
+    <h3>Benchmark per Komponen</h3>
+    <table class="data-table">
+      <thead><tr><th>Komponen</th><th>World Class</th><th>Tipikal</th><th>Implikasi jika rendah</th></tr></thead>
+      <tbody>
+        <tr><td>Availability</td><td>≥ 90%</td><td>75–89%</td><td>Terlalu banyak breakdown atau setup time terlalu lama</td></tr>
+        <tr><td>Performance</td><td>≥ 95%</td><td>80–94%</td><td>Mesin berjalan lambat atau sering berhenti sebentar (minor stops)</td></tr>
+        <tr><td>Quality</td><td>≥ 99,9%</td><td>95–99%</td><td>Reject rate tinggi, proses tidak stabil, perlu SPC</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Catatan penting:</strong> Benchmark world class 85% adalah perkalian dari A=90% × P=95% × Q=99,9% ≈ 85,1%. Angka ini bukan target absolut untuk semua industri. Pabrik proses kontinu (seperti petrokimia) sering mencapai OEE lebih tinggi karena changeover jarang, sementara job shop dengan variasi produk tinggi mungkin memiliki target OEE yang lebih rendah karena setup yang lebih sering.</p>
+
+    <h2>Strategi Peningkatan OEE</h2>
+    <p>Meningkatkan OEE secara efektif memerlukan pendekatan sistematis. Tidak semua komponen memberikan dampak yang sama, dan sumber daya perbaikan selalu terbatas. Berikut adalah kerangka strategi yang terbukti efektif.</p>
+
+    <h3>Prioritisasi: Komponen Mana yang Diperbaiki Dulu?</h3>
+    <p>Prinsip dasar: <strong>perbaiki komponen yang paling rendah terlebih dahulu</strong>, karena di situlah potensi peningkatan terbesar berada. Gunakan Pareto analysis pada Six Big Losses untuk mengidentifikasi kerugian terbesar.</p>
+    <p>Langkah-langkah prioritisasi:</p>
     <ol>
-      <li><strong>Breakdown</strong> (Availability) — kerusakan mesin tak terencana.</li>
-      <li><strong>Setup &amp; adjustment</strong> (Availability) — pergantian produk, kalibrasi.</li>
-      <li><strong>Idling &amp; minor stops</strong> (Performance) — berhenti sebentar &lt; 5 menit, material tersangkut.</li>
-      <li><strong>Reduced speed</strong> (Performance) — mesin berjalan di bawah kecepatan desain.</li>
-      <li><strong>Defects &amp; rework</strong> (Quality) — produk cacat selama produksi stabil.</li>
-      <li><strong>Startup losses</strong> (Quality) — produk cacat saat warm-up/awal produksi.</li>
+      <li><strong>Kumpulkan data</strong> — catat setiap kejadian downtime, minor stop, speed loss, dan reject selama minimal 2-4 minggu.</li>
+      <li><strong>Kategorikan ke Six Big Losses</strong> — kelompokkan setiap kejadian ke salah satu dari enam kategori kerugian.</li>
+      <li><strong>Buat Pareto chart</strong> — urutkan kerugian dari yang terbesar ke terkecil berdasarkan waktu yang hilang. Biasanya, 2-3 kerugian teratas menyumbang 70-80% dari total waktu produktif yang hilang.</li>
+      <li><strong>Fokuskan sumber daya</strong> — bentuk tim perbaikan (kaizen team) untuk mengatasi kerugian terbesar terlebih dahulu.</li>
     </ol>
 
-    <h2>Kesalahan Umum dalam Menghitung OEE</h2>
+    <h3>Pilar-Pilar TPM untuk Peningkatan OEE</h3>
+    <p>TPM memiliki delapan pilar, tetapi tiga pilar berikut paling langsung berdampak pada OEE:</p>
+    <p><strong>1. Autonomous Maintenance (Jishu Hozen)</strong></p>
+    <p>Memberdayakan operator untuk melakukan perawatan dasar: pembersihan, pelumasan, pengencangan baut, inspeksi visual, dan deteksi anomali. Operator yang setiap hari bekerja dengan mesin adalah orang pertama yang mendengar suara tidak normal atau merasakan getaran berlebih. Dengan pelatihan yang tepat, mereka menjadi lini pertama pertahanan terhadap kerusakan. Implementasi biasanya mengikuti 7 langkah Jishu Hozen mulai dari pembersihan awal hingga manajemen mandiri penuh.</p>
+    <p><strong>2. Planned Maintenance (Keikaku Hozen)</strong></p>
+    <p>Perawatan terjadwal berdasarkan data historis kerusakan dan umur komponen. Tujuannya adalah memindahkan paradigma dari reactive (perbaiki setelah rusak) ke proactive (cegah sebelum rusak). Ini mencakup pembuatan jadwal preventive maintenance, penentuan spare parts kritis, dan analisis pola kerusakan menggunakan data MTBF (Mean Time Between Failures) dan MTTR (Mean Time to Repair).</p>
+    <p><strong>3. Focused Improvement (Kobetsu Kaizen)</strong></p>
+    <p>Tim lintas fungsi (produksi, maintenance, quality, engineering) yang dibentuk khusus untuk menyelesaikan masalah spesifik pada mesin atau lini tertentu. Menggunakan metodologi pemecahan masalah terstruktur seperti PDCA (Plan-Do-Check-Act), 5 Why Analysis, dan Fishbone Diagram. Setiap proyek Kobetsu Kaizen biasanya menargetkan satu kerugian spesifik dari Six Big Losses.</p>
+
+    <h3>Quick Wins vs Investasi Jangka Panjang</h3>
+    <table class="data-table">
+      <thead><tr><th>Strategi</th><th>Dampak pada OEE</th><th>Investasi</th><th>Waktu Implementasi</th></tr></thead>
+      <tbody>
+        <tr><td>Autonomous maintenance (5S + inspeksi operator)</td><td>Availability + Performance naik 5-10%</td><td>Rendah</td><td>1-3 bulan</td></tr>
+        <tr><td>SMED (pengurangan setup time)</td><td>Availability naik 3-8%</td><td>Rendah-Sedang</td><td>1-2 bulan per mesin</td></tr>
+        <tr><td>Preventive maintenance terjadwal</td><td>Availability naik 5-15%</td><td>Sedang</td><td>3-6 bulan</td></tr>
+        <tr><td>SPC dan poka-yoke</td><td>Quality naik 1-5%</td><td>Sedang</td><td>2-4 bulan</td></tr>
+        <tr><td>Overhaul/retrofit mesin tua</td><td>Performance naik 5-15%</td><td>Tinggi</td><td>Tergantung scope</td></tr>
+        <tr><td>IoT monitoring + predictive maintenance</td><td>Availability naik 10-20%</td><td>Tinggi</td><td>6-12 bulan</td></tr>
+      </tbody>
+    </table>
+
+    <h2>TEEP vs OEE: Kapan Menggunakan yang Mana?</h2>
+    <p><strong>TEEP (Total Effective Equipment Performance)</strong> adalah perluasan dari OEE yang memperhitungkan seluruh waktu kalender, bukan hanya waktu produksi terencana. Jika OEE menjawab "seberapa efektif mesin saat dijadwalkan beroperasi?", TEEP menjawab "seberapa efektif mesin relatif terhadap seluruh waktu yang tersedia (24/7/365)?"</p>
+    <div class="formula-block">TEEP = Utilization × OEE</div>
+    <p>Di mana:</p>
+    <div class="formula-block">Utilization = Planned Production Time / Total Calendar Time</div>
+    <p><strong>Contoh:</strong> Pabrik beroperasi 16 jam/hari (2 shift), 5 hari/minggu. Total calendar time per minggu = 168 jam. Planned production time = 80 jam.</p>
     <ul>
-      <li><strong>Memakai cycle time aktual, bukan ideal</strong>, pada komponen Performance — ini membuat P selalu 100% dan menyembunyikan kerugian kecepatan.</li>
-      <li><strong>Tidak konsisten soal planned downtime</strong> — istirahat terjadwal biasanya dikeluarkan dari planned production time, bukan dihitung sebagai downtime.</li>
-      <li><strong>Performance &gt; 100%</strong> — biasanya tanda ideal cycle time yang dipakai terlalu longgar; gunakan kapasitas desain (nameplate) yang sebenarnya.</li>
-      <li><strong>Mengejar angka OEE gabungan lintas mesin</strong> — OEE paling bermakna per mesin/lini; rata-rata pabrik menyembunyikan masalah lokal.</li>
+      <li>Utilization = 80 / 168 = 47,6%</li>
+      <li>Jika OEE = 85%, maka TEEP = 0,476 × 0,85 = 40,5%</li>
+    </ul>
+    <p>Artinya, dari seluruh potensi waktu yang tersedia, hanya 40,5% yang benar-benar menghasilkan produk bagus.</p>
+
+    <h3>Kapan Menggunakan OEE vs TEEP?</h3>
+    <table class="data-table">
+      <thead><tr><th>Situasi</th><th>Gunakan</th><th>Alasan</th></tr></thead>
+      <tbody>
+        <tr><td>Mengukur efektivitas operasi harian</td><td>OEE</td><td>Fokus pada peningkatan efisiensi selama waktu produksi terencana</td></tr>
+        <tr><td>Evaluasi keputusan investasi kapasitas</td><td>TEEP</td><td>Menunjukkan berapa banyak kapasitas tersembunyi yang bisa dibuka tanpa beli mesin baru</td></tr>
+        <tr><td>Justifikasi penambahan shift</td><td>TEEP</td><td>Jika TEEP rendah karena utilization rendah, tambah shift lebih murah daripada beli mesin</td></tr>
+        <tr><td>KPI shopfloor harian</td><td>OEE</td><td>Operator dan supervisor bisa langsung mengambil tindakan atas komponen A, P, Q</td></tr>
+        <tr><td>Perencanaan kapasitas jangka panjang</td><td>TEEP</td><td>Membantu manajemen melihat total potensi peralatan yang dimiliki</td></tr>
+      </tbody>
+    </table>
+
+    <h2>OEE di Era Industri 4.0</h2>
+    <p>Transformasi digital membawa perubahan fundamental dalam cara OEE diukur, dianalisis, dan ditindaklanjuti. Berikut adalah tren dan teknologi kunci yang mengubah lanskap OEE di era Industri 4.0.</p>
+
+    <h3>Real-Time OEE Monitoring dengan IoT</h3>
+    <p>Sensor IoT (Internet of Things) yang dipasang pada mesin dapat secara otomatis mendeteksi status mesin (running, idle, down), menghitung output, dan mengukur kecepatan aktual — tanpa intervensi manual. Data dikirim ke platform cloud atau edge computing dan diolah menjadi dashboard OEE real-time yang dapat diakses dari mana saja. Keuntungan utama adalah eliminasi pencatatan manual yang rentan kesalahan dan delay, serta kemampuan mendeteksi masalah dalam hitungan menit, bukan jam atau shift.</p>
+
+    <h3>Digital Dashboard dan Visualisasi</h3>
+    <p>Dashboard digital yang terpasang di lantai produksi (andon board) maupun di perangkat mobile menampilkan OEE terkini beserta tren historis. Supervisor dapat melihat mesin mana yang sedang underperform dan langsung mengambil tindakan. Fitur alert otomatis memberikan notifikasi ketika OEE atau salah satu komponennya turun di bawah threshold yang ditetapkan. Beberapa platform bahkan menyediakan analisis drill-down dari OEE ke Six Big Losses hingga ke akar masalah spesifik.</p>
+
+    <h3>Predictive Maintenance dan OEE</h3>
+    <p>Predictive maintenance menggunakan data sensor (getaran, suhu, arus listrik, akustik) yang dianalisis dengan algoritma machine learning untuk memprediksi kapan komponen akan gagal — sebelum kerusakan terjadi. Koneksi dengan OEE sangat langsung: dengan memprediksi dan mencegah breakdown, Availability meningkat secara signifikan. Selain itu, maintenance dapat dijadwalkan pada waktu yang paling tidak mengganggu produksi, mengurangi dampak pada planned downtime.</p>
+
+    <h3>Digital Twin dan Simulasi</h3>
+    <p>Teknologi digital twin memungkinkan pabrik membuat replika virtual dari mesin atau lini produksi. Tim engineering dapat mensimulasikan skenario "what-if" — misalnya, "apa dampak terhadap OEE jika kita mengurangi setup time 30%?" atau "berapa OEE yang bisa dicapai jika kecepatan mesin dinaikkan 10%?" — tanpa mengganggu produksi aktual. Ini mempercepat pengambilan keputusan dan mengurangi risiko eksperimen di lantai produksi.</p>
+
+    <h2>Kesalahan Umum dalam Menghitung OEE</h2>
+    <p>Perhitungan OEE tampak sederhana, tetapi banyak perusahaan melakukan kesalahan yang membuat angka OEE tidak akurat atau menyesatkan. Berikut adalah kesalahan yang paling sering ditemui beserta cara menghindarinya.</p>
+    <ul>
+      <li><strong>Memakai cycle time aktual, bukan ideal</strong>, pada komponen Performance — ini membuat P selalu 100% dan menyembunyikan kerugian kecepatan. Gunakan nameplate capacity atau cycle time tercepat yang pernah dicapai secara konsisten.</li>
+      <li><strong>Tidak konsisten soal planned downtime</strong> — istirahat terjadwal biasanya dikeluarkan dari planned production time, bukan dihitung sebagai downtime. Definisi harus konsisten di seluruh pabrik dan didokumentasikan secara tertulis.</li>
+      <li><strong>Performance &gt; 100%</strong> — biasanya tanda ideal cycle time yang dipakai terlalu longgar; gunakan kapasitas desain (nameplate) yang sebenarnya. Jika mesin sudah diupgrade, perbarui ideal cycle time-nya.</li>
+      <li><strong>Mengejar angka OEE gabungan lintas mesin</strong> — OEE paling bermakna per mesin/lini; rata-rata pabrik menyembunyikan masalah lokal. Mesin dengan OEE 95% dan mesin dengan OEE 45% bisa menghasilkan rata-rata 70% yang terlihat "cukup baik" padahal satu mesin dalam kondisi kritis.</li>
+      <li><strong>Mengabaikan minor stops</strong> — karena durasinya pendek (1-2 menit), minor stops sering tidak dicatat. Padahal, jika terjadi 30 kali per shift, total waktu hilang bisa mencapai 30-60 menit — setara dengan satu kali breakdown besar.</li>
+      <li><strong>Memasukkan waktu non-produksi dalam perhitungan</strong> — waktu trial produk baru, kunjungan audit, atau training operator seharusnya tidak masuk dalam planned production time. Memasukkannya akan menurunkan Availability secara tidak adil.</li>
+      <li><strong>Tidak memperbarui ideal cycle time setelah modifikasi mesin</strong> — jika mesin sudah diupgrade (motor baru, software baru, tooling baru), ideal cycle time harus diperbarui agar Performance tetap mencerminkan kondisi aktual.</li>
+      <li><strong>Menghitung OEE terlalu jarang</strong> — menghitung OEE hanya sekali sebulan tidak memberikan informasi yang actionable. OEE sebaiknya dihitung per shift atau per hari agar penyimpangan cepat terdeteksi dan ditindaklanjuti.</li>
     </ul>
 
     <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
     <div class="faq-item">
       <h3>Apa bedanya OEE dan utilisasi?</h3>
-      <p>Utilisasi hanya mengukur berapa lama mesin menyala dibanding waktu tersedia. OEE jauh lebih ketat karena ikut menghitung kecepatan aktual dan kualitas output, bukan sekadar "mesin hidup".</p>
+      <p>Utilisasi hanya mengukur berapa lama mesin menyala dibanding waktu tersedia. OEE jauh lebih ketat karena ikut menghitung kecepatan aktual dan kualitas output, bukan sekadar "mesin hidup." Mesin bisa memiliki utilisasi 95% tetapi OEE hanya 50% jika berjalan lambat dan banyak menghasilkan produk cacat.</p>
     </div>
     <div class="faq-item">
       <h3>Apakah rework dihitung sebagai unit baik?</h3>
-      <p>Tidak. Dalam konvensi OEE, unit baik adalah yang lolos pertama kali (first pass yield). Unit yang harus di-rework dihitung sebagai kerugian kualitas meskipun akhirnya terjual.</p>
+      <p>Tidak. Dalam konvensi OEE, unit baik adalah yang lolos pertama kali (first pass yield). Unit yang harus di-rework dihitung sebagai kerugian kualitas meskipun akhirnya terjual. Alasannya, waktu mesin untuk memproduksi unit cacat tersebut sudah terbuang, dan proses rework membutuhkan sumber daya tambahan (waktu, tenaga kerja, material).</p>
     </div>
     <div class="faq-item">
       <h3>OEE dipelajari di mata kuliah apa?</h3>
-      <p>OEE muncul di Perawatan Mesin/Manajemen Perawatan (TPM), Sistem Produksi, dan Pengendalian Kualitas — serta sangat sering menjadi topik kerja praktek dan skripsi mahasiswa teknik industri di perusahaan manufaktur.</p>
+      <p>OEE muncul di Perawatan Mesin/Manajemen Perawatan (TPM), Sistem Produksi, dan Pengendalian Kualitas — serta sangat sering menjadi topik kerja praktek dan skripsi mahasiswa teknik industri di perusahaan manufaktur. Di beberapa kurikulum, OEE juga dibahas dalam mata kuliah Lean Manufacturing dan Manajemen Operasi.</p>
     </div>
+    <div class="faq-item">
+      <h3>Apakah OEE bisa digunakan untuk membandingkan mesin yang berbeda?</h3>
+      <p>OEE sebaiknya digunakan untuk membandingkan kinerja mesin yang sama dari waktu ke waktu (temporal comparison), bukan untuk membandingkan mesin yang berbeda jenis. Mesin CNC dan mesin packaging memiliki karakteristik kerugian yang sangat berbeda, sehingga perbandingan langsung bisa menyesatkan. Jika perlu membandingkan lintas mesin, pastikan konteks operasionalnya serupa.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Bagaimana cara memulai program OEE di pabrik yang belum pernah mengukur OEE?</h3>
+      <p>Mulailah dari satu mesin bottleneck (mesin yang paling membatasi output keseluruhan lini). Tunjuk seorang champion, latih operator untuk mencatat downtime, output, dan reject secara manual menggunakan formulir sederhana. Hitung OEE harian selama 4 minggu untuk mendapatkan baseline. Setelah itu, identifikasi kerugian terbesar menggunakan Pareto chart dan mulai proyek perbaikan pertama. Jangan mencoba mengukur semua mesin sekaligus — ini akan membuat tim kewalahan.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apakah OEE 100% itu mungkin?</h3>
+      <p>Secara teoretis, OEE 100% berarti zero downtime, zero speed loss, dan zero defects — yang secara praktis tidak mungkin dicapai secara berkelanjutan. Bahkan pabrik terbaik di dunia beroperasi di kisaran 85-90% OEE. Target realistis adalah peningkatan bertahap dan konsisten, bukan kesempurnaan. Fokus pada tren (apakah OEE meningkat dari bulan ke bulan?) lebih penting daripada mengejar angka absolut tertentu.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Berapa frekuensi ideal pengukuran OEE?</h3>
+      <p>Untuk pabrik yang sudah matang, OEE sebaiknya dihitung per shift dan ditampilkan di dashboard real-time. Untuk pabrik yang baru memulai, pengukuran harian sudah cukup sebagai langkah awal. Yang terpenting adalah konsistensi: lebih baik mengukur OEE setiap hari dengan metode yang konsisten daripada mengukur setiap jam dengan definisi yang berubah-ubah. Review mingguan oleh tim manajemen dan review bulanan untuk analisis tren jangka panjang juga sangat direkomendasikan.</p>
+    </div>
+
+    <h2>Rangkuman</h2>
+    <p>OEE (Overall Equipment Effectiveness) adalah metrik fundamental dalam TPM yang mengintegrasikan tiga dimensi efektivitas peralatan — Availability, Performance, dan Quality — ke dalam satu angka yang mudah dipahami dan ditindaklanjuti. Dikembangkan oleh Seiichi Nakajima pada dekade 1980-an, OEE telah menjadi standar global untuk mengukur dan meningkatkan efektivitas peralatan manufaktur.</p>
+    <p>Poin-poin kunci yang perlu diingat:</p>
+    <ul>
+      <li><strong>OEE = A × P × Q</strong> — rumus sederhana tetapi sangat kuat karena memecah kerugian ke dalam kategori yang actionable.</li>
+      <li><strong>Six Big Losses</strong> — kerangka klasifikasi kerugian yang membantu tim fokus pada akar masalah: breakdown dan setup (Availability), minor stops dan reduced speed (Performance), defects dan startup losses (Quality).</li>
+      <li><strong>World class OEE = 85%</strong> — dengan komponen A ≥ 90%, P ≥ 95%, Q ≥ 99,9%. Rata-rata pabrik berada di kisaran 60%.</li>
+      <li><strong>Prioritisasi berbasis data</strong> — gunakan Pareto analysis pada Six Big Losses untuk mengidentifikasi kerugian terbesar dan memfokuskan sumber daya di sana.</li>
+      <li><strong>TEEP melengkapi OEE</strong> — untuk keputusan kapasitas dan investasi, TEEP yang memperhitungkan seluruh waktu kalender memberikan gambaran lebih lengkap.</li>
+      <li><strong>Industri 4.0 mentransformasi OEE</strong> — IoT, real-time monitoring, predictive maintenance, dan digital twin membawa OEE dari metrik bulanan menjadi instrumen perbaikan real-time.</li>
+      <li><strong>Konsistensi definisi</strong> — kesalahan terbesar dalam program OEE bukan pada rumusnya, melainkan pada inkonsistensi definisi planned time, ideal cycle time, dan good pieces.</li>
+    </ul>
 
     <h2>Referensi</h2>
     <ul>
-      <li>Nakajima, S. (1988). <em>Introduction to TPM: Total Productive Maintenance</em>. Productivity Press. — sumber asli konsep OEE dan Six Big Losses.</li>
+      <li>Nakajima, S. (1988). <em>Introduction to TPM: Total Productive Maintenance</em>. Productivity Press. — sumber asli konsep OEE, Six Big Losses, dan benchmark world class.</li>
+      <li>Nakajima, S. (1989). <em>TPM Development Program: Implementing Total Productive Maintenance</em>. Productivity Press. — panduan implementasi TPM yang lebih detail, termasuk langkah-langkah pengukuran OEE.</li>
+      <li>Ahuja, I.P.S., &amp; Khamba, J.S. (2008). "Total productive maintenance: literature review and directions." <em>International Journal of Quality &amp; Reliability Management</em>, 25(7), 709–756.</li>
       <li>Muchiri, P., &amp; Pintelon, L. (2008). "Performance measurement using overall equipment effectiveness (OEE): literature review and practical application discussion." <em>International Journal of Production Research</em>, 46(13), 3517–3535.</li>
+      <li>Hansen, R.C. (2001). <em>Overall Equipment Effectiveness: A Powerful Production/Maintenance Tool for Increased Profits</em>. Industrial Press. — panduan praktis OEE untuk praktisi industri.</li>
       <li>Stevenson, W. J. (2021). <em>Operations Management</em> (14th ed.), bab Maintenance. McGraw-Hill.</li>
+      <li>SEMI E10-0304E (2004). <em>Standard for Definition and Measurement of Equipment Reliability, Availability, and Maintainability (RAM)</em>. SEMI International Standards.</li>
+      <li>Dal, B., Tugwell, P., &amp; Greatbanks, R. (2000). "Overall equipment effectiveness as a measure of operational improvement." <em>International Journal of Operations &amp; Production Management</em>, 20(12), 1488–1502.</li>
     </ul>
 
     <hr class="divider">
-    <p>Kalkulator OEE kami menghitung Availability, Performance, Quality, dan OEE total beserta interpretasi kategorinya secara otomatis.</p>
+    <p>Kalkulator OEE kami menghitung Availability, Performance, Quality, dan OEE total beserta interpretasi kategorinya secara otomatis — cukup masukkan data produksi Anda.</p>
     <p>
       <a href="index.html" class="btn">Buka Kalkulator OEE</a>
       <a href="panduan.html" class="btn btn-secondary" style="margin-left:8px;">Panduan Lainnya</a>
@@ -202,6 +452,7 @@
     <a href="about.html">Tentang</a>
     <a href="contact.html">Kontak</a>
     <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Syarat &amp; Ketentuan</a>
   </div>
   <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
 </footer>

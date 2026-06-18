@@ -2,97 +2,103 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://khalid200704.github.io/</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://khalid200704.github.io/panduan.html</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://khalid200704.github.io/panduan-eoq.html</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://khalid200704.github.io/panduan-forecasting.html</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://khalid200704.github.io/panduan-bep.html</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://khalid200704.github.io/panduan-takt-time.html</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://khalid200704.github.io/panduan-oee.html</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://khalid200704.github.io/panduan-line-balancing.html</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://khalid200704.github.io/panduan-npv.html</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://khalid200704.github.io/panduan-spc.html</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://khalid200704.github.io/panduan-pert-cpm.html</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://khalid200704.github.io/panduan-antrian.html</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://khalid200704.github.io/panduan-ergonomi.html</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://khalid200704.github.io/about.html</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://khalid200704.github.io/contact.html</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://khalid200704.github.io/privacy.html</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-19</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://khalid200704.github.io/terms.html</loc>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>

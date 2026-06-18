@@ -44,17 +44,37 @@
     {
       "@type": "Question",
       "name": "Apa arti notasi M/M/1?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Notasi Kendall A/B/c: huruf pertama adalah pola kedatangan, kedua pola pelayanan, ketiga jumlah server. M/M/1 berarti kedatangan Poisson (antarwaktu eksponensial/Markovian), waktu pelayanan eksponensial, dan satu server." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Notasi Kendall A/B/c: huruf pertama adalah pola kedatangan, kedua pola pelayanan, ketiga jumlah server. M/M/1 berarti kedatangan Poisson (antarwaktu eksponensial/Markovian), waktu pelayanan eksponensial, dan satu server. Notasi lengkapnya A/B/c/K/N/D mencakup kapasitas sistem, ukuran populasi, dan disiplin antrian." }
     },
     {
       "@type": "Question",
       "name": "Apa itu Little's Law?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Little's Law (Little, 1961) menyatakan L = λW: rata-rata jumlah pelanggan dalam sistem sama dengan laju kedatangan dikali rata-rata waktu dalam sistem. Hukum ini berlaku untuk hampir semua sistem antrian yang stabil, apa pun distribusinya." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Little's Law (Little, 1961) menyatakan L = λW: rata-rata jumlah pelanggan dalam sistem sama dengan laju kedatangan dikali rata-rata waktu dalam sistem. Hukum ini berlaku untuk hampir semua sistem antrian yang stabil, apa pun distribusinya. Juga berlaku untuk subsistem antrian: Lq = λWq." }
     },
     {
       "@type": "Question",
       "name": "Kenapa sistem antrian harus memiliki ρ < 1?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Utilisasi ρ = λ/μ harus kurang dari 1 agar sistem stabil. Jika kedatangan lebih cepat dari kemampuan pelayanan (ρ ≥ 1), antrian tumbuh tanpa batas dan rumus steady-state tidak berlaku." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Utilisasi ρ = λ/μ harus kurang dari 1 agar sistem stabil. Jika kedatangan lebih cepat dari kemampuan pelayanan (ρ ≥ 1), antrian tumbuh tanpa batas dan rumus steady-state tidak berlaku. Solusinya: tambah server (model M/M/c), kurangi laju kedatangan, atau batasi kapasitas (model M/M/1/K)." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah Little's Law berlaku untuk antrian non-FIFO?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Ya. Little's Law berlaku untuk semua disiplin antrian — FIFO, LIFO, prioritas, bahkan random. Hukum ini hanya memerlukan sistem dalam keadaan stabil. Disiplin antrian mempengaruhi distribusi waktu tunggu individual, tetapi rata-ratanya tetap memenuhi L = λW." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa perbedaan model deterministik (D) dan Markovian (M)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Pada model deterministik (D), waktu antarkedatangan atau pelayanan bersifat tetap (konstan). Pada model Markovian (M), waktu bersifat acak mengikuti distribusi eksponensial. M/D/1 menghasilkan antrian lebih pendek dibandingkan M/M/1 dengan utilisasi sama; Lq pada M/D/1 tepat setengah dari M/M/1." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa beda L dan Lq?",
+      "acceptedAnswer": { "@type": "Answer", "text": "L menghitung semua pelanggan dalam sistem (yang sedang dilayani + yang mengantre), sedangkan Lq hanya yang mengantre. Selisihnya L − Lq = ρ, yaitu rata-rata pelanggan yang sedang dilayani." }
+    },
+    {
+      "@type": "Question",
+      "name": "Software apa yang dapat digunakan untuk analisis antrian?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Untuk model analitik sederhana (M/M/1, M/M/c), spreadsheet atau kalkulator online sudah cukup. Untuk model kompleks, digunakan software simulasi seperti Arena, AnyLogic, Simio, atau library Python seperti SimPy dan CIW. Untuk call center, terdapat Erlang Calculator." }
     }
   ]
 }
@@ -96,86 +116,328 @@
 
     <h1>Teori Antrian: Model M/M/1 dan Little's Law</h1>
     <p class="subtitle">Notasi Kendall, ukuran kinerja sistem antrian (L, Lq, W, Wq), dan contoh soal lengkap — dasar analisis loket, kasir, mesin, dan call center.</p>
+
+
+    <h2>Mengapa Teori Antrian Penting?</h2>
+    <p>Antrian muncul setiap kali permintaan layanan datang lebih cepat daripada kemampuan melayani <em>pada saat itu</em>. Fenomena ini bersifat universal dan dijumpai di hampir setiap sektor industri maupun jasa. <strong>Teori antrian</strong> (<em>queueing theory</em>) dirintis oleh insinyur telekomunikasi Denmark <strong>Agner Krarup Erlang</strong> pada tahun 1909, ketika ia menganalisis kapasitas sentral telepon di Kopenhagen. Sejak saat itu, teori antrian berkembang menjadi salah satu pilar utama dalam Penelitian Operasional (<em>Operations Research</em>) dan digunakan secara luas di dunia akademik maupun industri.</p>
+
+    <h3>Contoh Nyata Antrian di Berbagai Sektor</h3>
+    <p>Untuk memahami betapa luasnya penerapan teori antrian, perhatikan contoh-contoh berikut:</p>
+    <ul>
+      <li><strong>Perbankan:</strong> Nasabah datang ke bank dan mengantre untuk dilayani oleh teller. Bank harus memutuskan berapa banyak teller yang dibuka di jam sibuk versus jam sepi. Terlalu sedikit teller berarti nasabah menunggu lama dan bisa pindah ke bank lain; terlalu banyak teller berarti biaya gaji tinggi padahal sebagian teller menganggur.</li>
+      <li><strong>Rumah Sakit (UGD):</strong> Pasien datang ke unit gawat darurat secara acak. Sistem triase menentukan prioritas pelayanan. Jumlah dokter dan perawat yang bertugas harus cukup untuk menangani lonjakan kedatangan pasien, terutama di akhir pekan atau musim flu.</li>
+      <li><strong>Supermarket:</strong> Kasir checkout adalah sistem antrian klasik. Manajemen supermarket menggunakan data historis untuk menentukan berapa kasir yang harus dibuka pada jam-jam tertentu agar waktu tunggu pelanggan tidak melebihi batas toleransi.</li>
+      <li><strong>Call Center:</strong> Panggilan masuk ke pusat layanan pelanggan mengikuti pola Poisson. Perusahaan telekomunikasi menggunakan model Erlang-C untuk menentukan jumlah agen yang diperlukan agar persentase panggilan yang dijawab dalam 20 detik (<em>service level</em>) mencapai target, misalnya 80%.</li>
+      <li><strong>Manufaktur:</strong> Di lantai produksi, mesin-mesin yang menunggu diperbaiki oleh teknisi membentuk antrian. Bahan baku yang menunggu diproses oleh stasiun kerja berikutnya juga membentuk antrian. Prinsip <em>Work-in-Process</em> (WIP) dalam <em>lean manufacturing</em> adalah aplikasi langsung dari teori antrian.</li>
+      <li><strong>Jaringan Komputer:</strong> Paket data yang tiba di router mengantre di buffer sebelum diteruskan. Jika buffer penuh, paket di-<em>drop</em> — ini adalah contoh model antrian dengan kapasitas terbatas (M/M/1/K).</li>
+    </ul>
+
+    <h3>Trade-off Biaya: Inti dari Analisis Antrian</h3>
+    <p>Inti masalah antrian adalah <strong>trade-off ekonomi</strong> antara dua jenis biaya yang saling berlawanan:</p>
+    <ul>
+      <li><strong>Biaya menunggu (waiting cost):</strong> Setiap menit pelanggan menunggu memiliki biaya — baik biaya langsung (kehilangan produktivitas pekerja, kerusakan barang yang menunggu) maupun biaya tidak langsung (ketidakpuasan pelanggan, kehilangan <em>goodwill</em>, pelanggan yang pergi tanpa dilayani).</li>
+      <li><strong>Biaya kapasitas pelayanan (service cost):</strong> Menambah server (kasir, teknisi, dokter, mesin) menaikkan biaya operasional — gaji karyawan, investasi peralatan, biaya pelatihan, dan biaya pemeliharaan.</li>
+    </ul>
+    <p>Teori antrian memberikan kerangka matematis untuk menghitung titik keseimbangan optimal antara kedua biaya ini. Tanpa analisis kuantitatif, keputusan sering diambil berdasarkan intuisi yang bisa sangat tidak akurat — karena perilaku antrian bersifat <em>non-linear</em> terhadap utilisasi.</p>
+
+    <h2>Notasi Kendall (Kendall's Notation)</h2>
+    <p>Sistem antrian diklasifikasikan menggunakan <strong>notasi Kendall</strong>, yang diperkenalkan oleh David G. Kendall pada tahun 1953. Notasi lengkapnya berbentuk <strong>A/B/c/K/N/D</strong>, terdiri dari enam posisi:</p>
+    <table class="data-table">
+      <thead><tr><th>Posisi</th><th>Simbol</th><th>Arti</th><th>Penjelasan Detail</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>A</td><td>Distribusi antarwaktu kedatangan</td><td><strong>M</strong> = Markovian (eksponensial/Poisson), <strong>D</strong> = deterministik (tetap), <strong>Ek</strong> = Erlang orde k, <strong>G</strong> = general (umum/sembarang)</td></tr>
+        <tr><td>2</td><td>B</td><td>Distribusi waktu pelayanan</td><td>Simbol sama seperti A: M, D, Ek, G</td></tr>
+        <tr><td>3</td><td>c</td><td>Jumlah server paralel</td><td>1, 2, 3, ..., s (bilangan bulat positif)</td></tr>
+        <tr><td>4</td><td>K</td><td>Kapasitas sistem</td><td>Jumlah maksimum pelanggan yang boleh berada dalam sistem (mengantre + dilayani). Default: tak terbatas (infinity)</td></tr>
+        <tr><td>5</td><td>N</td><td>Ukuran populasi pemanggil</td><td>Jumlah total pelanggan potensial. Default: tak terbatas (infinity)</td></tr>
+        <tr><td>6</td><td>D</td><td>Disiplin antrian</td><td><strong>FIFO/FCFS</strong> = First In First Out, <strong>LIFO</strong> = Last In First Out, <strong>SIRO</strong> = Service In Random Order, <strong>Priority</strong> = berdasarkan prioritas</td></tr>
+      </tbody>
+    </table>
+    <p>Dalam praktik, jika posisi ke-4, ke-5, dan ke-6 tidak ditulis, maka diasumsikan default: K = tak terbatas, N = tak terbatas, dan D = FIFO. Dengan demikian, penulisan <strong>M/M/1</strong> sebenarnya merupakan singkatan dari M/M/1/tak terbatas/tak terbatas/FIFO.</p>
+    <p><strong>Contoh pembacaan notasi:</strong></p>
+    <ul>
+      <li><strong>M/M/1</strong> — kedatangan Poisson, pelayanan eksponensial, 1 server, kapasitas dan populasi tak terbatas, FIFO.</li>
+      <li><strong>M/M/3</strong> — sama seperti M/M/1 tetapi dengan 3 server paralel.</li>
+      <li><strong>M/M/1/10</strong> — seperti M/M/1 tetapi kapasitas sistem maksimal 10 orang; pelanggan ke-11 ditolak.</li>
+      <li><strong>M/D/1</strong> — kedatangan Poisson, waktu pelayanan tetap (deterministik), 1 server.</li>
+      <li><strong>M/G/1</strong> — kedatangan Poisson, pelayanan berdistribusi umum (bisa normal, lognormal, dll.), 1 server.</li>
+      <li><strong>G/G/c</strong> — model paling umum; kedatangan dan pelayanan berdistribusi sembarang dengan c server. Biasanya diselesaikan dengan simulasi.</li>
+    </ul>
+
+    <h2>Distribusi Poisson dan Eksponensial dalam Teori Antrian</h2>
+    <p>Huruf <strong>M</strong> dalam notasi Kendall merujuk pada <em>Markovian</em>, yang berarti proses memiliki sifat <strong>memoryless</strong> (tanpa memori). Dua distribusi yang terkait erat mendasari model Markovian:</p>
+
+    <h3>Distribusi Poisson untuk Kedatangan</h3>
+    <p>Jika kedatangan pelanggan bersifat acak dan independen satu sama lain, maka jumlah kedatangan dalam interval waktu tertentu mengikuti <strong>distribusi Poisson</strong>. Secara matematis, peluang terdapat <em>k</em> kedatangan dalam waktu <em>t</em> adalah:</p>
+    <div class="formula-block">P(X = k) = (λt)<sup>k</sup> e<sup>-λt</sup> / k! &nbsp;&nbsp; untuk k = 0, 1, 2, ...</div>
+    <p>di mana λ adalah laju kedatangan rata-rata (pelanggan per satuan waktu). Distribusi Poisson memiliki sifat penting: rata-rata (mean) sama dengan variansinya, yaitu keduanya bernilai λt.</p>
+
+    <h3>Distribusi Eksponensial untuk Antarwaktu Kedatangan</h3>
+    <p>Jika jumlah kedatangan mengikuti Poisson, maka <strong>waktu antar-kedatangan</strong> (<em>interarrival time</em>) mengikuti <strong>distribusi eksponensial</strong> dengan parameter λ. Fungsi kepadatan peluangnya:</p>
+    <div class="formula-block">f(t) = λ e<sup>-λt</sup> &nbsp;&nbsp; untuk t &ge; 0</div>
+    <p>Rata-rata antarwaktu kedatangan adalah 1/λ. Misalnya, jika λ = 10 pelanggan/jam, maka rata-rata waktu antar dua kedatangan berturutan adalah 1/10 jam = 6 menit.</p>
+
+    <h3>Sifat Memoryless (Tanpa Memori)</h3>
+    <p>Sifat terpenting dari distribusi eksponensial adalah <strong>memoryless property</strong>: berapa lama pun seseorang telah menunggu, sisa waktu tunggunya tetap berdistribusi sama. Secara formal: P(T &gt; s + t | T &gt; s) = P(T &gt; t). Sifat ini menyederhanakan analisis secara signifikan, karena kondisi sistem hanya bergantung pada jumlah pelanggan saat ini — bukan pada kapan mereka datang atau sudah berapa lama dilayani.</p>
+
+    <h3>Hubungan Kedua Distribusi</h3>
+    <p>Poisson dan eksponensial adalah dua sisi dari koin yang sama:</p>
+    <ul>
+      <li>Jika <em>jumlah kejadian</em> per interval waktu berdistribusi <strong>Poisson(λ)</strong>, maka <em>waktu antar-kejadian</em> berdistribusi <strong>Eksponensial(λ)</strong>.</li>
+      <li>Sebaliknya, jika <em>waktu antar-kejadian</em> berdistribusi Eksponensial(λ), maka jumlah kejadian per interval waktu berdistribusi Poisson(λ).</li>
+    </ul>
+    <p>Dalam konteks antrian, hubungan ini berarti: jika kita mengasumsikan kedatangan Poisson (M pada posisi pertama notasi Kendall), itu sama artinya dengan mengasumsikan antarwaktu kedatangan eksponensial. Demikian pula untuk waktu pelayanan.</p>
     <!-- AdSense In-Article -->
     <ins class="adsbygoogle" style="display:block;text-align:center" data-ad-client="ca-pub-8688855167346136" data-ad-slot="9074056144" data-ad-format="fluid" data-ad-layout="in-article"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
-
-
-    <h2>Mengapa Antrian Perlu Dianalisis?</h2>
-    <p>Antrian muncul setiap kali permintaan layanan datang lebih cepat daripada kemampuan melayani <em>pada saat itu</em> — di kasir minimarket, loket rumah sakit, mesin yang menunggu diperbaiki, hingga paket data di router. <strong>Teori antrian</strong> dirintis oleh insinyur Denmark <strong>A. K. Erlang</strong> (1909) saat menganalisis sentral telepon Kopenhagen, dan kini menjadi materi inti Penelitian Operasional (Operations Research).</p>
-    <p>Inti masalahnya adalah trade-off: menambah server (kasir, teknisi) menaikkan biaya kapasitas tetapi menurunkan biaya menunggu. Teori antrian memberi angka untuk menimbang keduanya.</p>
-
-    <h2>Struktur Sistem Antrian dan Notasi Kendall</h2>
-    <p>Sistem antrian dijelaskan dengan notasi <strong>Kendall A/B/c</strong> (Kendall, 1953):</p>
-    <table class="data-table">
-      <thead><tr><th>Posisi</th><th>Arti</th><th>Simbol umum</th></tr></thead>
-      <tbody>
-        <tr><td>A</td><td>Distribusi antarwaktu kedatangan</td><td>M (Markovian/eksponensial), D (deterministik), G (umum)</td></tr>
-        <tr><td>B</td><td>Distribusi waktu pelayanan</td><td>M, D, G</td></tr>
-        <tr><td>c</td><td>Jumlah server paralel</td><td>1, 2, …, s</td></tr>
-      </tbody>
-    </table>
-    <p>Model paling dasar adalah <strong>M/M/1</strong>: kedatangan mengikuti proses Poisson dengan laju λ, waktu pelayanan eksponensial dengan laju μ, satu server, disiplin FCFS (first come first served), populasi dan kapasitas antrian tak terbatas.</p>
-
-    <h2>Rumus Model M/M/1</h2>
-    <p>Syarat kestabilan: utilisasi ρ = λ/μ harus &lt; 1. Pada kondisi steady-state (Hillier &amp; Lieberman, 2021):</p>
-    <table class="data-table">
-      <thead><tr><th>Ukuran kinerja</th><th>Rumus</th></tr></thead>
-      <tbody>
-        <tr><td>Utilisasi server</td><td>ρ = λ / μ</td></tr>
-        <tr><td>Peluang sistem kosong</td><td>P₀ = 1 − ρ</td></tr>
-        <tr><td>Rata-rata pelanggan dalam sistem</td><td>L = ρ / (1 − ρ) = λ / (μ − λ)</td></tr>
-        <tr><td>Rata-rata pelanggan dalam antrian</td><td>Lq = ρ² / (1 − ρ)</td></tr>
-        <tr><td>Rata-rata waktu dalam sistem</td><td>W = 1 / (μ − λ)</td></tr>
-        <tr><td>Rata-rata waktu menunggu di antrian</td><td>Wq = λ / [μ(μ − λ)]</td></tr>
-      </tbody>
-    </table>
-
     <h2>Little's Law: Hukum Paling Berguna di Teori Antrian</h2>
     <div class="formula-block">L = λ · W &nbsp;&nbsp;|&nbsp;&nbsp; Lq = λ · Wq</div>
-    <p>Dibuktikan secara formal oleh John D. C. Little (1961), hukum ini berlaku untuk <em>hampir semua</em> sistem antrian stabil — apa pun distribusi kedatangan dan pelayanannya. Praktisnya: cukup tahu dua dari tiga besaran (L, λ, W), besaran ketiga langsung didapat. Little's Law juga menjadi dasar rumus lead time produksi: WIP = throughput × cycle time.</p>
+    <p>Dibuktikan secara formal oleh <strong>John D. C. Little</strong> pada tahun 1961, Little's Law menyatakan bahwa rata-rata jumlah pelanggan dalam sistem yang stabil (<strong>L</strong>) sama dengan laju kedatangan efektif (<strong>λ</strong>) dikali rata-rata waktu seorang pelanggan berada dalam sistem (<strong>W</strong>). Hukum ini juga berlaku untuk subsistem antrian saja: Lq = λ Wq.</p>
 
-    <h2>Contoh Soal M/M/1 dan Pembahasan</h2>
+    <h3>Mengapa Little's Law Begitu Istimewa?</h3>
+    <p>Keistimewaan Little's Law terletak pada <strong>universalitasnya</strong>. Hukum ini berlaku untuk <em>hampir semua</em> sistem antrian stabil — terlepas dari distribusi kedatangan (Poisson, deterministik, atau umum), distribusi pelayanan, jumlah server, disiplin antrian (FIFO, LIFO, prioritas), maupun struktur jaringan antrian. Satu-satunya syarat adalah sistem harus berada dalam kondisi <em>steady-state</em> (stabil jangka panjang), di mana laju kedatangan tidak melebihi kapasitas pelayanan.</p>
+
+    <h3>Contoh Intuitif Little's Law</h3>
+    <p>Bayangkan sebuah toko roti kecil. Rata-rata, 30 pelanggan datang per jam (λ = 30/jam). Jika pada suatu saat Anda masuk dan menghitung rata-rata ada 15 pelanggan di dalam toko (L = 15), berapa lama rata-rata seorang pelanggan menghabiskan waktu di toko?</p>
+    <div class="formula-block">W = L / λ = 15 / 30 = 0,5 jam = 30 menit</div>
+    <p>Tanpa mengetahui distribusi kedatangan atau pelayanan, tanpa mengetahui jumlah kasir, tanpa mengetahui disiplin antrian — Little's Law langsung memberikan jawabannya. Inilah kekuatannya.</p>
+
+    <h3>Aplikasi di Lean Manufacturing</h3>
+    <p>Little's Law menjadi fondasi penting dalam <em>lean manufacturing</em> dan manajemen rantai pasok. Dalam konteks produksi, hukum ini dinyatakan sebagai:</p>
+    <div class="formula-block">WIP = Throughput &times; Cycle Time</div>
+    <p>di mana WIP (<em>Work-in-Process</em>) = jumlah rata-rata barang dalam sistem produksi, Throughput = laju output produksi, dan Cycle Time = waktu rata-rata barang berada dalam sistem. Dengan Little's Law, manajer produksi dapat memperkirakan cycle time hanya dari pengamatan WIP dan throughput — tanpa harus melacak setiap unit produk individual.</p>
+
+    <h2>Model M/M/1: Detail Lengkap</h2>
+    <p>Model M/M/1 adalah model antrian paling mendasar dan paling sering diajarkan. Model ini mengasumsikan: kedatangan Poisson (laju λ), pelayanan eksponensial (laju μ), satu server, kapasitas tak terbatas, populasi tak terbatas, dan disiplin FIFO.</p>
+
+    <h3>Syarat Kestabilan</h3>
+    <p><strong>Utilisasi</strong> (intensitas lalu lintas) didefinisikan sebagai ρ = λ/μ. Agar sistem mencapai <em>steady-state</em>, harus berlaku <strong>ρ &lt; 1</strong>, artinya laju kedatangan harus lebih kecil daripada laju pelayanan. Jika ρ &ge; 1, antrian akan tumbuh tanpa batas dan sistem tidak pernah stabil — semua rumus steady-state menjadi tidak berlaku.</p>
+
+    <h3>Derivasi Ukuran Kinerja</h3>
+    <p>Semua ukuran kinerja M/M/1 diturunkan dari distribusi probabilitas jumlah pelanggan dalam sistem pada kondisi steady-state. Probabilitas terdapat tepat <em>n</em> pelanggan dalam sistem adalah:</p>
+    <div class="formula-block">P<sub>n</sub> = (1 − ρ) ρ<sup>n</sup> &nbsp;&nbsp; untuk n = 0, 1, 2, ...</div>
+    <p>Ini adalah distribusi geometris. Dari sini, semua ukuran kinerja lainnya diturunkan secara sistematis:</p>
+
+    <p><strong>Peluang sistem kosong (P₀):</strong></p>
+    <div class="formula-block">P₀ = P(n=0) = 1 − ρ</div>
+    <p>Ini adalah fraksi waktu server menganggur (<em>idle</em>). Jika ρ = 0,7, maka server menganggur 30% dari waktu.</p>
+
+    <p><strong>Peluang terdapat n pelanggan (P<sub>n</sub>):</strong></p>
+    <div class="formula-block">P<sub>n</sub> = (1 − ρ) ρ<sup>n</sup></div>
+    <p>Contoh: dengan ρ = 0,8, peluang terdapat lebih dari 5 pelanggan dalam sistem = ρ<sup>6</sup> = 0,8<sup>6</sup> = 0,262 atau 26,2%.</p>
+
+    <p><strong>Rata-rata jumlah pelanggan dalam sistem (L):</strong></p>
+    <div class="formula-block">L = &Sigma;<sub>n=0</sub><sup>&infin;</sup> n P<sub>n</sub> = ρ / (1 − ρ) = λ / (μ − λ)</div>
+
+    <p><strong>Rata-rata jumlah pelanggan dalam antrian (Lq):</strong></p>
+    <div class="formula-block">Lq = L − ρ = ρ² / (1 − ρ) = λ² / [μ(μ − λ)]</div>
+    <p>Perhatikan bahwa L = Lq + ρ. Selisih ρ merepresentasikan rata-rata jumlah pelanggan yang sedang dilayani (yaitu 0 atau 1, dengan rata-rata ρ).</p>
+
+    <p><strong>Rata-rata waktu dalam sistem (W):</strong></p>
+    <div class="formula-block">W = L / λ = 1 / (μ − λ)</div>
+    <p>Ini diperoleh langsung dari Little's Law: L = λW sehingga W = L/λ.</p>
+
+    <p><strong>Rata-rata waktu menunggu dalam antrian (Wq):</strong></p>
+    <div class="formula-block">Wq = Lq / λ = ρ / (μ − λ) = λ / [μ(μ − λ)]</div>
+    <p>Hubungan W dan Wq: W = Wq + 1/μ. Artinya, waktu total dalam sistem = waktu menunggu di antrian + rata-rata waktu pelayanan.</p>
+
+    <p>Tabel ringkasan seluruh rumus M/M/1 pada kondisi steady-state (Hillier &amp; Lieberman, 2021):</p>
+    <table class="data-table">
+      <thead><tr><th>Ukuran Kinerja</th><th>Rumus</th><th>Keterangan</th></tr></thead>
+      <tbody>
+        <tr><td>Utilisasi server</td><td>ρ = λ / μ</td><td>Fraksi waktu server sibuk</td></tr>
+        <tr><td>Peluang sistem kosong</td><td>P₀ = 1 − ρ</td><td>Fraksi waktu server idle</td></tr>
+        <tr><td>Peluang n pelanggan</td><td>P<sub>n</sub> = (1 − ρ) ρ<sup>n</sup></td><td>Distribusi geometris</td></tr>
+        <tr><td>Rata-rata pelanggan dalam sistem</td><td>L = ρ / (1 − ρ)</td><td>Termasuk yang dilayani</td></tr>
+        <tr><td>Rata-rata pelanggan dalam antrian</td><td>Lq = ρ² / (1 − ρ)</td><td>Hanya yang mengantre</td></tr>
+        <tr><td>Rata-rata waktu dalam sistem</td><td>W = 1 / (μ − λ)</td><td>Menunggu + dilayani</td></tr>
+        <tr><td>Rata-rata waktu tunggu di antrian</td><td>Wq = λ / [μ(μ − λ)]</td><td>Hanya waktu menunggu</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Contoh Soal 1: Bengkel Servis Motor (M/M/1)</h2>
     <p><strong>Soal:</strong> Sebuah bengkel servis motor kecil memiliki satu mekanik. Motor datang rata-rata λ = 8 unit/jam (Poisson) dan mekanik mampu melayani rata-rata μ = 10 unit/jam (eksponensial). Hitung seluruh ukuran kinerja sistem.</p>
     <p><strong>Langkah 1 — Utilisasi:</strong></p>
-    <div class="formula-block">ρ = 8/10 = 0,8 → mekanik sibuk 80% waktu; P₀ = 0,2</div>
+    <div class="formula-block">ρ = 8/10 = 0,8 → mekanik sibuk 80% waktu; P₀ = 1 − 0,8 = 0,2 (idle 20%)</div>
     <p><strong>Langkah 2 — Jumlah motor dalam sistem dan antrian:</strong></p>
     <div class="formula-block">L = 0,8/(1−0,8) = 4 motor &nbsp;|&nbsp; Lq = 0,8²/(1−0,8) = 3,2 motor</div>
     <p><strong>Langkah 3 — Waktu dalam sistem dan waktu menunggu:</strong></p>
     <div class="formula-block">W = 1/(10−8) = 0,5 jam = 30 menit &nbsp;|&nbsp; Wq = 8/[10(10−8)] = 0,4 jam = 24 menit</div>
-    <p><strong>Langkah 4 — Verifikasi dengan Little's Law:</strong> L = λW = 8 × 0,5 = 4 ✓ dan Lq = 8 × 0,4 = 3,2 ✓.</p>
-    <p><strong>Interpretasi:</strong> rata-rata pelanggan menghabiskan 30 menit di bengkel, 24 menit di antaranya hanya menunggu. Perhatikan fenomena penting: utilisasi "hanya" 80%, tetapi antrian sudah panjang — karena hubungan L terhadap ρ <em>tidak linear</em>. Jika λ naik ke 9/jam (ρ = 0,9), L melonjak ke 9 motor dan W menjadi 1 jam. Inilah alasan sistem layanan tidak dirancang mendekati utilisasi 100%.</p>
+    <p><strong>Langkah 4 — Verifikasi dengan Little's Law:</strong> L = λW = 8 × 0,5 = 4 ✓ dan Lq = λWq = 8 × 0,4 = 3,2 ✓.</p>
+    <p><strong>Interpretasi:</strong> Rata-rata pelanggan menghabiskan 30 menit di bengkel, 24 menit di antaranya hanya menunggu. Perhatikan fenomena penting: utilisasi "hanya" 80%, tetapi antrian sudah panjang — karena hubungan L terhadap ρ bersifat <em>non-linear</em>. Jika λ naik ke 9/jam (ρ = 0,9), L melonjak ke 9 motor dan W menjadi 1 jam. Inilah alasan sistem layanan tidak dirancang mendekati utilisasi 100%.</p>
 
-    <h2>Perluasan Model</h2>
+    <h2>Contoh Soal 2: Antrian Bank dengan Satu Teller (M/M/1)</h2>
+    <p><strong>Soal:</strong> Sebuah cabang bank kecil memiliki satu teller. Nasabah datang rata-rata λ = 12 orang/jam (mengikuti proses Poisson). Rata-rata waktu pelayanan adalah 4 menit per nasabah (eksponensial), sehingga μ = 60/4 = 15 orang/jam. Hitung seluruh ukuran kinerja. Bagaimana jika tingkat kedatangan meningkat 20%?</p>
+
+    <p><strong>Penyelesaian — Kondisi Awal:</strong></p>
+    <p><strong>Langkah 1 — Utilisasi:</strong></p>
+    <div class="formula-block">ρ = λ/μ = 12/15 = 0,8 → teller sibuk 80% waktu; P₀ = 0,2</div>
+
+    <p><strong>Langkah 2 — Jumlah rata-rata dalam sistem dan antrian:</strong></p>
+    <div class="formula-block">L = 0,8/(1−0,8) = 4 nasabah &nbsp;|&nbsp; Lq = 0,8²/(1−0,8) = 3,2 nasabah</div>
+
+    <p><strong>Langkah 3 — Waktu rata-rata:</strong></p>
+    <div class="formula-block">W = 1/(15−12) = 1/3 jam = 20 menit &nbsp;|&nbsp; Wq = 12/[15(15−12)] = 12/45 = 0,267 jam = 16 menit</div>
+
+    <p><strong>Langkah 4 — Verifikasi Little's Law:</strong> L = λW = 12 × (1/3) = 4 ✓ dan Lq = λWq = 12 × (12/45) = 3,2 ✓.</p>
+
+    <p><strong>Penyelesaian — Jika Kedatangan Naik 20%:</strong></p>
+    <p>Jika λ naik 20%, maka λ' = 12 × 1,2 = 14,4 orang/jam.</p>
+    <div class="formula-block">ρ' = 14,4/15 = 0,96</div>
+    <div class="formula-block">L' = 0,96/(1−0,96) = 24 nasabah &nbsp;|&nbsp; Lq' = 0,96²/(1−0,96) = 23,04 nasabah</div>
+    <div class="formula-block">W' = 1/(15−14,4) = 1/0,6 = 1,667 jam = 100 menit &nbsp;|&nbsp; Wq' = 14,4/[15 × 0,6] = 1,6 jam = 96 menit</div>
+
+    <p><strong>Interpretasi dan Analisis:</strong> Kenaikan kedatangan 20% (dari ρ = 0,8 ke ρ = 0,96) menyebabkan perubahan dramatis pada kinerja sistem:</p>
     <ul>
-      <li><strong>M/M/s</strong> — beberapa server paralel (bank dengan banyak teller); rumusnya memakai P₀ berbentuk penjumlahan, biasanya dibantu tabel atau software.</li>
-      <li><strong>M/M/1/K</strong> — kapasitas antrian terbatas K (pelanggan ditolak saat penuh).</li>
-      <li><strong>M/G/1</strong> — pelayanan berdistribusi umum; Lq dihitung dengan formula Pollaczek–Khintchine.</li>
-      <li><strong>Analisis biaya</strong> — total biaya = biaya server (c × Cs) + biaya menunggu (L × Cw); jumlah server optimal meminimalkan totalnya.</li>
+      <li>Rata-rata nasabah dalam sistem melonjak dari <strong>4 menjadi 24</strong> (naik 6 kali lipat).</li>
+      <li>Waktu tunggu melonjak dari <strong>16 menit menjadi 96 menit</strong> (naik 6 kali lipat).</li>
+      <li>Total waktu di bank naik dari <strong>20 menit menjadi 100 menit</strong> (naik 5 kali lipat).</li>
     </ul>
+    <p>Contoh ini menggambarkan dengan jelas sifat non-linear antrian: ketika utilisasi mendekati 1, kinerja memburuk secara eksponensial. Bank ini jelas membutuhkan teller tambahan atau perlu mempertimbangkan solusi lain seperti layanan perbankan digital untuk mengalihkan sebagian transaksi.</p>
+
+    <h2>Model M/M/c: Antrian dengan Beberapa Server</h2>
+    <p>Dalam banyak situasi nyata, fasilitas layanan memiliki lebih dari satu server: bank dengan beberapa teller, rumah sakit dengan beberapa dokter, atau call center dengan puluhan agen. Model <strong>M/M/c</strong> (juga ditulis M/M/s) menangani situasi ini.</p>
+
+    <h3>Asumsi Model M/M/c</h3>
+    <ul>
+      <li>Kedatangan mengikuti proses Poisson dengan laju λ.</li>
+      <li>Waktu pelayanan berdistribusi eksponensial dengan laju μ <em>per server</em>.</li>
+      <li>Terdapat <strong>c</strong> server identik yang bekerja paralel.</li>
+      <li>Satu antrian tunggal melayani semua server (model <em>pooled queue</em>).</li>
+      <li>Syarat kestabilan: ρ = λ/(cμ) &lt; 1.</li>
+    </ul>
+
+    <h3>Rumus Kunci M/M/c (Formula Erlang-C)</h3>
+    <p>Probabilitas semua server sibuk (pelanggan harus mengantre) dihitung menggunakan <strong>formula Erlang-C</strong>, yang dinotasikan sebagai C(c, λ/μ):</p>
+    <div class="formula-block">P₀ = [&Sigma;<sub>n=0</sub><sup>c-1</sup> (λ/μ)<sup>n</sup>/n! + (λ/μ)<sup>c</sup>/(c! &middot; (1 − ρ))]<sup>-1</sup></div>
+    <div class="formula-block">C(c, λ/μ) = P(menunggu) = [(λ/μ)<sup>c</sup> / (c! &middot; (1 − ρ))] &middot; P₀</div>
+    <p>Ukuran kinerja M/M/c:</p>
+    <table class="data-table">
+      <thead><tr><th>Ukuran Kinerja</th><th>Rumus</th></tr></thead>
+      <tbody>
+        <tr><td>Utilisasi per server</td><td>ρ = λ / (c μ)</td></tr>
+        <tr><td>Rata-rata pelanggan mengantre</td><td>Lq = C(c, λ/μ) &middot; ρ / (1 − ρ)</td></tr>
+        <tr><td>Rata-rata waktu mengantre</td><td>Wq = Lq / λ</td></tr>
+        <tr><td>Rata-rata waktu dalam sistem</td><td>W = Wq + 1/μ</td></tr>
+        <tr><td>Rata-rata pelanggan dalam sistem</td><td>L = λ W</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Kapan Menggunakan M/M/c vs Beberapa M/M/1?</h3>
+    <p>Secara umum, <strong>satu antrian tunggal dengan c server</strong> (M/M/c) lebih efisien daripada <strong>c antrian terpisah masing-masing dengan 1 server</strong> (c buah M/M/1). Ini karena dalam model <em>pooled queue</em>, server yang sedang menganggur langsung melayani pelanggan berikutnya dari antrian tunggal, sehingga tidak ada server yang idle sementara di antrian lain ada yang menunggu. Model M/M/c menghasilkan Lq dan Wq yang lebih kecil dibandingkan c buah M/M/1 terpisah dengan total kapasitas yang sama.</p>
+
+    <h2>Model M/M/1/K: Antrian dengan Kapasitas Terbatas</h2>
+    <p>Model <strong>M/M/1/K</strong> merupakan variasi M/M/1 di mana sistem hanya dapat menampung maksimum <strong>K</strong> pelanggan (termasuk yang sedang dilayani). Jika pelanggan datang saat sistem penuh (sudah ada K orang), pelanggan tersebut <strong>ditolak</strong> (<em>blocked</em>) dan meninggalkan sistem tanpa dilayani.</p>
+
+    <h3>Perbedaan Utama dengan M/M/1</h3>
+    <ul>
+      <li><strong>Tidak memerlukan ρ &lt; 1:</strong> Karena kapasitas terbatas, sistem selalu mencapai steady-state bahkan jika λ &gt; μ. Pelanggan yang ditolak secara otomatis membatasi jumlah orang dalam sistem.</li>
+      <li><strong>Laju kedatangan efektif:</strong> Tidak semua pelanggan yang datang masuk ke sistem. Laju kedatangan efektif λ<sub>eff</sub> = λ(1 − P<sub>K</sub>), di mana P<sub>K</sub> adalah peluang sistem penuh.</li>
+      <li><strong>Pelanggan hilang:</strong> Fraksi pelanggan yang ditolak = P<sub>K</sub>. Ini menjadi metrik penting — misalnya, call center ingin menjaga persentase panggilan yang diblokir di bawah 2%.</li>
+    </ul>
+
+    <h3>Rumus M/M/1/K</h3>
+    <p>Untuk ρ ≠ 1:</p>
+    <div class="formula-block">P<sub>n</sub> = [(1 − ρ) / (1 − ρ<sup>K+1</sup>)] &middot; ρ<sup>n</sup> &nbsp;&nbsp; untuk n = 0, 1, ..., K</div>
+    <div class="formula-block">L = ρ/(1−ρ) − (K+1)ρ<sup>K+1</sup>/(1−ρ<sup>K+1</sup>)</div>
+    <p>Contoh penerapan: ruang tunggu klinik yang hanya memiliki 8 kursi (K = 9 termasuk yang dilayani), buffer router jaringan, tempat parkir dengan kapasitas terbatas.</p>
+
+    <h2>Analisis Ekonomi Antrian</h2>
+    <p>Dalam praktik, tujuan akhir analisis antrian bukan sekadar menghitung L, Lq, W, Wq — melainkan membuat <strong>keputusan optimal tentang kapasitas pelayanan</strong>. Pendekatan ekonomi menerjemahkan ukuran kinerja antrian menjadi biaya, kemudian mencari konfigurasi yang meminimalkan total biaya.</p>
+
+    <h3>Komponen Biaya</h3>
+    <p>Total biaya per satuan waktu (TC) terdiri dari dua komponen:</p>
+    <div class="formula-block">TC(c) = C<sub>s</sub> &times; c + C<sub>w</sub> &times; L(c)</div>
+    <p>di mana:</p>
+    <ul>
+      <li><strong>C<sub>s</sub></strong> = biaya per server per satuan waktu (gaji, overhead, pemeliharaan peralatan).</li>
+      <li><strong>c</strong> = jumlah server.</li>
+      <li><strong>C<sub>w</sub></strong> = biaya menunggu per pelanggan per satuan waktu (kerugian produktivitas, biaya ketidakpuasan, potensi kehilangan pelanggan).</li>
+      <li><strong>L(c)</strong> = rata-rata jumlah pelanggan dalam sistem sebagai fungsi dari jumlah server c.</li>
+    </ul>
+
+    <h3>Contoh Analisis Biaya</h3>
+    <p>Sebuah bengkel memiliki λ = 8 unit/jam dan μ = 10 unit/jam per mekanik. Biaya satu mekanik C<sub>s</sub> = Rp100.000/jam. Biaya menunggu (downtime mesin pelanggan) C<sub>w</sub> = Rp50.000/jam per unit.</p>
+    <ul>
+      <li><strong>Dengan 1 mekanik (M/M/1):</strong> L = 4, TC = 100.000 × 1 + 50.000 × 4 = Rp300.000/jam.</li>
+      <li><strong>Dengan 2 mekanik (M/M/2):</strong> ρ = 8/(2×10) = 0,4. Menggunakan rumus M/M/c, L ≈ 0,952, TC = 100.000 × 2 + 50.000 × 0,952 = Rp247.600/jam.</li>
+      <li><strong>Dengan 3 mekanik (M/M/3):</strong> ρ = 8/(3×10) = 0,267. L ≈ 0,837, TC = 100.000 × 3 + 50.000 × 0,837 = Rp341.850/jam.</li>
+    </ul>
+    <p>Dalam contoh ini, <strong>2 mekanik</strong> memberikan total biaya minimum. Menambah mekanik ketiga menaikkan biaya kapasitas lebih besar daripada penghematan biaya menunggu. Prosedur ini bisa diotomatiskan dengan menghitung TC(c) untuk c = 1, 2, 3, ... dan memilih c* yang menghasilkan TC minimum.</p>
+
+    <h3>Tantangan Menentukan Biaya Menunggu</h3>
+    <p>Dalam praktik, menentukan C<sub>w</sub> lebih sulit daripada C<sub>s</sub>. Biaya menunggu seringkali bersifat intangible: berapa nilai kepuasan pelanggan? Berapa kerugian jika pelanggan memutuskan tidak jadi membeli? Pendekatan yang sering digunakan meliputi analisis sensitivitas (menghitung keputusan optimal untuk berbagai nilai C<sub>w</sub>) dan pendekatan target <em>service level</em> (misalnya: menetapkan bahwa 95% pelanggan harus menunggu kurang dari 5 menit, lalu menentukan jumlah server yang memenuhi target).</p>
+
+    <h2>Penerapan Teori Antrian di Industri</h2>
+    <p>Teori antrian memiliki penerapan luas di berbagai sektor industri. Berikut beberapa contoh penerapan yang paling signifikan:</p>
+
+    <h3>Industri Manufaktur</h3>
+    <p>Dalam lingkungan manufaktur, antrian muncul di berbagai titik dalam proses produksi. <strong>Antrian produksi</strong> terjadi ketika barang setengah jadi (WIP) menunggu diproses di stasiun kerja berikutnya — analisis ini menjadi dasar pendekatan <em>Theory of Constraints</em> (TOC) dari Goldratt. <strong>Antrian mesin</strong> terbentuk ketika mesin-mesin yang rusak menunggu diperbaiki oleh teknisi pemeliharaan — model M/M/c digunakan untuk menentukan jumlah teknisi optimal. <strong>Antrian material</strong> muncul di gudang atau area penerimaan saat material menunggu diperiksa dan disimpan. Prinsip Little's Law (WIP = Throughput × Cycle Time) menjadi fondasi pengelolaan WIP di sistem kanban.</p>
+
+    <h3>Layanan Kesehatan</h3>
+    <p>Rumah sakit menggunakan model antrian untuk perencanaan kapasitas: menentukan jumlah tempat tidur di ICU, jumlah dokter di UGD, jumlah ruang operasi, dan jadwal perawat. Model antrian dengan prioritas digunakan untuk sistem triase, di mana pasien kritis dilayani lebih dahulu. Waktu tunggu pasien di poliklinik dapat dianalisis dengan model M/G/1 karena waktu konsultasi dokter biasanya tidak berdistribusi eksponensial.</p>
+
+    <h3>Logistik dan Transportasi</h3>
+    <p>Dermaga pelabuhan menggunakan model antrian untuk menentukan jumlah crane bongkar-muat. Bandara menganalisis jumlah runway dan gate yang diperlukan. Perusahaan ekspedisi menentukan jumlah kendaraan dan pengemudi berdasarkan pola permintaan. Gerbang tol jalan raya merupakan contoh klasik M/M/c di mana jumlah gardu tol ditentukan berdasarkan volume lalu lintas jam sibuk.</p>
+
+    <h3>Teknologi Informasi</h3>
+    <p>Dalam bidang TI, antrian ada di mana-mana: <strong>server web</strong> mengantre HTTP requests, <strong>database</strong> mengantre query, <strong>printer</strong> mengantre dokumen, dan <strong>router</strong> mengantre paket data. Kapasitas server (berapa banyak VM atau container yang perlu disediakan) dihitung menggunakan model antrian. <em>Auto-scaling</em> pada cloud computing pada dasarnya mengotomatiskan keputusan jumlah server optimal berdasarkan prinsip teori antrian — menambah instance ketika utilisasi tinggi dan menguranginya saat permintaan rendah.</p>
 
     <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
     <div class="faq-item">
       <h3>Apa beda L dan Lq?</h3>
-      <p>L menghitung semua pelanggan dalam <em>sistem</em> (yang sedang dilayani + yang mengantre), sedangkan Lq hanya yang <em>mengantre</em>. Selisihnya L − Lq = ρ, yaitu rata-rata pelanggan yang sedang dilayani.</p>
+      <p>L menghitung semua pelanggan dalam <em>sistem</em> (yang sedang dilayani + yang mengantre), sedangkan Lq hanya yang <em>mengantre</em>. Selisihnya L − Lq = ρ, yaitu rata-rata pelanggan yang sedang dilayani. Dalam model M/M/1, karena hanya ada satu server, rata-rata pelanggan yang dilayani = ρ (karena server sibuk dengan probabilitas ρ).</p>
     </div>
     <div class="faq-item">
       <h3>Bagaimana memeriksa asumsi Poisson di data nyata?</h3>
-      <p>Catat jumlah kedatangan per interval waktu yang sama, lalu uji kecocokan distribusi Poisson dengan uji chi-square goodness-of-fit — prosedur standar di praktikum statistika industri.</p>
+      <p>Catat jumlah kedatangan per interval waktu yang sama (misalnya per 10 menit selama beberapa hari), lalu uji kecocokan distribusi Poisson dengan uji <strong>chi-square goodness-of-fit</strong> — prosedur standar di praktikum statistika industri. Selain itu, karena distribusi Poisson memiliki mean = variance, Anda dapat menghitung indeks dispersi (variance/mean) dari data; jika hasilnya mendekati 1, asumsi Poisson kemungkinan valid.</p>
     </div>
     <div class="faq-item">
       <h3>Kenapa hasil rumus disebut steady-state?</h3>
-      <p>Rumus M/M/1 menggambarkan kondisi rata-rata jangka panjang setelah sistem "stabil", bukan menit-menit awal buka layanan. Untuk perilaku transien atau sistem kompleks, digunakan simulasi (misal dengan software Arena atau Python/SimPy).</p>
+      <p>Rumus M/M/1 menggambarkan kondisi rata-rata jangka panjang setelah sistem "stabil", bukan menit-menit awal buka layanan. Pada awal operasi, sistem masih dalam kondisi <em>transient</em> di mana perilaku berubah-ubah. Setelah cukup lama beroperasi, ukuran kinerja konvergen ke nilai steady-state. Untuk menganalisis perilaku transien atau sistem yang sangat kompleks, digunakan <strong>simulasi</strong> (misalnya dengan software Arena, AnyLogic, atau Python/SimPy).</p>
     </div>
+    <div class="faq-item">
+      <h3>Apakah Little's Law berlaku untuk antrian non-FIFO?</h3>
+      <p>Ya. Salah satu keunggulan Little's Law adalah ia berlaku untuk <em>semua</em> disiplin antrian — FIFO, LIFO, prioritas, bahkan random. Hukum ini hanya memerlukan sistem dalam keadaan stabil dan laju kedatangan rata-rata jangka panjang terdefinisi. Disiplin antrian mempengaruhi distribusi waktu tunggu masing-masing pelanggan (ada yang menunggu lebih lama, ada yang lebih singkat), tetapi <em>rata-ratanya</em> tetap memenuhi L = λW.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Bagaimana jika ρ lebih dari 1?</h3>
+      <p>Jika ρ = λ/μ ≥ 1 pada model M/M/1, antrian akan tumbuh tanpa batas dan sistem tidak pernah mencapai steady-state. Rumus-rumus M/M/1 tidak berlaku. Solusinya: tambah kapasitas pelayanan (naikkan μ atau tambah server sehingga menggunakan model M/M/c dengan ρ = λ/(cμ) &lt; 1), kurangi laju kedatangan (misalnya dengan penjadwalan atau sistem reservasi), atau batasi kapasitas sistem (model M/M/1/K) sehingga pelanggan kelebihan ditolak.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apa perbedaan model deterministik (D) dan Markovian (M)?</h3>
+      <p>Pada model deterministik (D), waktu antarkedatangan atau pelayanan bersifat <strong>tetap</strong> (konstan). Contoh: sistem produksi otomatis di mana mesin memproses setiap unit dalam waktu yang persis sama. Pada model Markovian (M), waktu bersifat <strong>acak</strong> mengikuti distribusi eksponensial. Model deterministik (M/D/1) menghasilkan antrian yang lebih pendek dibandingkan M/M/1 dengan utilisasi yang sama, karena variabilitas yang lebih rendah. Rumus Pollaczek-Khintchine menunjukkan bahwa Lq pada M/D/1 tepat setengah dari Lq pada M/M/1.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Software apa yang dapat digunakan untuk analisis antrian?</h3>
+      <p>Untuk model analitik sederhana (M/M/1, M/M/c), spreadsheet seperti Excel sudah cukup — atau gunakan kalkulator di situs ini. Untuk model kompleks atau jaringan antrian, digunakan software simulasi seperti <strong>Arena</strong> (Rockwell Automation), <strong>AnyLogic</strong>, <strong>Simio</strong>, atau library Python seperti <strong>SimPy</strong> dan <strong>CIW</strong>. Untuk analisis Erlang-C di call center, terdapat software khusus seperti <strong>Erlang Calculator</strong>.</p>
+    </div>
+
+    <h2>Rangkuman</h2>
+    <p>Berikut rangkuman poin-poin kunci yang telah dibahas dalam panduan ini:</p>
+    <ul>
+      <li><strong>Teori antrian</strong> memberikan kerangka matematis untuk menganalisis sistem di mana pelanggan menunggu untuk dilayani. Inti masalahnya adalah trade-off antara biaya menunggu dan biaya kapasitas pelayanan.</li>
+      <li><strong>Notasi Kendall A/B/c/K/N/D</strong> mengklasifikasikan model antrian berdasarkan distribusi kedatangan, distribusi pelayanan, jumlah server, kapasitas sistem, ukuran populasi, dan disiplin antrian.</li>
+      <li><strong>Distribusi Poisson dan Eksponensial</strong> mendasari model Markovian (M). Keduanya saling terkait: jika jumlah kedatangan per interval Poisson, maka antarwaktu kedatangan eksponensial. Sifat memoryless menyederhanakan analisis.</li>
+      <li><strong>Little's Law (L = λW)</strong> adalah hukum universal yang berlaku untuk semua sistem antrian stabil, terlepas dari distribusi dan disiplin antrian.</li>
+      <li><strong>Model M/M/1</strong> adalah model paling dasar. Semua ukuran kinerja (ρ, P₀, Pn, L, Lq, W, Wq) diturunkan dari distribusi geometris Pn = (1−ρ)ρ<sup>n</sup>. Kinerja memburuk secara non-linear saat ρ mendekati 1.</li>
+      <li><strong>Model M/M/c</strong> menangani antrian multi-server dan menggunakan formula Erlang-C. Satu antrian tunggal (pooled queue) lebih efisien daripada beberapa antrian terpisah.</li>
+      <li><strong>Model M/M/1/K</strong> menangani sistem berkapasitas terbatas, di mana pelanggan yang datang saat sistem penuh akan ditolak. Sistem ini selalu stabil karena mekanisme pemblokiran.</li>
+      <li><strong>Analisis ekonomi</strong> menerjemahkan ukuran kinerja menjadi biaya total TC(c) = Cs × c + Cw × L(c) dan mencari jumlah server optimal yang meminimalkan total biaya.</li>
+      <li><strong>Penerapan</strong> teori antrian mencakup manufaktur (WIP, pemeliharaan mesin), layanan kesehatan (UGD, poliklinik), logistik (pelabuhan, bandara), dan TI (server, router, cloud scaling).</li>
+    </ul>
 
     <h2>Referensi</h2>
     <ul>
       <li>Little, J. D. C. (1961). "A Proof for the Queuing Formula: L = λW." <em>Operations Research</em>, 9(3), 383–387. — bukti formal Little's Law.</li>
       <li>Kendall, D. G. (1953). "Stochastic Processes Occurring in the Theory of Queues and their Analysis by the Method of the Imbedded Markov Chain." <em>The Annals of Mathematical Statistics</em>, 24(3), 338–354. — asal notasi A/B/c.</li>
-      <li>Hillier, F. S., &amp; Lieberman, G. J. (2021). <em>Introduction to Operations Research</em> (11th ed.), bab Queueing Theory. McGraw-Hill.</li>
-      <li>Gross, D., Shortle, J. F., Thompson, J. M., &amp; Harris, C. M. (2018). <em>Fundamentals of Queueing Theory</em> (5th ed.). Wiley.</li>
-      <li>Heizer, J., Render, B., &amp; Munson, C. (2020). <em>Operations Management</em> (13th ed.), Module D "Waiting-Line Models". Pearson.</li>
+      <li>Hillier, F. S., &amp; Lieberman, G. J. (2021). <em>Introduction to Operations Research</em> (11th ed.), bab Queueing Theory. McGraw-Hill. — buku teks PO yang paling banyak digunakan, mencakup derivasi lengkap model M/M/1, M/M/c, dan analisis ekonomi antrian.</li>
+      <li>Gross, D., Shortle, J. F., Thompson, J. M., &amp; Harris, C. M. (2018). <em>Fundamentals of Queueing Theory</em> (5th ed.). Wiley. — referensi utama teori antrian tingkat lanjut, mencakup jaringan antrian dan model non-Markovian.</li>
+      <li>Taha, H. A. (2017). <em>Operations Research: An Introduction</em> (10th ed.), bab 17–18 "Queueing Systems". Pearson. — pendekatan yang sangat baik untuk pembaca level sarjana, dengan banyak contoh soal dan latihan.</li>
+      <li>Heizer, J., Render, B., &amp; Munson, C. (2020). <em>Operations Management</em> (13th ed.), Module D "Waiting-Line Models". Pearson. — modul ringkas untuk mahasiswa manajemen operasi.</li>
+      <li>Erlang, A. K. (1909). "The Theory of Probabilities and Telephone Conversations." <em>Nyt Tidsskrift for Matematik B</em>, 20, 33–39. — makalah perintis yang memulai teori antrian modern.</li>
+      <li>Cooper, R. B. (1981). <em>Introduction to Queueing Theory</em> (2nd ed.). North-Holland. — teks klasik yang menjelaskan hubungan Poisson-eksponensial dan proses kelahiran-kematian secara mendalam.</li>
     </ul>
 
     <hr class="divider">
@@ -200,6 +462,7 @@
     <a href="about.html">Tentang</a>
     <a href="contact.html">Kontak</a>
     <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Syarat &amp; Ketentuan</a>
   </div>
   <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
 </footer>

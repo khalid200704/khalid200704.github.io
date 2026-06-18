@@ -55,6 +55,26 @@
       "@type": "Question",
       "name": "Apa perbedaan EOQ dan ROP?",
       "acceptedAnswer": { "@type": "Answer", "text": "EOQ menjawab berapa banyak yang harus dipesan, sedangkan ROP (Reorder Point) menjawab kapan harus memesan, yaitu saat posisi persediaan turun ke tingkat d×L + safety stock." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bagaimana jika permintaan berfluktuasi musiman?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Untuk permintaan musiman, gunakan rata-rata permintaan tahunan sebagai pendekatan awal lalu tambahkan safety stock lebih besar pada bulan puncak, bagi tahun menjadi beberapa periode dengan EOQ terpisah, atau gunakan model lot-sizing dinamis seperti Wagner-Whitin atau Silver-Meal." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah EOQ masih relevan di era digital?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sangat relevan. Prinsip trade-off antara biaya pesan dan biaya simpan tetap berlaku. Platform e-commerce besar menggunakan algoritma berbasis EOQ untuk mengelola jutaan SKU. Yang berubah di era digital adalah kemampuan mengumpulkan data lebih akurat dan menghitung ulang EOQ secara real-time." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bagaimana menghitung H jika hanya diketahui persentase harga?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Jika biaya penyimpanan dinyatakan sebagai persentase (i) dari harga per unit (P), maka H = i × P. Misalnya, harga barang Rp 50.000 dengan biaya simpan 20% per tahun menghasilkan H = 20% × 50.000 = Rp 10.000/unit/tahun. Persentase biaya simpan di industri umumnya 15-30% per tahun." }
+    },
+    {
+      "@type": "Question",
+      "name": "Apa hubungan EOQ dengan konsep Just-In-Time (JIT)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "JIT dapat dipahami sebagai kondisi di mana biaya pemesanan S ditekan mendekati nol. Jika S mendekati nol, EOQ juga mendekati nol — artinya pesan dalam lot sangat kecil tapi sangat sering, persis seperti prinsip JIT. Jadi EOQ dan JIT bukan bertentangan, melainkan berada pada spektrum yang sama." }
     }
   ]
 }
@@ -105,6 +125,54 @@
     <h2>Apa itu EOQ?</h2>
     <p><strong>Economic Order Quantity (EOQ)</strong> adalah jumlah unit yang sebaiknya dipesan setiap kali melakukan pemesanan agar <strong>total biaya persediaan tahunan menjadi minimum</strong>. Model ini pertama kali dikembangkan oleh Ford W. Harris pada tahun 1913 dan sampai sekarang masih menjadi materi inti mata kuliah Manajemen Persediaan dan Perencanaan &amp; Pengendalian Produksi (PPIC).</p>
     <p>Ide dasarnya: ada dua biaya yang saling tarik-menarik. Jika Anda memesan dalam jumlah besar tetapi jarang, <em>biaya pemesanan</em> turun tetapi <em>biaya penyimpanan</em> naik karena rata-rata stok di gudang lebih banyak. Sebaliknya, memesan sedikit tapi sering menekan biaya simpan namun menaikkan biaya pesan. EOQ adalah titik keseimbangan di mana kedua biaya tersebut sama besar.</p>
+    <p>Dalam konteks manajemen rantai pasok modern, EOQ tetap menjadi fondasi penting karena memberikan kerangka berpikir kuantitatif yang jelas. Meskipun kondisi nyata jarang memenuhi semua asumsi model, pemahaman EOQ membantu manajer persediaan mengambil keputusan berbasis data alih-alih mengandalkan intuisi semata.</p>
+
+    <h2>Latar Belakang Historis EOQ</h2>
+    <p>Model EOQ pertama kali dipublikasikan oleh <strong>Ford Whitman Harris</strong> pada tahun 1913 dalam artikelnya berjudul <em>"How Many Parts to Make at Once"</em> yang terbit di majalah <em>Factory, The Magazine of Management</em>. Harris, seorang insinyur yang bekerja di Westinghouse Electric, mengamati bahwa pabrik-pabrik saat itu memesan bahan baku tanpa perhitungan sistematis — kadang terlalu banyak sehingga gudang penuh, kadang terlalu sedikit sehingga produksi terhenti.</p>
+    <p>Kontribusi Harris terletak pada formalisasi trade-off antara biaya pemesanan dan biaya penyimpanan ke dalam satu persamaan matematis. Ia menunjukkan bahwa ada satu titik optimal di mana total biaya kedua komponen tersebut mencapai nilai minimum. Namun, model ini baru mendapat perhatian luas setelah R.H. Wilson mempopulerkannya pada tahun 1934, sehingga model EOQ juga sering disebut sebagai <strong>model Wilson</strong> atau <strong>model Harris-Wilson</strong>.</p>
+    <p>Lebih dari satu abad setelah publikasi awal, EOQ tetap relevan dan diajarkan secara universal di program studi Teknik Industri, Manajemen Operasi, dan Logistik di seluruh dunia. Mengapa? Karena prinsip fundamentalnya — menyeimbangkan biaya tetap per pesanan dengan biaya variabel penyimpanan — berlaku di hampir semua konteks bisnis, mulai dari manufaktur berskala besar hingga toko ritel kecil. Di era digital, perangkat lunak ERP (Enterprise Resource Planning) seperti SAP dan Oracle menggunakan logika EOQ sebagai salah satu modul inti dalam perencanaan kebutuhan material (MRP).</p>
+    <p>Selain itu, pemahaman EOQ menjadi landasan untuk mempelajari model persediaan yang lebih kompleks, seperti model diskon kuantitas, model produksi bertahap (EPQ), model persediaan probabilistik, dan model multi-eselon. Tanpa menguasai EOQ, mahasiswa akan kesulitan memahami pengembangan-pengembangan lanjutan tersebut.</p>
+
+    <h2>Komponen Biaya Persediaan</h2>
+    <p>Untuk memahami EOQ secara mendalam, kita perlu mengurai komponen biaya persediaan yang menjadi dasar perhitungannya. Secara umum, biaya persediaan terdiri dari tiga kategori utama: <strong>biaya pemesanan (ordering cost)</strong>, <strong>biaya penyimpanan (holding/carrying cost)</strong>, dan <strong>biaya kekurangan stok (stockout/shortage cost)</strong>. Model EOQ dasar hanya mempertimbangkan dua kategori pertama.</p>
+
+    <h3>Biaya Pemesanan (Ordering Cost / Setup Cost)</h3>
+    <p>Biaya pemesanan adalah seluruh biaya yang timbul setiap kali perusahaan melakukan satu kali pemesanan, terlepas dari jumlah unit yang dipesan. Komponen-komponen biaya pemesanan meliputi:</p>
+    <ul>
+      <li><strong>Biaya administratif</strong> — waktu dan tenaga staf purchasing untuk membuat purchase order, menghubungi supplier, melakukan negosiasi, dan memproses dokumen terkait.</li>
+      <li><strong>Biaya pengiriman (shipping/freight)</strong> — ongkos kirim yang bersifat tetap per pengiriman, misalnya biaya minimum truk atau biaya ekspedisi per kiriman.</li>
+      <li><strong>Biaya penerimaan (receiving)</strong> — biaya tenaga kerja dan peralatan di bagian penerimaan barang: unloading, pengecekan fisik, dan penyortiran.</li>
+      <li><strong>Biaya inspeksi dan quality control</strong> — biaya pemeriksaan kualitas sampel atau seluruh lot yang diterima, termasuk biaya pengujian laboratorium jika diperlukan.</li>
+      <li><strong>Biaya setup mesin</strong> — khusus untuk konteks produksi, yaitu biaya mengatur ulang mesin setiap kali berganti produk, termasuk waktu henti mesin (downtime) dan biaya material uji coba (trial run).</li>
+    </ul>
+    <p>Dalam model EOQ, seluruh komponen ini dijumlahkan menjadi satu angka <strong>S</strong> (biaya per pesanan). Jika perusahaan memesan sebanyak N kali dalam setahun, maka total biaya pemesanan tahunan adalah N &times; S = (D/Q) &times; S.</p>
+
+    <h3>Biaya Penyimpanan (Holding Cost / Carrying Cost)</h3>
+    <p>Biaya penyimpanan adalah biaya yang timbul karena menyimpan persediaan di gudang selama periode tertentu. Komponen-komponen biaya penyimpanan meliputi:</p>
+    <ul>
+      <li><strong>Biaya modal (cost of capital)</strong> — biaya oportunitas dari uang yang tertanam dalam persediaan. Jika perusahaan menginvestasikan dana tersebut di tempat lain, berapa return yang hilang? Biasanya dihitung berdasarkan weighted average cost of capital (WACC) perusahaan. Komponen ini sering menjadi porsi terbesar, bisa mencapai 10-15% dari nilai barang per tahun.</li>
+      <li><strong>Biaya sewa gudang dan utilitas</strong> — sewa ruang penyimpanan, listrik (terutama untuk cold storage), keamanan, dan pemeliharaan fasilitas gudang.</li>
+      <li><strong>Biaya keusangan (obsolescence)</strong> — risiko barang menjadi usang karena perubahan teknologi, tren pasar, atau perubahan desain produk. Sangat signifikan untuk industri elektronik dan fashion.</li>
+      <li><strong>Biaya asuransi</strong> — premi asuransi untuk melindungi persediaan dari risiko kebakaran, banjir, pencurian, dan bencana lainnya.</li>
+      <li><strong>Biaya kerusakan dan penyusutan (spoilage/shrinkage)</strong> — kerugian akibat barang rusak selama penyimpanan, kedaluwarsa (untuk produk makanan dan farmasi), penguapan, atau pencurian internal.</li>
+      <li><strong>Biaya penanganan (handling cost)</strong> — biaya tenaga kerja dan peralatan material handling (forklift, rak, pallet) untuk memindahkan dan mengelola barang di gudang.</li>
+      <li><strong>Biaya pencatatan dan sistem</strong> — biaya operasional sistem manajemen gudang (WMS), barcode, RFID, dan cycle counting.</li>
+    </ul>
+    <p>Seluruh komponen ini dijumlahkan menjadi <strong>H</strong> (biaya simpan per unit per tahun). Karena model EOQ mengasumsikan persediaan berkurang secara linier dari Q ke 0, rata-rata persediaan adalah Q/2, sehingga total biaya penyimpanan tahunan adalah (Q/2) &times; H.</p>
+
+    <h3>Perbandingan Biaya Pemesanan vs. Biaya Penyimpanan</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>Aspek</th><th>Biaya Pemesanan (S)</th><th>Biaya Penyimpanan (H)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Sifat</td><td>Timbul per transaksi pemesanan</td><td>Timbul per unit per periode waktu</td></tr>
+        <tr><td>Hubungan dengan Q</td><td>Berbanding terbalik — makin besar Q, makin jarang pesan, makin rendah total biaya pesan</td><td>Berbanding lurus — makin besar Q, makin banyak rata-rata stok, makin tinggi total biaya simpan</td></tr>
+        <tr><td>Komponen utama</td><td>Administrasi, pengiriman, inspeksi, setup mesin</td><td>Biaya modal, gudang, keusangan, asuransi, kerusakan</td></tr>
+        <tr><td>Cara estimasi</td><td>Hitung total biaya departemen purchasing per tahun, bagi dengan jumlah pesanan per tahun</td><td>Hitung sebagai persentase nilai barang (umumnya 15-30% per tahun) atau hitung komponen satu per satu</td></tr>
+        <tr><td>Rumus total tahunan</td><td>(D / Q) &times; S</td><td>(Q / 2) &times; H</td></tr>
+      </tbody>
+    </table>
 
     <h2>Rumus EOQ</h2>
     <div class="formula-block">EOQ = √( 2 × D × S / H )</div>
@@ -123,6 +191,46 @@
       <li><strong>Total biaya persediaan minimum:</strong> TC = (D/EOQ)·S + (EOQ/2)·H = √(2·D·S·H)</li>
     </ul>
 
+    <h2>Derivasi Rumus EOQ</h2>
+    <p>Bagaimana rumus EOQ = √(2DS/H) diperoleh? Berikut derivasi matematisnya langkah demi langkah. Pemahaman derivasi ini penting agar Anda tidak sekadar menghafal rumus, tetapi benar-benar memahami logika di baliknya.</p>
+
+    <h3>Langkah 1: Bangun Fungsi Total Biaya</h3>
+    <p>Total biaya persediaan per tahun (TC) terdiri dari dua komponen:</p>
+    <div class="formula-block">TC(Q) = Biaya Pemesanan + Biaya Penyimpanan = (D/Q) × S + (Q/2) × H</div>
+    <p>Penjelasan setiap suku:</p>
+    <ul>
+      <li><strong>(D/Q) &times; S</strong> — Jika permintaan setahun adalah D unit dan setiap kali pesan sebanyak Q unit, maka frekuensi pemesanan = D/Q. Dikalikan biaya per pesan S, diperoleh total biaya pemesanan setahun.</li>
+      <li><strong>(Q/2) &times; H</strong> — Dengan asumsi persediaan berkurang linier dari Q (saat barang datang) ke 0 (tepat sebelum pesanan berikutnya datang), rata-rata persediaan di gudang = Q/2. Dikalikan biaya simpan per unit H, diperoleh total biaya penyimpanan setahun.</li>
+    </ul>
+
+    <h3>Langkah 2: Ambil Turunan Pertama terhadap Q</h3>
+    <p>Untuk menemukan Q yang meminimalkan TC, kita hitung turunan pertama (first derivative) TC terhadap Q, lalu set sama dengan nol:</p>
+    <div class="formula-block">dTC/dQ = −DS/Q² + H/2</div>
+    <p>Penjelasan: turunan dari (D·S)·Q⁻¹ terhadap Q adalah −DS·Q⁻² = −DS/Q², dan turunan dari (H/2)·Q terhadap Q adalah H/2.</p>
+
+    <h3>Langkah 3: Set Turunan Pertama = 0 dan Selesaikan untuk Q*</h3>
+    <div class="formula-block">−DS/Q² + H/2 = 0</div>
+    <p>Pindahkan suku pertama ke ruas kanan:</p>
+    <div class="formula-block">H/2 = DS/Q²</div>
+    <p>Kalikan kedua ruas dengan Q² dan bagi dengan H/2:</p>
+    <div class="formula-block">Q² = 2DS/H</div>
+    <p>Ambil akar kuadrat kedua ruas (hanya akar positif yang bermakna):</p>
+    <div class="formula-block">Q* = EOQ = √(2DS/H)</div>
+
+    <h3>Langkah 4: Verifikasi dengan Turunan Kedua</h3>
+    <p>Untuk memastikan bahwa Q* adalah titik minimum (bukan maksimum), kita periksa turunan kedua:</p>
+    <div class="formula-block">d²TC/dQ² = 2DS/Q³</div>
+    <p>Karena D, S, dan Q selalu positif, maka d²TC/dQ² > 0 untuk semua Q > 0. Ini mengkonfirmasi bahwa Q* memang menghasilkan nilai minimum TC. Artinya, fungsi TC berbentuk cembung ke atas (convex), sehingga hanya ada satu titik minimum global.</p>
+
+    <h3>Sifat Menarik pada Titik EOQ</h3>
+    <p>Substitusikan Q* = √(2DS/H) kembali ke fungsi biaya. Biaya pemesanan pada titik optimal:</p>
+    <div class="formula-block">Biaya Pesan = DS/Q* = DS/√(2DS/H) = √(DSH/2)</div>
+    <p>Biaya penyimpanan pada titik optimal:</p>
+    <div class="formula-block">Biaya Simpan = Q*H/2 = √(2DS/H) × H/2 = √(DSH/2)</div>
+    <p>Keduanya <strong>sama persis</strong>. Ini adalah sifat fundamental EOQ: <em>pada titik optimal, biaya pemesanan tahunan selalu sama dengan biaya penyimpanan tahunan</em>. Sifat ini sangat berguna sebagai alat verifikasi — jika hasil perhitungan Anda menunjukkan kedua biaya tersebut tidak sama, berarti ada kesalahan.</p>
+    <p>Total biaya minimum per tahun:</p>
+    <div class="formula-block">TC* = √(DSH/2) + √(DSH/2) = 2 × √(DSH/2) = √(2DSH)</div>
+
     <h2>Asumsi Model EOQ</h2>
     <p>Model EOQ dasar valid jika asumsi-asumsi berikut terpenuhi (Heizer &amp; Render, <em>Operations Management</em>):</p>
     <ol>
@@ -134,16 +242,52 @@
       <li>Stockout (kehabisan stok) dapat dihindari sepenuhnya jika pemesanan dilakukan tepat waktu.</li>
     </ol>
     <p>Jika permintaan berfluktuasi cukup besar, gunakan EOQ sebagai estimasi awal dan tambahkan <a href="panduan-eoq.html#safety-stock">safety stock</a> untuk mengantisipasi variabilitas.</p>
+    <p>Penting untuk dipahami bahwa asumsi-asumsi ini jarang terpenuhi secara sempurna di dunia nyata. Namun, model EOQ tetap memberikan <em>starting point</em> yang sangat baik. Dalam praktik, manajer persediaan menggunakan hasil EOQ sebagai dasar, lalu melakukan penyesuaian berdasarkan pertimbangan praktis seperti kapasitas gudang, minimum order quantity (MOQ) supplier, dan pola permintaan musiman.</p>
 
-    <h2>Contoh Soal EOQ dan Pembahasan</h2>
+    <h2>Contoh Soal 1: Distributor Sparepart</h2>
     <p><strong>Soal:</strong> Sebuah distributor sparepart memiliki permintaan tahunan D = 10.000 unit. Biaya setiap kali memesan S = Rp 50.000 dan biaya penyimpanan H = Rp 2.000 per unit per tahun. Perusahaan beroperasi 300 hari kerja per tahun. Tentukan EOQ, frekuensi pemesanan, jarak antar pesanan, dan total biaya persediaan minimum.</p>
     <p><strong>Langkah 1 — Hitung EOQ:</strong></p>
-    <div class="formula-block">EOQ = √(2 × 10.000 × 50.000 / 2.000) = √500.000 ≈ 707 unit</div>
+    <div class="formula-block">EOQ = √(2 × 10.000 × 50.000 / 2.000) = √500.000.000/2.000 = √500.000 ≈ 707 unit</div>
     <p><strong>Langkah 2 — Frekuensi pemesanan per tahun:</strong> N = 10.000 / 707 ≈ 14,1 ≈ 14 kali per tahun.</p>
     <p><strong>Langkah 3 — Jarak antar pesanan:</strong> T = 300 / 14,1 ≈ 21 hari kerja. Artinya perusahaan memesan rata-rata setiap 3 minggu sekali.</p>
     <p><strong>Langkah 4 — Total biaya persediaan minimum:</strong></p>
     <div class="formula-block">TC = √(2 × D × S × H) = √(2 × 10.000 × 50.000 × 2.000) ≈ Rp 1.414.214 /tahun</div>
     <p>Pada titik EOQ, biaya pemesanan tahunan (≈ Rp 707.107) sama besar dengan biaya penyimpanan tahunan (≈ Rp 707.107) — inilah ciri khas solusi optimal model EOQ.</p>
+
+    <h2>Contoh Soal 2: Toko Roti (dengan Analisis Sensitivitas)</h2>
+    <p><strong>Soal:</strong> Sebuah toko roti "Bakery Nusantara" menggunakan tepung terigu sebagai bahan baku utama. Data yang diketahui:</p>
+    <ul>
+      <li>Permintaan tepung terigu per tahun: D = 5.200 kg (rata-rata 100 kg/minggu, 52 minggu)</li>
+      <li>Biaya pemesanan per kali pesan: S = Rp 75.000 (termasuk ongkos kirim, administrasi, dan inspeksi)</li>
+      <li>Harga tepung terigu per kg: P = Rp 12.000</li>
+      <li>Biaya penyimpanan dinyatakan sebagai 25% dari harga barang per tahun: H = 25% &times; Rp 12.000 = Rp 3.000/kg/tahun</li>
+      <li>Toko beroperasi 312 hari per tahun (6 hari per minggu)</li>
+    </ul>
+    <p><strong>Langkah 1 — Hitung EOQ:</strong></p>
+    <div class="formula-block">EOQ = √(2 × 5.200 × 75.000 / 3.000) = √(780.000.000 / 3.000) = √260.000 ≈ 510 kg</div>
+    <p><strong>Langkah 2 — Frekuensi pemesanan:</strong> N = 5.200 / 510 ≈ 10,2 kali per tahun, dibulatkan menjadi sekitar 10 kali per tahun.</p>
+    <p><strong>Langkah 3 — Jarak antar pesanan:</strong> T = 312 / 10,2 ≈ 31 hari kerja, atau sekitar 5 minggu sekali.</p>
+    <p><strong>Langkah 4 — Total biaya persediaan minimum:</strong></p>
+    <div class="formula-block">TC = √(2 × 5.200 × 75.000 × 3.000) = √(2.340.000.000.000) ≈ Rp 1.529.706 /tahun</div>
+    <p><strong>Verifikasi:</strong> Biaya pesan = (5.200/510) &times; 75.000 ≈ Rp 764.706. Biaya simpan = (510/2) &times; 3.000 ≈ Rp 765.000. Kedua nilai hampir sama (perbedaan kecil akibat pembulatan), mengkonfirmasi perhitungan sudah benar.</p>
+
+    <h3>Analisis Sensitivitas</h3>
+    <p>Salah satu kelebihan model EOQ adalah <strong>ketahanannya (robustness)</strong> terhadap perubahan parameter. Karena kurva total biaya relatif landai di sekitar titik optimal, pergeseran parameter tidak menyebabkan lonjakan biaya yang drastis. Mari kita buktikan dengan skenario perubahan pada contoh Bakery Nusantara:</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Skenario</th><th>Perubahan</th><th>EOQ Baru</th><th>TC Baru</th><th>Kenaikan TC</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Basis</td><td>—</td><td>510 kg</td><td>Rp 1.529.706</td><td>—</td></tr>
+        <tr><td>D naik 20%</td><td>D = 6.240</td><td>558 kg</td><td>Rp 1.674.316</td><td>+9,5%</td></tr>
+        <tr><td>S naik 20%</td><td>S = 90.000</td><td>558 kg</td><td>Rp 1.674.316</td><td>+9,5%</td></tr>
+        <tr><td>H naik 20%</td><td>H = 3.600</td><td>465 kg</td><td>Rp 1.674.316</td><td>+9,5%</td></tr>
+        <tr><td>D naik 20%, H naik 20%</td><td>D = 6.240, H = 3.600</td><td>510 kg</td><td>Rp 1.835.760</td><td>+20%</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>Temuan penting:</strong> Ketika satu parameter (D, S, atau H) berubah 20%, total biaya hanya naik sekitar 9,5% — bukan 20%. Ini karena EOQ berada di bawah tanda akar kuadrat, sehingga dampak perubahan parameter "teredam." Implikasi praktisnya: <em>estimasi parameter tidak perlu sempurna</em>. Bahkan jika estimasi biaya penyimpanan meleset 20%, total biaya persediaan hanya bergeser kurang dari 10% dari nilai optimalnya. Inilah yang membuat model EOQ sangat praktis digunakan meskipun data yang tersedia tidak selalu akurat.</p>
 
     <h2 id="rop">Kapan Harus Memesan? Reorder Point (ROP)</h2>
     <p>EOQ menjawab <em>berapa banyak</em> yang dipesan; <strong>Reorder Point</strong> menjawab <em>kapan</em> memesan. Pesanan baru harus dilakukan saat posisi persediaan turun ke tingkat:</p>
@@ -155,27 +299,108 @@
     <div class="formula-block">SS = Z × σd × √L</div>
     <p>Z adalah nilai standar normal sesuai <em>service level</em> yang diinginkan (Z = 1,645 untuk 95%; Z = 2,05 untuk 98%; Z = 2,33 untuk 99%), σd adalah standar deviasi permintaan harian. Contoh: dengan service level 98%, σd = 10 unit/hari, dan L = 7 hari, maka SS = 2,05 × 10 × √7 ≈ 55 unit, sehingga ROP menjadi 350 + 55 = 405 unit.</p>
 
+    <h2>Variasi Model EOQ</h2>
+    <p>Model EOQ dasar memiliki beberapa pengembangan untuk menangani situasi yang lebih realistis. Berikut tiga variasi utama yang sering muncul dalam literatur dan soal ujian.</p>
+
+    <h3>1. EOQ dengan Diskon Kuantitas (Quantity Discount Model)</h3>
+    <p>Dalam praktik, banyak supplier menawarkan harga lebih murah jika pembeli memesan dalam jumlah besar. Model ini mempertimbangkan bahwa harga per unit (P) berubah berdasarkan jumlah pesanan, sehingga biaya pembelian (purchasing cost) turut masuk ke dalam fungsi total biaya.</p>
+    <p>Prosedur penyelesaiannya:</p>
+    <ol>
+      <li>Hitung EOQ untuk setiap tingkat harga. Perhatikan bahwa H sering dinyatakan sebagai persentase dari harga (H = i &times; P), sehingga H berbeda untuk setiap tingkat harga.</li>
+      <li>Untuk setiap tingkat harga, periksa apakah EOQ yang dihitung masuk dalam rentang kuantitas yang valid. Jika tidak, sesuaikan Q ke batas bawah rentang yang berlaku.</li>
+      <li>Hitung total biaya tahunan (termasuk biaya pembelian D &times; P) untuk setiap Q yang valid.</li>
+      <li>Pilih Q yang menghasilkan total biaya terendah.</li>
+    </ol>
+    <div class="formula-block">TC = D × P + (D/Q) × S + (Q/2) × i × P</div>
+    <p>dengan P = harga per unit pada tingkat diskon yang berlaku, dan i = persentase biaya simpan per tahun.</p>
+
+    <h3>2. EPQ — Economic Production Quantity</h3>
+    <p>Model EPQ (juga disebut Economic Lot Size atau Production Order Quantity) digunakan ketika barang <strong>diproduksi secara internal</strong>, bukan dibeli dari supplier eksternal. Perbedaan utamanya: barang masuk ke persediaan secara bertahap selama proses produksi berlangsung (dengan laju p unit/hari), sementara pada saat yang sama permintaan mengambil barang dari persediaan (dengan laju d unit/hari).</p>
+    <p>Karena barang masuk dan keluar secara simultan, level persediaan maksimum tidak pernah mencapai Q, melainkan hanya Q &times; (1 − d/p). Akibatnya, rata-rata persediaan lebih rendah dibanding model EOQ dasar, dan ukuran lot optimal menjadi lebih besar:</p>
+    <div class="formula-block">EPQ = √( 2DS / (H × (1 − d/p)) )</div>
+    <p>Perhatikan bahwa jika p mendekati tak terhingga (barang diterima sekaligus, seperti pembelian dari supplier), maka (1 − d/p) mendekati 1 dan rumus EPQ kembali menjadi rumus EOQ standar. Ini menunjukkan bahwa EOQ sebenarnya adalah kasus khusus dari EPQ.</p>
+
+    <h3>3. EOQ dengan Backorder Terencana (Planned Shortage Model)</h3>
+    <p>Dalam beberapa situasi, perusahaan secara sengaja membiarkan kekurangan stok terjadi karena biaya backorder (b per unit per tahun) lebih rendah dibanding biaya menyimpan persediaan tambahan. Model ini mengoptimalkan <em>dua</em> variabel keputusan: jumlah pesanan Q dan level persediaan maksimum S (di mana Q − S adalah jumlah backorder per siklus).</p>
+    <div class="formula-block">Q* = √(2DS/H) × √((H+b)/b)</div>
+    <div class="formula-block">S* = √(2DS/H) × √(b/(H+b))</div>
+    <p>Semakin tinggi biaya backorder b relatif terhadap H, semakin kecil jumlah backorder optimal — dan pada batas b mendekati tak terhingga, model ini kembali menjadi EOQ standar (tidak ada backorder sama sekali). Sebaliknya, jika biaya backorder rendah, perusahaan akan lebih banyak membiarkan stockout terjadi untuk mengurangi biaya simpan.</p>
+
+    <h2>Penerapan EOQ di Industri Nyata</h2>
+    <p>Teori EOQ terlihat elegan di atas kertas, tetapi implementasinya di lapangan memerlukan sejumlah penyesuaian pragmatis. Berikut beberapa pertimbangan praktis yang perlu diperhatikan oleh praktisi.</p>
+
+    <h3>Penyesuaian Ukuran Lot (Batch Size)</h3>
+    <p>Hasil perhitungan EOQ sering kali bukan bilangan bulat "rapi." Misalnya, EOQ = 707 unit. Dalam praktik, perusahaan mungkin membulatkan ke 700 atau 750 unit agar sesuai dengan kelipatan kemasan (misalnya 1 palet = 250 unit, maka 3 palet = 750 unit). Karena kurva total biaya relatif datar di sekitar EOQ, penyesuaian 5-10% dari nilai optimal hampir tidak memengaruhi total biaya secara signifikan.</p>
+
+    <h3>Minimum Order Quantity (MOQ) Supplier</h3>
+    <p>Banyak supplier menetapkan jumlah minimum pemesanan. Jika MOQ supplier lebih besar dari EOQ yang dihitung, perusahaan terpaksa memesan sebanyak MOQ dan menerima sedikit kenaikan total biaya. Dalam kasus ini, EOQ tetap berguna sebagai benchmark — perusahaan dapat mengevaluasi berapa besar "biaya tambahan" akibat keterpaksaan memesan melebihi EOQ, dan menggunakan informasi tersebut dalam negosiasi dengan supplier.</p>
+
+    <h3>Keterbatasan Kapasitas Gudang</h3>
+    <p>Jika kapasitas gudang terbatas dan EOQ melebihi kapasitas yang tersedia, perusahaan harus membatasi Q agar tidak melebihi kapasitas. Alternatif lain: pertimbangkan untuk menyewa gudang tambahan atau menggunakan jasa pergudangan pihak ketiga (third-party logistics / 3PL), lalu masukkan biaya sewa tersebut ke dalam komponen H agar model tetap akurat.</p>
+
+    <h3>Penyesuaian untuk Permintaan Musiman</h3>
+    <p>Model EOQ dasar mengasumsikan permintaan konstan sepanjang tahun. Namun, banyak industri mengalami fluktuasi permintaan musiman — misalnya industri minuman yang permintaannya naik selama bulan Ramadan atau musim panas. Untuk mengatasinya, praktisi dapat:</p>
+    <ul>
+      <li>Membagi tahun menjadi beberapa periode (misalnya per kuartal atau per musim) dengan EOQ yang berbeda untuk masing-masing periode.</li>
+      <li>Menggunakan EOQ berbasis rata-rata tahunan sebagai titik awal, lalu menambahkan safety stock lebih besar pada periode puncak permintaan.</li>
+      <li>Menerapkan model persediaan dinamis seperti algoritma Silver-Meal atau Wagner-Whitin yang memang dirancang untuk permintaan tidak konstan.</li>
+    </ul>
+
+    <h3>Integrasi dengan Sistem ERP</h3>
+    <p>Dalam perusahaan modern, perhitungan EOQ jarang dilakukan secara manual. Sistem ERP (SAP, Oracle, Microsoft Dynamics) memiliki modul persediaan yang secara otomatis menghitung EOQ berdasarkan data historis permintaan, biaya terkini, dan parameter yang diatur oleh tim supply chain. Namun, pemahaman konseptual tentang EOQ tetap krusial agar pengguna dapat mengkonfigurasi parameter sistem dengan benar, menginterpretasi output, dan melakukan override ketika kondisi khusus terjadi (misalnya promosi besar-besaran atau gangguan rantai pasok).</p>
+
+    <h3>EOQ untuk Multi-Item</h3>
+    <p>Ketika perusahaan mengelola ribuan SKU (Stock Keeping Unit), menghitung EOQ individual untuk setiap item bisa menghasilkan jadwal pemesanan yang sangat beragam dan sulit dikelola. Dalam praktik, item-item sering dikelompokkan berdasarkan analisis ABC (berdasarkan nilai konsumsi tahunan), lalu kebijakan pemesanan disesuaikan: item kelas A mendapat perhatian lebih detail dengan EOQ individual, item kelas B dan C menggunakan pendekatan yang lebih sederhana seperti periode pemesanan tetap (fixed order interval).</p>
+
     <h2>Kesalahan Umum Saat Mengerjakan Soal EOQ</h2>
     <ul>
-      <li><strong>Satuan tidak konsisten</strong> — D harus per tahun dan H per unit per tahun. Jika H diberikan sebagai persentase dari harga barang (misal 20% × harga), konversi dulu ke Rp/unit/tahun.</li>
+      <li><strong>Satuan tidak konsisten</strong> — D harus per tahun dan H per unit per tahun. Jika H diberikan sebagai persentase dari harga barang (misal 20% &times; harga), konversi dulu ke Rp/unit/tahun.</li>
       <li><strong>Tertukar S dan H</strong> — S melekat pada <em>setiap kali pesan</em>, H melekat pada <em>setiap unit yang disimpan</em>.</li>
       <li><strong>Membulatkan terlalu dini</strong> — bulatkan hasil akhir saja agar total biaya tidak melenceng.</li>
       <li><strong>Lupa membedakan hari kalender dan hari kerja</strong> saat menghitung jarak antar pesanan.</li>
+      <li><strong>Mengabaikan biaya pembelian pada model diskon</strong> — pada model quantity discount, total biaya harus menyertakan komponen D &times; P, bukan hanya biaya pesan dan simpan.</li>
+      <li><strong>Salah mengidentifikasi jenis model</strong> — pastikan apakah soal mengarah ke EOQ dasar, EOQ diskon, EPQ, atau model backorder sebelum mulai menghitung.</li>
     </ul>
 
     <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
     <div class="faq-item">
       <h3>Apakah hasil EOQ harus dibulatkan?</h3>
-      <p>Ya, dalam praktik jumlah pesanan dibulatkan ke unit (atau kelipatan kemasan) terdekat. Karena kurva total biaya di sekitar EOQ relatif datar, pembulatan kecil hampir tidak mengubah total biaya.</p>
+      <p>Ya, dalam praktik jumlah pesanan dibulatkan ke unit (atau kelipatan kemasan) terdekat. Karena kurva total biaya di sekitar EOQ relatif datar, pembulatan kecil hampir tidak mengubah total biaya. Sebagai pedoman, jika pembulatan tidak melebihi 5-10% dari nilai EOQ, dampaknya terhadap total biaya sangat minimal.</p>
     </div>
     <div class="faq-item">
       <h3>Bagaimana jika ada diskon kuantitas?</h3>
-      <p>Gunakan model <em>quantity discount</em>: hitung EOQ untuk setiap tingkat harga, sesuaikan ke kuantitas minimum diskon bila perlu, lalu bandingkan total biaya (termasuk biaya pembelian) dan pilih yang termurah.</p>
+      <p>Gunakan model <em>quantity discount</em>: hitung EOQ untuk setiap tingkat harga, sesuaikan ke kuantitas minimum diskon bila perlu, lalu bandingkan total biaya (termasuk biaya pembelian D &times; P) dan pilih yang termurah. Perhatikan bahwa jika H dinyatakan sebagai persentase dari harga (H = i &times; P), maka H berubah pada setiap tingkat harga.</p>
     </div>
     <div class="faq-item">
       <h3>Apa bedanya EOQ dengan EPQ?</h3>
-      <p>EPQ (Economic Production Quantity) dipakai jika barang diproduksi sendiri secara bertahap, bukan diterima sekaligus. Rumusnya EOQ dikalikan faktor koreksi √(p/(p−d)) dengan p = laju produksi dan d = laju permintaan.</p>
+      <p>EPQ (Economic Production Quantity) dipakai jika barang diproduksi sendiri secara bertahap, bukan diterima sekaligus. Rumusnya EOQ dikalikan faktor koreksi √(p/(p−d)) dengan p = laju produksi dan d = laju permintaan. Karena barang masuk ke gudang secara bertahap, persediaan maksimum lebih rendah dibanding EOQ, sehingga lot size EPQ selalu lebih besar dari EOQ untuk parameter yang sama.</p>
     </div>
+    <div class="faq-item">
+      <h3>Bagaimana jika permintaan berfluktuasi musiman?</h3>
+      <p>Model EOQ dasar mengasumsikan permintaan konstan. Untuk permintaan musiman, ada beberapa pendekatan: (1) hitung EOQ menggunakan rata-rata permintaan tahunan sebagai pendekatan awal, lalu tambahkan safety stock lebih besar pada bulan-bulan puncak; (2) bagi tahun menjadi beberapa periode dan hitung EOQ terpisah untuk setiap periode; (3) gunakan model lot-sizing dinamis seperti Wagner-Whitin atau Silver-Meal yang dirancang khusus untuk permintaan berfluktuasi.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apakah EOQ masih relevan di era digital dan e-commerce?</h3>
+      <p>Sangat relevan. Meskipun teknologi digital memungkinkan pemesanan lebih cepat dan murah, prinsip trade-off antara biaya pesan dan biaya simpan tetap berlaku. Bahkan, platform e-commerce besar seperti Amazon menggunakan algoritma berbasis EOQ (dengan modifikasi) untuk mengelola jutaan SKU di jaringan gudangnya. Yang berubah di era digital bukan relevansi model, melainkan kemampuan mengumpulkan data lebih akurat dan menghitung ulang EOQ secara real-time menggunakan sistem otomatis.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Bagaimana menghitung H jika hanya diketahui persentase harga?</h3>
+      <p>Ini sangat umum dalam soal maupun praktik. Jika biaya penyimpanan dinyatakan sebagai persentase (i) dari harga per unit (P), maka H = i &times; P. Misalnya, jika harga barang P = Rp 50.000 dan biaya simpan 20% per tahun, maka H = 20% &times; 50.000 = Rp 10.000/unit/tahun. Persentase biaya simpan di industri umumnya berkisar 15-30% per tahun, tergantung jenis produk dan kondisi penyimpanan.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Apa hubungan EOQ dengan konsep Just-In-Time (JIT)?</h3>
+      <p>Secara filosofis, JIT bertujuan meminimalkan persediaan menuju nol ("zero inventory"), yang tampak bertentangan dengan EOQ. Namun, secara matematis, JIT dapat dipahami sebagai kondisi di mana biaya pemesanan S ditekan mendekati nol (melalui hubungan jangka panjang dengan supplier, kontrak blanket, dan otomasi pemesanan). Jika S mendekati nol, maka EOQ = √(2DS/H) juga mendekati nol — artinya perusahaan memesan dalam lot sangat kecil namun sangat sering, yang persis seperti prinsip JIT. Jadi, EOQ dan JIT bukan konsep yang bertentangan, melainkan berada pada spektrum yang sama: JIT adalah kondisi ekstrem ketika S sangat kecil.</p>
+    </div>
+
+    <h2>Rangkuman (Key Takeaways)</h2>
+    <ul>
+      <li><strong>EOQ menyeimbangkan dua biaya yang saling bertolak belakang</strong> — biaya pemesanan (turun jika pesan jarang tapi banyak) dan biaya penyimpanan (naik jika stok di gudang banyak). Titik keseimbangan inilah yang meminimalkan total biaya.</li>
+      <li><strong>Rumus inti: EOQ = √(2DS/H)</strong> — di mana D = permintaan per tahun, S = biaya per pesanan, H = biaya simpan per unit per tahun. Pada titik optimal, biaya pesan tahunan selalu sama dengan biaya simpan tahunan.</li>
+      <li><strong>Model EOQ bersifat robust</strong> — perubahan 20% pada parameter hanya menyebabkan perubahan total biaya sekitar 9,5%. Oleh karena itu, estimasi parameter yang tidak sempurna tetap menghasilkan solusi yang mendekati optimal.</li>
+      <li><strong>EOQ adalah fondasi, bukan akhir</strong> — dari EOQ dasar, kita dapat memperluas ke model diskon kuantitas, EPQ (produksi), model backorder, dan model multi-item yang lebih sesuai dengan kondisi nyata.</li>
+      <li><strong>Gunakan bersama ROP dan safety stock</strong> — EOQ menjawab "berapa banyak," ROP menjawab "kapan memesan," dan safety stock melindungi dari ketidakpastian permintaan. Ketiga konsep ini bekerja bersama sebagai sistem manajemen persediaan yang utuh.</li>
+      <li><strong>Tetap relevan di era modern</strong> — meskipun sistem ERP dan algoritma canggih sudah tersedia, pemahaman konseptual EOQ tetap penting untuk mengkonfigurasi sistem, menginterpretasi output, dan mengambil keputusan ketika kondisi tidak standar.</li>
+    </ul>
 
     <h2>Referensi</h2>
     <ul>
@@ -183,6 +408,9 @@
       <li>Heizer, J., Render, B., &amp; Munson, C. (2020). <em>Operations Management: Sustainability and Supply Chain Management</em> (13th ed.), Bab 12 "Inventory Management". Pearson.</li>
       <li>Stevenson, W. J. (2021). <em>Operations Management</em> (14th ed.), Bab 13 "Inventory Management". McGraw-Hill.</li>
       <li>Silver, E. A., Pyke, D. F., &amp; Thomas, D. J. (2017). <em>Inventory and Production Management in Supply Chains</em> (4th ed.). CRC Press.</li>
+      <li>Nahmias, S. &amp; Olsen, T. L. (2015). <em>Production and Operations Analysis</em> (7th ed.), Bab 4 "Deterministic Inventory Models". Waveland Press.</li>
+      <li>Tersine, R. J. (1994). <em>Principles of Inventory and Materials Management</em> (4th ed.). Prentice Hall. — referensi klasik untuk model-model persediaan deterministik dan probabilistik.</li>
+      <li>Wilson, R. H. (1934). "A Scientific Routine for Stock Control." <em>Harvard Business Review</em>, 13, 116–128. — makalah yang mempopulerkan model Harris.</li>
     </ul>
 
     <hr class="divider">
@@ -207,6 +435,7 @@
     <a href="about.html">Tentang</a>
     <a href="contact.html">Kontak</a>
     <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Syarat &amp; Ketentuan</a>
   </div>
   <p>&copy; 2026 TI Toolkit — Kalkulator Teknik Industri. Dibuat untuk mahasiswa Indonesia.</p>
 </footer>
